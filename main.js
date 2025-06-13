@@ -1,4 +1,56 @@
 // Basic Three.js scene setup
+let currentSiteIndex = 0;
+let currentSiteGroup = null;
+
+const sitesData = [
+    {
+        name: "Site 1",
+        description: "A rocky outcrop in Western Australia featuring unique geological formations.",
+        createFunc: createPlaceholderSite1
+    },
+    {
+        name: "Site 2",
+        description: "An ancient Aboriginal rock art site with wave-like formations.",
+        createFunc: createPlaceholderSite2
+    }
+];
+
+function switchSite(newIndex) {
+    if (newIndex < 0 || newIndex >= sitesData.length || isTransitioning) return;
+    
+    isTransitioning = 'out';
+    transitionAlpha = 1;
+    transitionStartTime = clock.getElapsedTime();
+    siteToLoadAfterFadeOut = newIndex;
+}
+
+function updateNavigationButtons() {
+    const prevButton = document.getElementById('prevButton');
+    const nextButton = document.getElementById('nextButton');
+    
+    if (prevButton) {
+        prevButton.disabled = currentSiteIndex <= 0;
+        prevButton.classList.toggle('active', false);
+    }
+    if (nextButton) {
+        nextButton.disabled = currentSiteIndex >= sitesData.length - 1;
+        nextButton.classList.toggle('active', false);
+    }
+}
+
+// Add event listeners for navigation buttons
+document.getElementById('prevButton')?.addEventListener('click', () => {
+    if (currentSiteIndex > 0) {
+        switchSite(currentSiteIndex - 1);
+    }
+});
+
+document.getElementById('nextButton')?.addEventListener('click', () => {
+    if (currentSiteIndex < sitesData.length - 1) {
+        switchSite(currentSiteIndex + 1);
+    }
+});
+
 function main() {
     const canvas = document.querySelector('#webglCanvas');
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true }); // Added antialias for potentially better shadow edges
@@ -18,7 +70,11 @@ function main() {
     camera.lookAt(0, 0, 0); // Ensure camera looks at the origin where the site will be centered
 
     const scene = new THREE.Scene();
-    const clock = new THREE.Clock(); // Added clock
+    
+    // Initialize clock before any animations
+    const clock = new THREE.Clock();
+    clock.start(); // Explicitly start the clock
+    
     let composer; // Declare composer here
 
     // Transition variables
@@ -56,10 +112,6 @@ function main() {
         }
         console.log(`Initial site: ${initialSiteData.name}`);
         controls.target.set(0,0,0);
-
-        isTransitioning = 'in';
-        transitionAlpha = 0;
-        transitionStartTime = clock.getElapsedTime();
         updateNavigationButtons(); // Call for initial state
     };
     manager.onProgress = function ( url, itemsLoaded, itemsTotal ) {
@@ -73,16 +125,8 @@ function main() {
         }
     };
 
-    // Skybox
-    const path = 'https://threejs.org/examples/textures/cube/MilkyWay/';
-    const urls = [
-        path + 'dark-s_px.jpg', path + 'dark-s_nx.jpg',
-        path + 'dark-s_py.jpg', path + 'dark-s_ny.jpg',
-        path + 'dark-s_pz.jpg', path + 'dark-s_nz.jpg'
-    ];
-    const loader = new THREE.CubeTextureLoader(manager); // Pass manager
-    const texture = loader.load(urls);
-    scene.background = texture;
+    // Set a simple background color instead of skybox for now
+    scene.background = new THREE.Color(0x000000);
 
     // OrbitControls
     const controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -115,14 +159,20 @@ function main() {
     // const shadowHelper = new THREE.CameraHelper(directionalLight.shadow.camera);
     // scene.add(shadowHelper);
 
-    // Post-processing Composer
-    composer = new THREE.EffectComposer(renderer);
-    const renderPass = new THREE.RenderPass(scene, camera);
-    composer.addPass(renderPass);
+    try {
+        // Post-processing Composer
+        composer = new THREE.EffectComposer(renderer);
+        const renderPass = new THREE.RenderPass(scene, camera);
+        composer.addPass(renderPass);
 
-    // BloomPass: strength, kernelSize, sigma, resolution
-    const bloomPass = new THREE.BloomPass(1.5, 25, 5.0, 512); // Adjusted for stronger bloom & higher res
-    composer.addPass(bloomPass);
+        // BloomPass: strength, kernelSize, sigma, resolution
+        const bloomPass = new THREE.BloomPass(1.5, 25, 5.0, 512); // Adjusted for stronger bloom & higher res
+        composer.addPass(bloomPass);
+    } catch (error) {
+        console.error('Error setting up post-processing:', error);
+        // Fallback to normal rendering
+        composer = null;
+    }
 
     // If BloomPass is the last pass, it should render to screen by default.
     // If not, or if issues, uncomment and add CopyShader pass:
@@ -310,17 +360,16 @@ function main() {
         navigationControlsContainer.appendChild(button);
     });
 
+    // Helper function to set opacity for a group and its children
     function setGroupOpacity(group, opacity) {
         if (!group) return;
+        
         group.traverse(child => {
             if (child.isMesh && child.material) {
                 const materials = Array.isArray(child.material) ? child.material : [child.material];
                 materials.forEach(mat => {
                     mat.transparent = true;
                     mat.opacity = opacity;
-                    // If opacity is 1, decide if you want to revert transparent to false
-                    // For simplicity, leaving transparent = true is often fine.
-                    // If mat.opacity >= 1) mat.transparent = false; // Only if original was not transparent
                 });
             }
         });
@@ -446,4 +495,13 @@ function main() {
     });
 }
 
-main();
+// Wrap the main call in try-catch
+try {
+    main();
+} catch (error) {
+    console.error('Error initializing application:', error);
+    const loadingIndicator = document.getElementById('loadingIndicator');
+    if (loadingIndicator) {
+        loadingIndicator.innerHTML = '<p>Error initializing 3D scene. Please check console and refresh.</p>';
+    }
+}

@@ -82,16 +82,32 @@
     </style>
 </head>
 <body>
+    <div id="loadingIndicator"><p>Loading...</p></div>
+    <div id="navigationControls">
+        <button id="prevButton">Previous Site</button>
+        <button id="nextButton">Next Site</button>
+    </div>
     <canvas id="webglCanvas"></canvas>
     <div id="siteDescription">Site information will appear here.</div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <!-- Update to latest Three.js version -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.153.0/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.153.0/examples/js/controls/OrbitControls.js"></script>
     <!-- Post-processing scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/ConvolutionShader.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/BloomPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.153.0/examples/js/postprocessing/EffectComposer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.153.0/examples/js/postprocessing/RenderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.153.0/examples/js/shaders/CopyShader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.153.0/examples/js/shaders/ConvolutionShader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.153.0/examples/js/postprocessing/BloomPass.js"></script>
+    <script>
+        // Add error handlers for script loading
+        window.addEventListener('error', function(e) {
+            console.error('Script loading error:', e);
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            if (loadingIndicator) {
+                loadingIndicator.innerHTML = '<p>Error loading 3D libraries. Please check console and refresh.</p>';
+            }
+        }, true);
+    </script>
     <script src="main.js"></script>
 </body>
 </html>
