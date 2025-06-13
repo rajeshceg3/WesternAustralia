@@ -7,18 +7,77 @@
     <style>
         body { margin: 0; overflow: hidden; }
         canvas { display: block; }
+        #loadingIndicator {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #1a1a1a; /* Dark background */
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 1.5em;
+            z-index: 200; /* Ensure it's above other elements */
+        }
+        #loadingIndicator p {
+            padding: 10px;
+            border: 1px solid #fff;
+            border-radius: 5px;
+        }
+        #navigationControls {
+            position: absolute;
+            bottom: 80px; /* Adjust to be above siteDescription */
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px;
+            background-color: rgba(20, 20, 20, 0.7);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            z-index: 150;
+            display: flex;
+            gap: 10px; /* Spacing between buttons */
+        }
+
+        #navigationControls button {
+            padding: 8px 15px;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        #navigationControls button:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+
+        #navigationControls button.active {
+            background-color: rgba(255, 255, 255, 0.5);
+            border-color: rgba(255, 255, 255, 0.8);
+            font-weight: bold;
+        }
         #siteDescription {
             position: absolute;
-            bottom: 20px;
-            left: 20px;
-            padding: 10px;
-            background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
-            color: white;
-            font-family: Arial, sans-serif;
+    bottom: 145px; /* Adjusted to make space for nav controls */
+    left: 25px; /* Adjusted */
+    padding: 15px; /* Increased padding */
+    background-color: rgba(40, 40, 40, 0.85); /* Darker, slightly more opaque */
+    color: #f0f0f0; /* Lighter text color */
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Modern font stack */
             font-size: 14px;
-            border-radius: 5px;
-            max-width: 300px; /* Or a percentage */
-            z-index: 100; /* Ensure it's above the canvas */
+    border-radius: 10px; /* Softer corners */
+    max-width: 320px; /* Slightly wider */
+    z-index: 100;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* More pronounced shadow */
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle light border */
+    line-height: 1.4; /* Improved readability */
         }
     </style>
 </head>
@@ -27,6 +86,12 @@
     <div id="siteDescription">Site information will appear here.</div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <!-- Post-processing scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/ConvolutionShader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/BloomPass.js"></script>
     <script src="main.js"></script>
 </body>
 </html>

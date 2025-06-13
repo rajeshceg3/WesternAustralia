@@ -1,9 +1,12 @@
 // Basic Three.js scene setup
 function main() {
     const canvas = document.querySelector('#webglCanvas');
-    const renderer = new THREE.WebGLRenderer({ canvas });
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true }); // Added antialias for potentially better shadow edges
     renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap; // Softer shadows
     const descriptionElement = document.getElementById('siteDescription');
+    const loadingIndicator = document.getElementById('loadingIndicator'); // Get loading indicator
 
     const fov = 75;
     const aspect = window.innerWidth / window.innerHeight;  // the canvas default
@@ -15,6 +18,71 @@ function main() {
     camera.lookAt(0, 0, 0); // Ensure camera looks at the origin where the site will be centered
 
     const scene = new THREE.Scene();
+    const clock = new THREE.Clock(); // Added clock
+    let composer; // Declare composer here
+
+    // Transition variables
+    let isTransitioning = false; // Can be false, 'in', or 'out'
+    let transitionAlpha = 1; // Current alpha for fade
+    const transitionDuration = 0.5; // Duration in seconds
+    let transitionStartTime = 0;
+    let siteToLoadAfterFadeOut = null; // Index of the site to load after fade out completes
+
+    // Loading Manager
+    const manager = new THREE.LoadingManager();
+    manager.onStart = function ( url, itemsLoaded, itemsTotal ) {
+        console.log( 'Started loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.' );
+        if (loadingIndicator) loadingIndicator.style.display = 'flex'; // Show loading indicator
+    };
+    manager.onLoad = function ( ) {
+        console.log( 'Loading complete!');
+        if (loadingIndicator) {
+            loadingIndicator.style.transition = 'opacity 0.5s';
+            loadingIndicator.style.opacity = '0';
+            setTimeout(() => {
+                if (loadingIndicator) loadingIndicator.style.display = 'none';
+            }, 500); // Match CSS transition duration
+        }
+
+        // Start the fade-in for the first site (logic moved here)
+        // currentSiteIndex is typically 0, ensured before this callback
+        const initialSiteData = sitesData[currentSiteIndex]; // currentSiteIndex is 0 here
+        currentSiteGroup = initialSiteData.createFunc();
+        setGroupOpacity(currentSiteGroup, 0); // Start fully transparent
+        scene.add(currentSiteGroup);
+        if (descriptionElement) {
+            descriptionElement.textContent = initialSiteData.description;
+            descriptionElement.style.opacity = 0;
+        }
+        console.log(`Initial site: ${initialSiteData.name}`);
+        controls.target.set(0,0,0);
+
+        isTransitioning = 'in';
+        transitionAlpha = 0;
+        transitionStartTime = clock.getElapsedTime();
+        updateNavigationButtons(); // Call for initial state
+    };
+    manager.onProgress = function ( url, itemsLoaded, itemsTotal ) {
+        console.log( 'Loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.' );
+    };
+    manager.onError = function ( url ) {
+        console.error( 'There was an error loading ' + url );
+        if (loadingIndicator) {
+            loadingIndicator.innerHTML = '<p>Error loading assets. Please try refreshing.</p>'; // Update text
+            loadingIndicator.style.display = 'flex'; // Ensure it's visible
+        }
+    };
+
+    // Skybox
+    const path = 'https://threejs.org/examples/textures/cube/MilkyWay/';
+    const urls = [
+        path + 'dark-s_px.jpg', path + 'dark-s_nx.jpg',
+        path + 'dark-s_py.jpg', path + 'dark-s_ny.jpg',
+        path + 'dark-s_pz.jpg', path + 'dark-s_nz.jpg'
+    ];
+    const loader = new THREE.CubeTextureLoader(manager); // Pass manager
+    const texture = loader.load(urls);
+    scene.background = texture;
 
     // OrbitControls
     const controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -26,11 +94,42 @@ function main() {
     // controls.maxPolarAngle = Math.PI / 2; // Keep this if you don't want to go below ground
 
     // Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5); // Reduced intensity
     scene.add(ambientLight);
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-    directionalLight.position.set(5, 10, 7.5); // Positioned to cast nice shadows
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.9); // Slightly increased intensity
+    directionalLight.position.set(10, 15, 10); // Adjusted position for better shadow angles
+    directionalLight.castShadow = true;
     scene.add(directionalLight);
+
+    // Configure shadow camera properties
+    directionalLight.shadow.mapSize.width = 2048; // Increased resolution
+    directionalLight.shadow.mapSize.height = 2048;
+    directionalLight.shadow.camera.near = 0.5;
+    directionalLight.shadow.camera.far = 50;
+    directionalLight.shadow.camera.left = -15;
+    directionalLight.shadow.camera.right = 15;
+    directionalLight.shadow.camera.top = 15;
+    directionalLight.shadow.camera.bottom = -15;
+    directionalLight.shadow.bias = -0.0005; // Mitigate shadow acne if necessary
+
+    // const shadowHelper = new THREE.CameraHelper(directionalLight.shadow.camera);
+    // scene.add(shadowHelper);
+
+    // Post-processing Composer
+    composer = new THREE.EffectComposer(renderer);
+    const renderPass = new THREE.RenderPass(scene, camera);
+    composer.addPass(renderPass);
+
+    // BloomPass: strength, kernelSize, sigma, resolution
+    const bloomPass = new THREE.BloomPass(1.5, 25, 5.0, 512); // Adjusted for stronger bloom & higher res
+    composer.addPass(bloomPass);
+
+    // If BloomPass is the last pass, it should render to screen by default.
+    // If not, or if issues, uncomment and add CopyShader pass:
+    // const copyPass = new THREE.ShaderPass(THREE.CopyShader);
+    // copyPass.renderToScreen = true;
+    // composer.addPass(copyPass);
+
 
     // Placeholder Site Functions
     function createPlaceholderSite1() {
@@ -46,6 +145,7 @@ function main() {
             material
         );
         mainRock.position.y = 0.8;
+        mainRock.castShadow = true;
         group.add(mainRock);
 
         for (let i = 0; i < 5; i++) {
@@ -61,8 +161,23 @@ function main() {
                 (Math.random() - 0.5) * 3
             );
             element.rotation.y = Math.random() * Math.PI;
+            element.castShadow = true;
             group.add(element);
         }
+
+        // Add ground plane
+        const groundMaterial = new THREE.MeshStandardMaterial({
+            color: 0x907050, // Brownish
+            roughness: 1.0,
+            metalness: 0.0
+        });
+        const groundGeometry = new THREE.PlaneGeometry(20, 20);
+        const groundMesh = new THREE.Mesh(groundGeometry, groundMaterial);
+        groundMesh.rotation.x = -Math.PI / 2;
+        groundMesh.position.y = 0;
+        groundMesh.receiveShadow = true;
+        group.add(groundMesh);
+
         return group;
     }
 
@@ -87,8 +202,22 @@ function main() {
         mesh.rotation.x = -Math.PI / 2; // Lay it flat
         mesh.scale.set(1, 1, 1.5); // Make it a bit longer/deeper
         mesh.position.y = 0.25; // Adjust if depth/bevel makes it go through ground
+        mesh.castShadow = true;
         group.add(mesh);
-        // group.position.y = 0.5; // Lift the whole group if needed, but individual mesh adjustment is often better
+
+        // Add ground plane
+        const groundMaterial = new THREE.MeshStandardMaterial({
+            color: 0x707070, // Greyish
+            roughness: 1.0,
+            metalness: 0.0
+        });
+        const groundGeometry = new THREE.PlaneGeometry(20, 20);
+        const groundMesh = new THREE.Mesh(groundGeometry, groundMaterial);
+        groundMesh.rotation.x = -Math.PI / 2;
+        groundMesh.position.y = 0; // Position slightly below the wave if needed, or adjust wave position
+        groundMesh.receiveShadow = true;
+        group.add(groundMesh);
+
         return group;
     }
 
@@ -112,8 +241,23 @@ function main() {
                 height / 2, // base on ground
                 (Math.random() - 0.5) * 4
             );
+            pillar.castShadow = true;
             group.add(pillar);
         }
+
+        // Add ground plane
+        const groundMaterial = new THREE.MeshStandardMaterial({
+            color: 0x605040, // Darker earth
+            roughness: 1.0,
+            metalness: 0.0
+        });
+        const groundGeometry = new THREE.PlaneGeometry(20, 20);
+        const groundMesh = new THREE.Mesh(groundGeometry, groundMaterial);
+        groundMesh.rotation.x = -Math.PI / 2;
+        groundMesh.position.y = 0;
+        groundMesh.receiveShadow = true;
+        group.add(groundMesh);
+
         return group;
     }
 
@@ -139,62 +283,144 @@ function main() {
         }
     ];
     let currentSiteGroup = null;
-    let currentSiteIndex = 0;
+    let currentSiteIndex = -1; // Start with -1 to indicate no site is initially fully loaded
+    const navigationControlsContainer = document.getElementById('navigationControls');
+
+    function updateNavigationButtons() {
+        if (!navigationControlsContainer) return;
+        const buttons = navigationControlsContainer.querySelectorAll('button');
+        buttons.forEach((button, index) => {
+            if (index === currentSiteIndex) {
+                button.classList.add('active');
+            } else {
+                button.classList.remove('active');
+            }
+        });
+    }
+
+    sitesData.forEach((site, index) => {
+        if (!navigationControlsContainer) return;
+        const button = document.createElement('button');
+        button.textContent = `Site ${index + 1}`;
+        button.addEventListener('click', () => {
+            if (!isTransitioning && index !== currentSiteIndex) { // Only allow click if not already transitioning and not current site
+                switchSite(index);
+            }
+        });
+        navigationControlsContainer.appendChild(button);
+    });
+
+    function setGroupOpacity(group, opacity) {
+        if (!group) return;
+        group.traverse(child => {
+            if (child.isMesh && child.material) {
+                const materials = Array.isArray(child.material) ? child.material : [child.material];
+                materials.forEach(mat => {
+                    mat.transparent = true;
+                    mat.opacity = opacity;
+                    // If opacity is 1, decide if you want to revert transparent to false
+                    // For simplicity, leaving transparent = true is often fine.
+                    // If mat.opacity >= 1) mat.transparent = false; // Only if original was not transparent
+                });
+            }
+        });
+    }
 
     function switchSite(index) {
+        if (isTransitioning || (index === currentSiteIndex && currentSiteGroup && !isTransitioning)) {
+            console.warn("Transition in progress or site already loaded/targetted:", index, "current:", currentSiteIndex, "transitioning:", isTransitioning);
+            return;
+        }
         if (index < 0 || index >= sitesData.length) {
             console.warn("Invalid site index:", index);
             return;
         }
 
-        if (currentSiteGroup) {
-            scene.remove(currentSiteGroup);
-            // Basic geometry and material cleanup (optional but good practice)
-            currentSiteGroup.traverse(child => {
-                if (child.geometry) child.geometry.dispose();
-                if (child.material) {
-                    if (Array.isArray(child.material)) {
-                        child.material.forEach(mat => mat.dispose());
-                    } else {
-                        child.material.dispose();
-                    }
-                }
-            });
-        }
+        siteToLoadAfterFadeOut = index;
+        isTransitioning = 'out';
+        // transitionAlpha is already 1 (or should be from previous fade in)
+        transitionStartTime = clock.getElapsedTime();
 
-        currentSiteIndex = index;
-        const siteData = sitesData[currentSiteIndex];
-
-        currentSiteGroup = siteData.createFunc();
-        scene.add(currentSiteGroup);
-        scene.background = new THREE.Color(siteData.bgColor);
-
+        // Description will be updated when the new site is loaded after fade out,
+        // but we can hide the current one immediately if it's visible.
         if (descriptionElement) {
-            descriptionElement.textContent = siteData.description;
-        } else {
-            console.error("Description element not found!");
+            // Start fading out description text if it's currently visible
+            // This will be more robustly handled in the render loop if we want text to fade with 3D model
         }
-
-        console.log(`Switched to: ${siteData.name}, Background: #${siteData.bgColor.toString(16).padStart(6, '0')}`);
-        // Ensure controls target is reasonable, e.g., origin if sites are centered there
-        controls.target.set(0, 0, 0);
     }
 
-    // Initial site load
-    switchSite(0);
+    // Initial site load setup - MOVED to manager.onLoad
+    currentSiteIndex = 0; // Desired starting site index, used by manager.onLoad
 
 
-    function render(time) {
-        time *= 0.001;  // convert time to seconds
+    function render() { // Removed 'time' parameter
+        const elapsedTime = clock.getElapsedTime();
 
-        // No specific animation for the site itself for now, OrbitControls handles camera
-        // If site1 had animations, they would be updated here.
-        // e.g., site1.rotation.y = time * 0.1;
+        if (isTransitioning) {
+            const deltaTime = elapsedTime - transitionStartTime;
+            let progress = Math.min(deltaTime / transitionDuration, 1);
 
+            if (isTransitioning === 'out') {
+                transitionAlpha = 1 - progress;
+                setGroupOpacity(currentSiteGroup, transitionAlpha);
+                if (descriptionElement) descriptionElement.style.opacity = 0; // Keep description hidden during 3D fade out
 
-        controls.update(); // only required if controls.enableDamping or controls.autoRotate are set to true
-        renderer.render(scene, camera);
+                if (progress >= 1) {
+                    if (currentSiteGroup) {
+                        scene.remove(currentSiteGroup);
+                        currentSiteGroup.traverse(child => {
+                            if (child.geometry) child.geometry.dispose();
+                            if (child.material) {
+                                const materials = Array.isArray(child.material) ? child.material : [child.material];
+                                materials.forEach(mat => mat.dispose());
+                            }
+                        });
+                        currentSiteGroup = null; // Clear reference
+                    }
 
+                    currentSiteIndex = siteToLoadAfterFadeOut;
+                    const newSiteData = sitesData[currentSiteIndex];
+                    currentSiteGroup = newSiteData.createFunc();
+                    setGroupOpacity(currentSiteGroup, 0); // Prepare for fade-in
+                    scene.add(currentSiteGroup);
+
+                    if (descriptionElement) {
+                        descriptionElement.textContent = newSiteData.description;
+                        // Opacity will be handled by fade-in part
+                    }
+                    console.log(`Switched to: ${newSiteData.name}`);
+                    controls.target.set(0, 0, 0);
+
+                    isTransitioning = 'in';
+                    transitionAlpha = 0; // Reset alpha for fade-in
+                    transitionStartTime = elapsedTime; // Reset start time for fade-in
+                }
+            } else if (isTransitioning === 'in') {
+                transitionAlpha = progress;
+                setGroupOpacity(currentSiteGroup, transitionAlpha);
+                if (descriptionElement) descriptionElement.style.opacity = transitionAlpha;
+
+                if (progress >= 1) {
+                    isTransitioning = false;
+                    setGroupOpacity(currentSiteGroup, 1); // Ensure full opacity
+                    if (descriptionElement) descriptionElement.style.opacity = 1;
+                    updateNavigationButtons(); // Update buttons on fade-in completion
+                    // Optional: Reset transparency if needed
+                    // currentSiteGroup.traverse(child => {
+                    //     if (child.isMesh && child.material) {
+                    //         const materials = Array.isArray(child.material) ? child.material : [child.material];
+                    //         materials.forEach(mat => {
+                    //             if (mat.opacity >= 1) mat.transparent = false; // Example condition
+                    //         });
+                    //     }
+                    // });
+                }
+            }
+        }
+
+        controls.update();
+        // renderer.render(scene, camera); // Old rendering call
+        if (composer) composer.render(); // New rendering call
         requestAnimationFrame(render);
     }
     requestAnimationFrame(render);
@@ -204,6 +430,7 @@ function main() {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
+        if (composer) composer.setSize(window.innerWidth, window.innerHeight); // Update composer size
     });
 
     // Handle background color change on 'C' key press
