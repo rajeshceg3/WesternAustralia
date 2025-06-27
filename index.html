@@ -18,14 +18,20 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-family: 'Segoe UI', 'Roboto', sans-serif; /* Modern font */
             font-size: 1.5em;
             z-index: 200; /* Ensure it's above other elements */
+        }
+        @keyframes pulsate {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.05); }
+            100% { opacity: 1; transform: scale(1); }
         }
         #loadingIndicator p {
             padding: 10px;
             border: 1px solid #fff;
             border-radius: 5px;
+            animation: pulsate 2s infinite; /* Pulsating animation */
         }
         #navigationControls {
             position: absolute;
@@ -43,41 +49,54 @@
 
         #navigationControls button {
             padding: 8px 15px;
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-family: 'Segoe UI', 'Roboto', sans-serif; /* Modern font */
             font-size: 14px;
-            background-color: rgba(255, 255, 255, 0.2);
+            background-color: rgba(55, 55, 55, 0.7); /* Darker base for buttons */
             color: white;
-            border: 1px solid rgba(255, 255, 255, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s, border-color 0.3s;
+            transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease; /* Smooth transitions */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* Subtle shadow for 3D effect */
         }
 
         #navigationControls button:hover {
-            background-color: rgba(255, 255, 255, 0.4);
-            border-color: rgba(255, 255, 255, 0.6);
+            background-color: rgba(75, 75, 75, 0.9); /* Lighter on hover */
+            border-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* Enhanced shadow on hover */
+            transform: scale(1.05); /* Slight scaling effect */
         }
 
         #navigationControls button.active {
-            background-color: rgba(255, 255, 255, 0.5);
-            border-color: rgba(255, 255, 255, 0.8);
+            background-color: rgba(95, 95, 95, 1); /* Distinct active state */
+            border-color: rgba(255, 255, 255, 0.7);
             font-weight: bold;
+            box-shadow: 0 2px 3px rgba(0,0,0,0.4); /* Slightly inset shadow for active */
         }
         #siteDescription {
             position: absolute;
     bottom: 145px; /* Adjusted to make space for nav controls */
     left: 25px; /* Adjusted */
     padding: 15px; /* Increased padding */
-    background-color: rgba(40, 40, 40, 0.85); /* Darker, slightly more opaque */
+    background-color: rgba(20, 20, 20, 0.6); /* More transparent background */
     color: #f0f0f0; /* Lighter text color */
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Modern font stack */
+    font-family: 'Segoe UI', 'Roboto', sans-serif; /* Modern font stack */
             font-size: 14px;
     border-radius: 10px; /* Softer corners */
     max-width: 320px; /* Slightly wider */
+    backdrop-filter: blur(5px); /* Frosted glass effect */
+    -webkit-backdrop-filter: blur(5px); /* Safari support */
     z-index: 100;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* More pronounced shadow */
     border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle light border */
     line-height: 1.4; /* Improved readability */
+    opacity: 0; /* Initially hidden for animation */
+    transform: translateY(10px); /* Initial position for slide-up animation */
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out; /* Animation for appearing */
+        }
+        #siteDescription.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
@@ -98,6 +117,11 @@
     <script src="https://cdn.jsdelivr.net/npm/three@0.153.0/examples/js/shaders/CopyShader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.153.0/examples/js/shaders/ConvolutionShader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.153.0/examples/js/postprocessing/BloomPass.js"></script>
+    <!-- BokehPass and its shader dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.153.0/examples/js/shaders/BokehShader2.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.153.0/examples/js/postprocessing/BokehPass.js"></script>
+    <!-- RGBELoader for HDR environment maps -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.153.0/examples/js/loaders/RGBELoader.js"></script>
     <script>
         // Add error handlers for script loading
         window.addEventListener('error', function(e) {
