@@ -81,66 +81,73 @@ const AppContext = (function() {
     }
 
     function _updateNavigationButtons() {
-        if (!navigationControlsContainer) return;
+    if (!navigationControlsContainer) return;
 
-        // Handle prev/next buttons specifically by ID
-        const prevButton = navigationControlsContainer.querySelector('#prevButton');
-        const nextButton = navigationControlsContainer.querySelector('#nextButton');
+    const prevButton = navigationControlsContainer.querySelector('#prevButton');
+    const nextButton = navigationControlsContainer.querySelector('#nextButton');
+    const siteButtons = Array.from(navigationControlsContainer.querySelectorAll('button:not(#prevButton):not(#nextButton)'));
+
+    const allNavButtons = [prevButton, nextButton, ...siteButtons].filter(button => button !== null);
+
+    if (isTransitioning) {
+        allNavButtons.forEach(button => button.disabled = true);
+    } else {
+        allNavButtons.forEach(button => button.disabled = false);
 
         if (prevButton) {
             prevButton.disabled = currentSiteIndex <= 0;
         }
         if (nextButton) {
-            // Assuming sitesData is available in this scope
-            nextButton.disabled = currentSiteIndex >= getSitesData().length - 1;
+            const sites = AppContext.getSitesData();
+            nextButton.disabled = currentSiteIndex >= sites.length - 1;
         }
+    }
 
-        // Handle active state for site-specific buttons
-        // Assuming site-specific buttons are direct children and don't have #prevButton or #nextButton ID
-        // And they are the ones that should get the 'active' class.
-        const siteButtons = Array.from(navigationControlsContainer.querySelectorAll('button:not(#prevButton):not(#nextButton)'));
-        siteButtons.forEach((button, siteButtonIndex) => {
+    siteButtons.forEach((button, siteButtonIndex) => {
+        if (button) {
             if (siteButtonIndex === currentSiteIndex) {
                 button.classList.add('active');
             } else {
                 button.classList.remove('active');
             }
-        });
-    }
+        }
+    });
+}
 
     function _switchSite(index) {
-        // Guard clauses
-        if (isTransitioning || (index === currentSiteIndex && currentSiteGroup && !isTransitioning)) {
-            console.warn("Transition in progress or site already loaded/targetted:", index, "current:", currentSiteIndex, "transitioning:", isTransitioning);
-            return;
-        }
-        if (index < 0 || index >= sitesData.length) {
-            console.warn("Invalid site index:", index);
-            return;
-        }
-
-        if (currentSiteGroup) {
-            outgoingSiteGroup = currentSiteGroup;
-        }
-
-        currentSiteIndex = index;
-        const newSiteData = sitesData[currentSiteIndex];
-        incomingSiteGroup = newSiteData.createFunc();
-        setGroupOpacity(incomingSiteGroup, 0);
-        if (scene) scene.add(incomingSiteGroup); // Check if scene exists
-
-        if (descriptionElement) {
-            descriptionElement.classList.remove('visible');
-            descriptionElement.textContent = newSiteData.description;
-        }
-
-        _updateNavigationButtons();
-        if (controls) controls.target.set(0, 0, 0);
-
-        isTransitioning = 'crossfade';
-        if (clock) transitionStartTime = clock.getElapsedTime(); // Check if clock exists
-        currentSiteGroup = null; // Set to null, incoming becomes current after transition
+    if (isTransitioning || (index === currentSiteIndex && currentSiteGroup && !isTransitioning)) {
+        console.warn("Transition in progress or site already loaded/targetted:", index, "current:", currentSiteIndex, "transitioning:", isTransitioning);
+        return;
     }
+    if (index < 0 || index >= sitesData.length) {
+        console.warn("Invalid site index:", index);
+        return;
+    }
+
+    isTransitioning = 'crossfade';
+    if (clock) transitionStartTime = clock.getElapsedTime();
+
+    currentSiteIndex = index;
+
+    _updateNavigationButtons();
+
+    if (currentSiteGroup) {
+        outgoingSiteGroup = currentSiteGroup;
+    }
+
+    const newSiteData = sitesData[currentSiteIndex];
+    incomingSiteGroup = newSiteData.createFunc();
+    setGroupOpacity(incomingSiteGroup, 0);
+    if (scene) scene.add(incomingSiteGroup);
+
+    if (descriptionElement) {
+        descriptionElement.classList.remove('visible');
+        descriptionElement.textContent = newSiteData.description;
+    }
+
+    if (controls) controls.target.set(0, 0, 0);
+    currentSiteGroup = null;
+}
 
     function initMainLogic() {
         // Most of the original main() content goes here
@@ -344,14 +351,15 @@ const AppContext = (function() {
             if (incomingSiteGroup) setGroupOpacity(incomingSiteGroup, progress);
             if (descriptionElement && progress > 0.5) descriptionElement.classList.add('visible');
             if (progress >= 1) {
-                if (outgoingSiteGroup && scene) scene.remove(outgoingSiteGroup); // Check scene
-                // Dispose geometry/material of outgoingSiteGroup (omitted for brevity, but important in real app)
+            if (outgoingSiteGroup && scene) scene.remove(outgoingSiteGroup);
                 outgoingSiteGroup = null;
                 currentSiteGroup = incomingSiteGroup;
                 incomingSiteGroup = null;
                 if (currentSiteGroup) setGroupOpacity(currentSiteGroup, 1);
                 if (descriptionElement) descriptionElement.classList.add('visible');
-                isTransitioning = false;
+
+            isTransitioning = false;
+            _updateNavigationButtons();
             }
         }
         if (controls) controls.update();

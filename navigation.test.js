@@ -190,13 +190,8 @@ describe('AppContext.updateNavigationButtons', () => {
         };
 
         AppContext.setNavigationControlsContainer(mockNavControlsContainer);
-
-        // Ensure sitesData is default (3 sites)
-        // AppContext.getSitesData() should provide the default 3 sites.
-        // If we needed to change it for a test, we'd have to mock getSitesData or modify AppContext's internal sitesData
-        // For these tests, we assume 3 sites are present as per AppContext's internal setup.
-        // We also need to make sure AppContext.setCurrentSiteIndex is reset if necessary
-        AppContext.setCurrentSiteIndex(0); // Default to first site for safety
+        AppContext.setCurrentSiteIndex(0); // Default to first site
+        AppContext.setIsTransitioning(false); // Default to not transitioning
     });
 
     afterEach(() => {
@@ -205,10 +200,13 @@ describe('AppContext.updateNavigationButtons', () => {
 
     test('Scenario 1: First site selected (index 0)', () => {
         AppContext.setCurrentSiteIndex(0);
+        AppContext.setIsTransitioning(false); // Explicitly set for clarity, though beforeEach covers it
         AppContext.updateNavigationButtons();
 
         expect(mockPrevButton.disabled).toBe(true);
         expect(mockNextButton.disabled).toBe(false);
+        // All site buttons should be enabled because isTransitioning is false
+        mockSiteButtons.forEach(button => expect(button.disabled).toBe(false));
         expect(mockSiteButton1.classList.add).toHaveBeenCalledWith('active');
         expect(mockSiteButton2.classList.remove).toHaveBeenCalledWith('active');
         expect(mockSiteButton3.classList.remove).toHaveBeenCalledWith('active');
@@ -216,10 +214,12 @@ describe('AppContext.updateNavigationButtons', () => {
 
     test('Scenario 2: Middle site selected (index 1)', () => {
         AppContext.setCurrentSiteIndex(1);
+        AppContext.setIsTransitioning(false); // Explicitly set
         AppContext.updateNavigationButtons();
 
         expect(mockPrevButton.disabled).toBe(false);
         expect(mockNextButton.disabled).toBe(false);
+        mockSiteButtons.forEach(button => expect(button.disabled).toBe(false));
         expect(mockSiteButton1.classList.remove).toHaveBeenCalledWith('active');
         expect(mockSiteButton2.classList.add).toHaveBeenCalledWith('active');
         expect(mockSiteButton3.classList.remove).toHaveBeenCalledWith('active');
@@ -227,103 +227,82 @@ describe('AppContext.updateNavigationButtons', () => {
 
     test('Scenario 3: Last site selected (index 2)', () => {
         AppContext.setCurrentSiteIndex(2);
+        AppContext.setIsTransitioning(false); // Explicitly set
         AppContext.updateNavigationButtons();
 
         expect(mockPrevButton.disabled).toBe(false);
         expect(mockNextButton.disabled).toBe(true);
+        mockSiteButtons.forEach(button => expect(button.disabled).toBe(false));
         expect(mockSiteButton1.classList.remove).toHaveBeenCalledWith('active');
         expect(mockSiteButton2.classList.remove).toHaveBeenCalledWith('active');
         expect(mockSiteButton3.classList.add).toHaveBeenCalledWith('active');
     });
 
-    test('Scenario 4: Only one site in total', () => {
-        // Mock getSitesData to return a single site for this test
-        const originalGetSitesData = AppContext.getSitesData;
-        // Need to be able to modify what AppContext thinks sitesData is.
-        // The most robust way would be if AppContext had a setSitesData or if getSitesData was mockable.
-        // Given the current structure, direct modification or complex spying is tricky.
-        // Let's spy on AppContext.getSitesData for this specific test, if it's used by _updateNavigationButtons for length.
-        // The refactored _updateNavigationButtons uses sitesData.length directly from its closure scope.
-        // So, we need a way to temporarily alter what 'sitesData' AppContext sees.
-        // This is a limitation of not having full DI for sitesData.
-        // For now, we'll assume the test environment allows us to temporarily modify it,
-        // or we acknowledge this test might not be perfectly isolated with the current AppContext design.
+    test('Scenario 4: Only one site in total (not transitioning)', () => {
+        AppContext.setCurrentSiteIndex(0);
+        AppContext.setIsTransitioning(false); // Explicitly set for clarity
 
-        // Simplification: We'll assume sitesData has 3 items for prev/next disabling logic,
-        // but for the "active" class, we'll provide only one button from querySelectorAll.
-        // This isn't ideal. A better way would be to make sitesData configurable for tests.
+        const singleSiteData = [{ name: "Single Site", createFunc: jest.fn(), description: "desc", bgColor: 0x000000 }];
+        const sitesDataSpy = jest.spyOn(AppContext, 'getSitesData').mockReturnValue(singleSiteData);
 
-        // Let's adjust the mock querySelectorAll to return only one site button
+        // Adjust querySelectorAll for site-specific buttons
         mockNavControlsContainer.querySelectorAll = jest.fn((selector) => {
-            if (selector === 'button:not(#prevButton):not(#nextButton)') return [mockSiteButton1]; // Only one site button
+            if (selector === 'button:not(#prevButton):not(#nextButton)') return [mockSiteButton1];
             return [];
-        });
-        // And we need to make AppContext.sitesData effectively have length 1 for prev/next button logic
-        // This is the tricky part. For now, let's assume we can mock AppContext.getSitesData
-        // (even though _updateNavigationButtons reads sitesData directly from closure).
-        // This test highlights a need for better testability of sitesData length if it varies.
-
-        // Proper way: Modify AppContext to use getSitesData().length internally for _updateNavigationButtons,
-        // then spy on getSitesData(). For now, we test as if sitesData has 1 entry for disabling logic.
-        // This means we'd have to modify AppContext's actual sitesData, which is not good for test isolation.
-
-        // Re-approach for this test: We will test the logic assuming sitesData.length can be 1.
-        // We'll set currentSiteIndex to 0. The actual sitesData in AppContext still has 3 items.
-        // The button disabling logic `currentSiteIndex >= sitesData.length - 1` will be based on this.
-        // To test the "only one site" case for disabling *both* prev and next,
-        // we'd need AppContext.sitesData to actually have one site.
-
-        // Let's assume we can spy on `AppContext.getSitesData` and make `_updateNavigationButtons` use it.
-        // The current `_updateNavigationButtons` uses `sitesData.length` from closure.
-        // So, this test will run against the default 3 sites.
-        // To truly test the "1 site total" for prev/next disabling, `main.js` needs a change.
-        // For now, we'll test the state of site buttons when only one is *provided by querySelectorAll*.
-        // And prev/next will behave based on the actual sitesData length (3).
-
-        AppContext.setCurrentSiteIndex(0);
-        // To simulate only one site for prev/next logic, we'd need to alter sitesData.length.
-        // Let's assume for *this specific sub-assertion* that sitesData.length is 1.
-        // This part of the test is more of a logical assertion based on the code:
-        // if (sitesData.length === 1) {
-        //   expect(mockPrevButton.disabled).toBe(true);
-        //   expect(mockNextButton.disabled).toBe(true);
-        // }
-        // Since we can't easily change AppContext's internal sitesData for one test:
-        AppContext.setCurrentSiteIndex(0);
-
-        // Spy on getSitesData and mock it to return a single site
-        const sitesDataSpy = jest.spyOn(AppContext, 'getSitesData').mockReturnValue([
-            { name: "Single Site", createFunc: jest.fn(), description: "desc", bgColor: 0x000000 }
-        ]);
-
-        // Adjust querySelectorAll for site-specific buttons to return only one site button for this test
-        // The mockSiteButtons array (mockSiteButton1, mockSiteButton2, mockSiteButton3) is defined in beforeEach.
-        // We are configuring querySelectorAll to return a list containing only mockSiteButton1.
-        mockNavControlsContainer.querySelectorAll = jest.fn((selector) => {
-            if (selector === 'button:not(#prevButton):not(#nextButton)') {
-                return [mockSiteButton1]; // Only this button is considered a "site-specific button"
-            }
-            return []; // Should not be called with other selectors in this test path
         });
 
         AppContext.updateNavigationButtons();
 
-        // Assertions for prev/next buttons based on getSitesData().length being 1
-        expect(mockPrevButton.disabled).toBe(true); // currentSiteIndex is 0, cannot go back
-        expect(mockNextButton.disabled).toBe(true); // currentSiteIndex is 0, and sitesData.length is 1 (0 >= 1-1)
+        expect(mockPrevButton.disabled).toBe(true); // currentSiteIndex is 0
+        expect(mockNextButton.disabled).toBe(true); // currentSiteIndex is 0, and sites.length is 1 (0 >= 1-1)
 
-        // Assertions for the single site button
-        // mockSiteButton1 corresponds to siteButtonIndex 0, which matches currentSiteIndex 0
+        expect(mockSiteButton1.disabled).toBe(false); // Not transitioning
         expect(mockSiteButton1.classList.add).toHaveBeenCalledWith('active');
-        expect(mockSiteButton1.classList.remove).not.toHaveBeenCalled();
 
-        // Ensure other buttons (mockSiteButton2, mockSiteButton3) were not affected by this call,
+        // Ensure other site buttons (mockSiteButton2, mockSiteButton3) were not affected by this call,
         // as they were not part of the querySelectorAll result for site-specific buttons.
         expect(mockSiteButton2.classList.add).not.toHaveBeenCalled();
         expect(mockSiteButton2.classList.remove).not.toHaveBeenCalled();
         expect(mockSiteButton3.classList.add).not.toHaveBeenCalled();
         expect(mockSiteButton3.classList.remove).not.toHaveBeenCalled();
 
-        // sitesDataSpy.mockRestore(); // Not strictly necessary here as afterEach calls jest.restoreAllMocks()
+        sitesDataSpy.mockRestore(); // Restore spy, though afterEach will also do it.
+    });
+
+    test('when transitioning (at first site), all buttons disabled, active class still set', () => {
+        AppContext.setCurrentSiteIndex(0);
+        AppContext.setIsTransitioning(true);
+
+        // Ensure AppContext.getSitesData() would return the default 3 sites.
+        // This is usually covered by not mocking it here if the default is 3 sites.
+        // If a previous test mocked it to something else, afterEach should restore it.
+        // For safety, if a specific length is assumed for active class assertions on siteButtons:
+        jest.spyOn(AppContext, 'getSitesData').mockReturnValue([{}, {}, {}]); // Assuming 3 sites for mockSiteButtons indices
+
+        AppContext.updateNavigationButtons();
+
+        expect(mockPrevButton.disabled).toBe(true);
+        expect(mockNextButton.disabled).toBe(true);
+        mockSiteButtons.forEach(button => expect(button.disabled).toBe(true));
+
+        expect(mockSiteButton1.classList.add).toHaveBeenCalledWith('active');
+        expect(mockSiteButton2.classList.remove).toHaveBeenCalledWith('active');
+        expect(mockSiteButton3.classList.remove).toHaveBeenCalledWith('active');
+    });
+
+    test('when transitioning (at middle site), all buttons disabled, active class still set', () => {
+        AppContext.setCurrentSiteIndex(1);
+        AppContext.setIsTransitioning(true);
+        jest.spyOn(AppContext, 'getSitesData').mockReturnValue([{}, {}, {}]); // Assuming 3 sites
+
+        AppContext.updateNavigationButtons();
+
+        expect(mockPrevButton.disabled).toBe(true);
+        expect(mockNextButton.disabled).toBe(true);
+        mockSiteButtons.forEach(button => expect(button.disabled).toBe(true));
+
+        expect(mockSiteButton1.classList.remove).toHaveBeenCalledWith('active');
+        expect(mockSiteButton2.classList.add).toHaveBeenCalledWith('active');
+        expect(mockSiteButton3.classList.remove).toHaveBeenCalledWith('active');
     });
 });
