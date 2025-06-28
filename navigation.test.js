@@ -289,21 +289,41 @@ describe('AppContext.updateNavigationButtons', () => {
         //   expect(mockNextButton.disabled).toBe(true);
         // }
         // Since we can't easily change AppContext's internal sitesData for one test:
-        // We'll proceed by setting up the site buttons as if there's only one.
-        mockSiteButtons = [mockSiteButton1]; // Only mockSiteButton1 is "active"
-         mockNavControlsContainer.querySelectorAll = jest.fn((selector) => {
-            if (selector === 'button:not(#prevButton):not(#nextButton)') return mockSiteButtons;
-            return [];
-        });
+        AppContext.setCurrentSiteIndex(0);
 
+        // Spy on getSitesData and mock it to return a single site
+        const sitesDataSpy = jest.spyOn(AppContext, 'getSitesData').mockReturnValue([
+            { name: "Single Site", createFunc: jest.fn(), description: "desc", bgColor: 0x000000 }
+        ]);
+
+        // Adjust querySelectorAll for site-specific buttons to return only one site button for this test
+        // The mockSiteButtons array (mockSiteButton1, mockSiteButton2, mockSiteButton3) is defined in beforeEach.
+        // We are configuring querySelectorAll to return a list containing only mockSiteButton1.
+        mockNavControlsContainer.querySelectorAll = jest.fn((selector) => {
+            if (selector === 'button:not(#prevButton):not(#nextButton)') {
+                return [mockSiteButton1]; // Only this button is considered a "site-specific button"
+            }
+            return []; // Should not be called with other selectors in this test path
+        });
 
         AppContext.updateNavigationButtons();
 
-        // These will reflect sitesData.length === 3 from AppContext
-        expect(mockPrevButton.disabled).toBe(true); // currentSiteIndex = 0
-        expect(mockNextButton.disabled).toBe(false); // currentSiteIndex = 0, sitesData.length = 3
+        // Assertions for prev/next buttons based on getSitesData().length being 1
+        expect(mockPrevButton.disabled).toBe(true); // currentSiteIndex is 0, cannot go back
+        expect(mockNextButton.disabled).toBe(true); // currentSiteIndex is 0, and sitesData.length is 1 (0 >= 1-1)
 
-        // These reflect the active state for the single button passed
+        // Assertions for the single site button
+        // mockSiteButton1 corresponds to siteButtonIndex 0, which matches currentSiteIndex 0
         expect(mockSiteButton1.classList.add).toHaveBeenCalledWith('active');
+        expect(mockSiteButton1.classList.remove).not.toHaveBeenCalled();
+
+        // Ensure other buttons (mockSiteButton2, mockSiteButton3) were not affected by this call,
+        // as they were not part of the querySelectorAll result for site-specific buttons.
+        expect(mockSiteButton2.classList.add).not.toHaveBeenCalled();
+        expect(mockSiteButton2.classList.remove).not.toHaveBeenCalled();
+        expect(mockSiteButton3.classList.add).not.toHaveBeenCalled();
+        expect(mockSiteButton3.classList.remove).not.toHaveBeenCalled();
+
+        // sitesDataSpy.mockRestore(); // Not strictly necessary here as afterEach calls jest.restoreAllMocks()
     });
 });
