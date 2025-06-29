@@ -3,26 +3,26 @@
 // At the top of main.js, or in a new app-context.js if we were modularizing more
 const AppContext = (function() {
     // All variables previously in main()'s direct scope go here
-    let scene, renderer, camera, clock, composer;
+    let scene, renderer, camera, clock, composer, gltfLoader; // Added gltfLoader
     // Site Management
     const sitesData = [
         {
             name: "Site 1 (Pinnacles-like)",
             createFunc: null, // Will be assigned actual function below
             bgColor: 0xFAEBD7, // AntiqueWhite
-            description: "Placeholder for The Pinnacles: Thousands of limestone pillars rising from the yellow sands of Nambung National Park."
+            description: "This site displays a 3D model of a parrot, loaded from the Three.js examples. It showcases GLTF model loading and animation."
         },
         {
             name: "Site 2 (Wave Rock-like)",
             createFunc: null, // Will be assigned actual function below
             bgColor: 0xFFE4B5,   // Moccasin
-            description: "Placeholder for Wave Rock: A giant, multi-coloured granite wave about to crash into the bush. Located near Hyden."
+            description: "This site features a 3D model of a duck, also from the Three.js examples. Observe the model and its simple animation."
         },
         {
             name: "Site 3 (Gorge/Pillars)",
             createFunc: null, // Will be assigned actual function below
             bgColor: 0xB0C4DE,    // LightSteelBlue
-            description: "Placeholder for a Karijini-style Gorge: Ancient, deep gorges with dramatic rock formations and seasonal waterfalls."
+            description: "This site presents a 3D model of a horse, provided by the Three.js examples. This demonstrates loading and displaying animated characters."
         }
     ];
     let currentSiteIndex = 0; // Initialized as it was in main (actually -1 then 0 in old main)
@@ -40,19 +40,73 @@ const AppContext = (function() {
     // These will return basic THREE.Group for testing switchSite logic,
     // but in the actual app, they create detailed sites.
     function createPlaceholderSite1() {
-        const group = new THREE.Group();
-        // Simplified for refactoring step - actual content was removed by prior step, will be re-added if needed
-        // For testing, returning a mock group is fine.
-        // Actual implementation will be inside initMainLogic or called by it.
-        return group;
+        const siteGroup = new THREE.Group();
+        if (!gltfLoader) return siteGroup; // Guard against loader not being ready
+
+        gltfLoader.load('https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/models/gltf/Parrot.glb', (gltf) => {
+            const model = gltf.scene;
+            model.scale.set(0.5, 0.5, 0.5);
+            model.position.y = -1;
+            siteGroup.add(model);
+
+            if (gltf.animations && gltf.animations.length) {
+                const mixer = new THREE.AnimationMixer(model);
+                // Play all animations
+                gltf.animations.forEach((clip) => {
+                    mixer.clipAction(clip).play();
+                });
+                siteGroup.userData.mixer = mixer;
+            }
+        }, undefined, (error) => {
+            console.error('Error loading model for Site 1 (Parrot):', error);
+        });
+        return siteGroup;
     }
     function createPlaceholderSite2() {
-        const group = new THREE.Group();
-        return group;
+        const siteGroup = new THREE.Group();
+        if (!gltfLoader) return siteGroup;
+
+        gltfLoader.load('https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/models/gltf/Duck.glb', (gltf) => {
+            const model = gltf.scene;
+            // Duck model is small, might need larger scale
+            model.scale.set(1, 1, 1); // Adjusted scale for Duck
+            model.position.y = -1;
+            siteGroup.add(model);
+
+            // Duck.glb typically doesn't have animations in the base file, but check just in case
+            if (gltf.animations && gltf.animations.length) {
+                const mixer = new THREE.AnimationMixer(model);
+                gltf.animations.forEach((clip) => {
+                    mixer.clipAction(clip).play();
+                });
+                siteGroup.userData.mixer = mixer;
+            }
+        }, undefined, (error) => {
+            console.error('Error loading model for Site 2 (Duck):', error);
+        });
+        return siteGroup;
     }
     function createPlaceholderSite3() {
-        const group = new THREE.Group();
-        return group;
+        const siteGroup = new THREE.Group();
+        if (!gltfLoader) return siteGroup;
+
+        gltfLoader.load('https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/models/gltf/Horse.glb', (gltf) => {
+            const model = gltf.scene;
+            model.scale.set(0.5, 0.5, 0.5);
+            model.position.y = -1;
+            siteGroup.add(model);
+
+            if (gltf.animations && gltf.animations.length) {
+                const mixer = new THREE.AnimationMixer(model);
+                gltf.animations.forEach((clip) => {
+                    mixer.clipAction(clip).play();
+                });
+                siteGroup.userData.mixer = mixer;
+            }
+        }, undefined, (error) => {
+            console.error('Error loading model for Site 3 (Horse):', error);
+        });
+        return siteGroup;
     }
 
     // Update sitesData to use these actual functions
@@ -115,7 +169,7 @@ const AppContext = (function() {
 }
 
     function _switchSite(index) {
-    if (isTransitioning || (index === currentSiteIndex && currentSiteGroup && !isTransitioning)) {
+    if (isTransitioning || (index === currentSiteIndex && currentSiteGroup && !isTransitioning && isTransitioning !== 'initial_in')) { // Allow initial load
         console.warn("Transition in progress or site already loaded/targetted:", index, "current:", currentSiteIndex, "transitioning:", isTransitioning);
         return;
     }
@@ -133,6 +187,11 @@ const AppContext = (function() {
 
     if (currentSiteGroup) {
         outgoingSiteGroup = currentSiteGroup;
+        // Stop animation of outgoing model
+        if (outgoingSiteGroup.userData.mixer) {
+            outgoingSiteGroup.userData.mixer.stopAllAction();
+            // delete outgoingSiteGroup.userData.mixer; // Optional: explicitly clear
+        }
     }
 
     const newSiteData = sitesData[currentSiteIndex];
@@ -166,7 +225,7 @@ const AppContext = (function() {
         const fov = 75;
         const aspect = window.innerWidth / window.innerHeight;
         const near = 0.1;
-        const far = 5;
+        const far = 100; // Increased far plane
         camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
         camera.position.z = 5;
         camera.position.y = 2;
@@ -219,7 +278,10 @@ const AppContext = (function() {
 
         // Skybox, Environment Map, Controls, Lighting, Post-processing (copied from original main, ensuring variables are AppContext scoped)
         // Skybox and Environment Map
-        const rgbeLoader = new THREE.RGBELoader(manager);
+        const rgbeLoader = new THREE.RGBELoader(manager); // Keep existing manager for RGBELoader
+        // Instantiate GLTFLoader here, using the same manager
+        gltfLoader = new THREE.GLTFLoader(manager);
+
         rgbeLoader.load('https://threejs.org/examples/textures/equirectangular/venice_sunset_1k.hdr', function(texture) {
             texture.mapping = THREE.EquirectangularReflectionMapping;
             const pmremGenerator = new THREE.PMREMGenerator(renderer);
@@ -332,10 +394,17 @@ const AppContext = (function() {
     }
 
     function render() {
-        const elapsedTime = clock.getElapsedTime();
+        const delta = clock.getDelta(); // Get delta time for animation mixers
+        const elapsedTime = clock.getElapsedTime(); // Keep elapsedTime for transitions
+
+        // Update animation mixer for the current site
+        if (currentSiteGroup && currentSiteGroup.userData.mixer) {
+            currentSiteGroup.userData.mixer.update(delta);
+        }
+
         if (isTransitioning === 'initial_in') {
-            const deltaTime = elapsedTime - transitionStartTime;
-            let progress = Math.min(deltaTime / transitionDuration, 1);
+            const transitionDeltaTime = elapsedTime - transitionStartTime; // Use elapsedTime for transition progress
+            let progress = Math.min(transitionDeltaTime / transitionDuration, 1);
             if (currentSiteGroup) setGroupOpacity(currentSiteGroup, progress);
             if (descriptionElement && progress > 0.2) descriptionElement.classList.add('visible');
             if (progress >= 1) {
@@ -351,10 +420,18 @@ const AppContext = (function() {
             if (incomingSiteGroup) setGroupOpacity(incomingSiteGroup, progress);
             if (descriptionElement && progress > 0.5) descriptionElement.classList.add('visible');
             if (progress >= 1) {
-            if (outgoingSiteGroup && scene) scene.remove(outgoingSiteGroup);
-                outgoingSiteGroup = null;
-                currentSiteGroup = incomingSiteGroup;
-                incomingSiteGroup = null;
+            if (outgoingSiteGroup && scene) {
+                // Ensure mixer is stopped before removing (already done in _switchSite, but good as a safeguard)
+                if (outgoingSiteGroup.userData.mixer) {
+                    outgoingSiteGroup.userData.mixer.stopAllAction();
+                }
+                scene.remove(outgoingSiteGroup);
+                // Consider disposing of geometry/materials if memory becomes an issue
+                // For now, let GC handle it after removal.
+            }
+            outgoingSiteGroup = null;
+            currentSiteGroup = incomingSiteGroup;
+            incomingSiteGroup = null;
                 if (currentSiteGroup) setGroupOpacity(currentSiteGroup, 1);
                 if (descriptionElement) descriptionElement.classList.add('visible');
 
