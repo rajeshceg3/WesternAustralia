@@ -236,7 +236,13 @@ const AppContext = (function() {
         clock.start();
 
         // Loading Manager (adapted from original main)
-        const manager = new THREE.LoadingManager();
+        const manager = new THREE.LoadingManager(); // Manager for GLTFLoader
+        const hdrLoadingManager = new THREE.LoadingManager(); // New manager for HDR
+
+        // Optional: Add handlers to hdrLoadingManager for logging if needed
+        // hdrLoadingManager.onLoad = () => { console.log('HDR Environment map loaded.'); };
+        // hdrLoadingManager.onError = (url) => { console.error('Error loading HDR: ' + url); };
+
         manager.onStart = function ( url, itemsLoaded, itemsTotal ) {
             console.log( 'Started loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.' );
             if (loadingIndicator) loadingIndicator.style.display = 'flex';
@@ -278,9 +284,9 @@ const AppContext = (function() {
 
         // Skybox, Environment Map, Controls, Lighting, Post-processing (copied from original main, ensuring variables are AppContext scoped)
         // Skybox and Environment Map
-        const rgbeLoader = new THREE.RGBELoader(manager); // Keep existing manager for RGBELoader
+        const rgbeLoader = new THREE.RGBELoader(hdrLoadingManager); // Uses HDR manager
         // Instantiate GLTFLoader here, using the same manager
-        gltfLoader = new THREE.GLTFLoader(manager);
+        gltfLoader = new THREE.GLTFLoader(manager); // Uses main GLTF manager
 
         rgbeLoader.load('https://threejs.org/examples/textures/equirectangular/venice_sunset_1k.hdr', function(texture) {
             texture.mapping = THREE.EquirectangularReflectionMapping;
