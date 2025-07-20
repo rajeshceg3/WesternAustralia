@@ -1,8 +1,7 @@
-// Presumes main.js is modified to expose AppContext
-// And that AppContext and its methods are accessible in the test environment.
-// This might require Node's vm module to run main.js in a context
-// and extract AppContext, or a build step if main.js becomes a module.
-// For now, assume AppContext is globally available after main.js is conceptually "loaded".
+import AppContext from './main.js';
+import * as THREE from 'three';
+
+global.THREE = THREE;
 
 // It's good practice to ensure THREE is available if AppContext relies on it at a global scope,
 // or ensure AppContext encapsulates its THREE dependency fully.
@@ -35,12 +34,11 @@ describe('AppContext.switchSite Detailed Logic', () => {
 
         // Spy on functions within AppContext that are called by switchSite
         // These are the actual site creation functions now part of AppContext
-        jest.spyOn(AppContext, 'createPlaceholderSite1').mockReturnValue({ isGroup: true, traverse: jest.fn(), name: "MockedSite1" });
-        jest.spyOn(AppContext, 'createPlaceholderSite2').mockReturnValue({ isGroup: true, traverse: jest.fn(), name: "MockedSite2" });
-        jest.spyOn(AppContext, 'createPlaceholderSite3').mockReturnValue({ isGroup: true, traverse: jest.fn(), name: "MockedSite3" });
+        jest.spyOn(AppContext, 'createPlaceholderSite1').mockReturnValue({ isGroup: true, traverse: jest.fn(), name: "MockedSite1", userData: {} });
+        jest.spyOn(AppContext, 'createPlaceholderSite2').mockReturnValue({ isGroup: true, traverse: jest.fn(), name: "MockedSite2", userData: {} });
+        jest.spyOn(AppContext, 'createPlaceholderSite3').mockReturnValue({ isGroup: true, traverse: jest.fn(), name: "MockedSite3", userData: {} });
 
         jest.spyOn(AppContext, 'setGroupOpacity').mockImplementation(() => {}); // Mock implementation to avoid actual traverse logic
-        jest.spyOn(AppContext, 'updateNavigationButtons').mockImplementation(() => {});
 
 
         // Reset state before each test using AppContext's own setters
@@ -85,7 +83,6 @@ describe('AppContext.switchSite Detailed Logic', () => {
         expect(mockDescriptionElement.textContent).toBe(sitesData[1].description);
         expect(mockDescriptionElement.classList.remove).toHaveBeenCalledWith('visible');
 
-        expect(AppContext.updateNavigationButtons).toHaveBeenCalled();
         expect(mockControls.target.set).toHaveBeenCalledWith(0, 0, 0);
         expect(mockClock.getElapsedTime).toHaveBeenCalled(); // To set transitionStartTime
 
@@ -162,147 +159,4 @@ describe('AppContext.switchSite Detailed Logic', () => {
     });
 });
 
-describe('AppContext.updateNavigationButtons', () => {
-    let mockPrevButton, mockNextButton, mockSiteButton1, mockSiteButton2, mockSiteButton3;
-    let mockSiteButtons;
-    let mockNavControlsContainer;
-
-    beforeEach(() => {
-        // Create mock buttons
-        mockPrevButton = { disabled: false, querySelector: jest.fn(), classList: { add: jest.fn(), remove: jest.fn() } };
-        mockNextButton = { disabled: false, querySelector: jest.fn(), classList: { add: jest.fn(), remove: jest.fn() } };
-        mockSiteButton1 = { disabled: false, classList: { add: jest.fn(), remove: jest.fn() } };
-        mockSiteButton2 = { disabled: false, classList: { add: jest.fn(), remove: jest.fn() } };
-        mockSiteButton3 = { disabled: false, classList: { add: jest.fn(), remove: jest.fn() } };
-        mockSiteButtons = [mockSiteButton1, mockSiteButton2, mockSiteButton3];
-
-        // Mock navigationControlsContainer
-        mockNavControlsContainer = {
-            querySelector: jest.fn((selector) => {
-                if (selector === '#prevButton') return mockPrevButton;
-                if (selector === '#nextButton') return mockNextButton;
-                return null;
-            }),
-            querySelectorAll: jest.fn((selector) => {
-                if (selector === 'button:not(#prevButton):not(#nextButton)') return mockSiteButtons;
-                return []; // Should not happen in these tests
-            })
-        };
-
-        AppContext.setNavigationControlsContainer(mockNavControlsContainer);
-        AppContext.setCurrentSiteIndex(0); // Default to first site
-        AppContext.setIsTransitioning(false); // Default to not transitioning
-    });
-
-    afterEach(() => {
-        jest.restoreAllMocks(); // Restores spies, including any on AppContext.getSitesData if used
-    });
-
-    test('Scenario 1: First site selected (index 0)', () => {
-        AppContext.setCurrentSiteIndex(0);
-        AppContext.setIsTransitioning(false); // Explicitly set for clarity, though beforeEach covers it
-        AppContext.updateNavigationButtons();
-
-        expect(mockPrevButton.disabled).toBe(true);
-        expect(mockNextButton.disabled).toBe(false);
-        // All site buttons should be enabled because isTransitioning is false
-        mockSiteButtons.forEach(button => expect(button.disabled).toBe(false));
-        expect(mockSiteButton1.classList.add).toHaveBeenCalledWith('active');
-        expect(mockSiteButton2.classList.remove).toHaveBeenCalledWith('active');
-        expect(mockSiteButton3.classList.remove).toHaveBeenCalledWith('active');
-    });
-
-    test('Scenario 2: Middle site selected (index 1)', () => {
-        AppContext.setCurrentSiteIndex(1);
-        AppContext.setIsTransitioning(false); // Explicitly set
-        AppContext.updateNavigationButtons();
-
-        expect(mockPrevButton.disabled).toBe(false);
-        expect(mockNextButton.disabled).toBe(false);
-        mockSiteButtons.forEach(button => expect(button.disabled).toBe(false));
-        expect(mockSiteButton1.classList.remove).toHaveBeenCalledWith('active');
-        expect(mockSiteButton2.classList.add).toHaveBeenCalledWith('active');
-        expect(mockSiteButton3.classList.remove).toHaveBeenCalledWith('active');
-    });
-
-    test('Scenario 3: Last site selected (index 2)', () => {
-        AppContext.setCurrentSiteIndex(2);
-        AppContext.setIsTransitioning(false); // Explicitly set
-        AppContext.updateNavigationButtons();
-
-        expect(mockPrevButton.disabled).toBe(false);
-        expect(mockNextButton.disabled).toBe(true);
-        mockSiteButtons.forEach(button => expect(button.disabled).toBe(false));
-        expect(mockSiteButton1.classList.remove).toHaveBeenCalledWith('active');
-        expect(mockSiteButton2.classList.remove).toHaveBeenCalledWith('active');
-        expect(mockSiteButton3.classList.add).toHaveBeenCalledWith('active');
-    });
-
-    test('Scenario 4: Only one site in total (not transitioning)', () => {
-        AppContext.setCurrentSiteIndex(0);
-        AppContext.setIsTransitioning(false); // Explicitly set for clarity
-
-        const singleSiteData = [{ name: "Single Site", createFunc: jest.fn(), description: "desc", bgColor: 0x000000 }];
-        const sitesDataSpy = jest.spyOn(AppContext, 'getSitesData').mockReturnValue(singleSiteData);
-
-        // Adjust querySelectorAll for site-specific buttons
-        mockNavControlsContainer.querySelectorAll = jest.fn((selector) => {
-            if (selector === 'button:not(#prevButton):not(#nextButton)') return [mockSiteButton1];
-            return [];
-        });
-
-        AppContext.updateNavigationButtons();
-
-        expect(mockPrevButton.disabled).toBe(true); // currentSiteIndex is 0
-        expect(mockNextButton.disabled).toBe(true); // currentSiteIndex is 0, and sites.length is 1 (0 >= 1-1)
-
-        expect(mockSiteButton1.disabled).toBe(false); // Not transitioning
-        expect(mockSiteButton1.classList.add).toHaveBeenCalledWith('active');
-
-        // Ensure other site buttons (mockSiteButton2, mockSiteButton3) were not affected by this call,
-        // as they were not part of the querySelectorAll result for site-specific buttons.
-        expect(mockSiteButton2.classList.add).not.toHaveBeenCalled();
-        expect(mockSiteButton2.classList.remove).not.toHaveBeenCalled();
-        expect(mockSiteButton3.classList.add).not.toHaveBeenCalled();
-        expect(mockSiteButton3.classList.remove).not.toHaveBeenCalled();
-
-        sitesDataSpy.mockRestore(); // Restore spy, though afterEach will also do it.
-    });
-
-    test('when transitioning (at first site), all buttons disabled, active class still set', () => {
-        AppContext.setCurrentSiteIndex(0);
-        AppContext.setIsTransitioning(true);
-
-        // Ensure AppContext.getSitesData() would return the default 3 sites.
-        // This is usually covered by not mocking it here if the default is 3 sites.
-        // If a previous test mocked it to something else, afterEach should restore it.
-        // For safety, if a specific length is assumed for active class assertions on siteButtons:
-        jest.spyOn(AppContext, 'getSitesData').mockReturnValue([{}, {}, {}]); // Assuming 3 sites for mockSiteButtons indices
-
-        AppContext.updateNavigationButtons();
-
-        expect(mockPrevButton.disabled).toBe(true);
-        expect(mockNextButton.disabled).toBe(true);
-        mockSiteButtons.forEach(button => expect(button.disabled).toBe(true));
-
-        expect(mockSiteButton1.classList.add).toHaveBeenCalledWith('active');
-        expect(mockSiteButton2.classList.remove).toHaveBeenCalledWith('active');
-        expect(mockSiteButton3.classList.remove).toHaveBeenCalledWith('active');
-    });
-
-    test('when transitioning (at middle site), all buttons disabled, active class still set', () => {
-        AppContext.setCurrentSiteIndex(1);
-        AppContext.setIsTransitioning(true);
-        jest.spyOn(AppContext, 'getSitesData').mockReturnValue([{}, {}, {}]); // Assuming 3 sites
-
-        AppContext.updateNavigationButtons();
-
-        expect(mockPrevButton.disabled).toBe(true);
-        expect(mockNextButton.disabled).toBe(true);
-        mockSiteButtons.forEach(button => expect(button.disabled).toBe(true));
-
-        expect(mockSiteButton1.classList.remove).toHaveBeenCalledWith('active');
-        expect(mockSiteButton2.classList.add).toHaveBeenCalledWith('active');
-        expect(mockSiteButton3.classList.remove).toHaveBeenCalledWith('active');
-    });
-});
+// All tests related to updateNavigationButtons are removed since the UI has changed.

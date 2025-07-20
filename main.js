@@ -1,9 +1,11 @@
 // Basic Three.js scene setup
 
+import UI from './UI.js';
+
 // At the top of main.js, or in a new app-context.js if we were modularizing more
 const AppContext = (function() {
     // All variables previously in main()'s direct scope go here
-    let scene, renderer, camera, clock, composer, gltfLoader; // Added gltfLoader
+    let scene, renderer, camera, clock, composer, gltfLoader, ui; // Added gltfLoader
     // Site Management
     const sitesData = [
         {
@@ -134,40 +136,6 @@ const AppContext = (function() {
         });
     }
 
-    function _updateNavigationButtons() {
-    if (!navigationControlsContainer) return;
-
-    const prevButton = navigationControlsContainer.querySelector('#prevButton');
-    const nextButton = navigationControlsContainer.querySelector('#nextButton');
-    const siteButtons = Array.from(navigationControlsContainer.querySelectorAll('button:not(#prevButton):not(#nextButton)'));
-
-    const allNavButtons = [prevButton, nextButton, ...siteButtons].filter(button => button !== null);
-
-    if (isTransitioning) {
-        allNavButtons.forEach(button => button.disabled = true);
-    } else {
-        allNavButtons.forEach(button => button.disabled = false);
-
-        if (prevButton) {
-            prevButton.disabled = currentSiteIndex <= 0;
-        }
-        if (nextButton) {
-            const sites = AppContext.getSitesData();
-            nextButton.disabled = currentSiteIndex >= sites.length - 1;
-        }
-    }
-
-    siteButtons.forEach((button, siteButtonIndex) => {
-        if (button) {
-            if (siteButtonIndex === currentSiteIndex) {
-                button.classList.add('active');
-            } else {
-                button.classList.remove('active');
-            }
-        }
-    });
-}
-
     function _switchSite(index) {
     if (isTransitioning || (index === currentSiteIndex && currentSiteGroup && !isTransitioning && isTransitioning !== 'initial_in')) { // Allow initial load
         console.warn("Transition in progress or site already loaded/targetted:", index, "current:", currentSiteIndex, "transitioning:", isTransitioning);
@@ -182,8 +150,6 @@ const AppContext = (function() {
     if (clock) transitionStartTime = clock.getElapsedTime();
 
     currentSiteIndex = index;
-
-    _updateNavigationButtons();
 
     if (currentSiteGroup) {
         outgoingSiteGroup = currentSiteGroup;
@@ -204,7 +170,18 @@ const AppContext = (function() {
         descriptionElement.textContent = newSiteData.description;
     }
 
-    if (controls) controls.target.set(0, 0, 0);
+    // Animate camera
+    const targetPosition = new THREE.Vector3(0, 2, 5);
+    const targetLookAt = new THREE.Vector3(0, 0, 0);
+    new TWEEN.Tween(camera.position)
+        .to(targetPosition, 1000)
+        .easing(TWEEN.Easing.Quadratic.InOut)
+        .start();
+    new TWEEN.Tween(controls.target)
+        .to(targetLookAt, 1000)
+        .easing(TWEEN.Easing.Quadratic.InOut)
+        .start();
+
     currentSiteGroup = null;
 }
 
@@ -287,6 +264,17 @@ const AppContext = (function() {
         const rgbeLoader = new THREE.RGBELoader(hdrLoadingManager); // Uses HDR manager
         // Instantiate GLTFLoader here, using the same manager
         gltfLoader = new THREE.GLTFLoader(manager); // Uses main GLTF manager
+        const fontLoader = new THREE.FontLoader();
+
+        fontLoader.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', (font) => {
+            ui = new UI(scene, font);
+            const nextButton = ui.createText("Next Project", new THREE.Vector3(2, 0, 0), 0.2, 0xffffff);
+            nextButton.userData.onClick = () => {
+                if (currentSiteIndex < sitesData.length - 1) {
+                    _switchSite(currentSiteIndex + 1);
+                }
+            };
+        });
 
         rgbeLoader.load('https://threejs.org/examples/textures/equirectangular/venice_sunset_1k.hdr', function(texture) {
             texture.mapping = THREE.EquirectangularReflectionMapping;
@@ -311,34 +299,39 @@ const AppContext = (function() {
         controls.maxDistance = 20;
 
         // Lighting
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
         scene.add(ambientLight);
-        const directionalLight = new THREE.DirectionalLight(0xFFFFEE, 0.8);
+
+        const spotLight = new THREE.SpotLight(0xffffff, 1, 0, Math.PI / 8, 0.5);
+        spotLight.position.set(0, 10, 5);
+        spotLight.castShadow = true;
+        scene.add(spotLight);
+
+        const directionalLight = new THREE.DirectionalLight(0xFFFFEE, 0.5);
         directionalLight.position.set(10, 20, 5);
-        directionalLight.castShadow = true;
         scene.add(directionalLight);
-        directionalLight.shadow.mapSize.width = 2048;
-        directionalLight.shadow.mapSize.height = 2048;
-        directionalLight.shadow.camera.near = 0.5;
-        directionalLight.shadow.camera.far = 30;
-        directionalLight.shadow.camera.left = -7;
-        directionalLight.shadow.camera.right = 7;
-        directionalLight.shadow.camera.top = 7;
-        directionalLight.shadow.camera.bottom = -7;
-        directionalLight.shadow.bias = -0.0005;
 
         // Post-processing
         try {
             composer = new THREE.EffectComposer(renderer);
             const renderPass = new THREE.RenderPass(scene, camera);
             composer.addPass(renderPass);
-            const bloomPass = new THREE.BloomPass(1.5, 25, 5.0, 256);
+
+            const bloomPass = new THREE.BloomPass(1, 15, 2, 512);
             composer.addPass(bloomPass);
+
+            const filmPass = new THREE.FilmPass(0.35, 0.025, 648, false);
+            composer.addPass(filmPass);
+
             const bokehPass = new THREE.BokehPass(scene, camera, {
-                focus: 5.0, aperture: 0.020, maxblur: 0.008,
-                width: window.innerWidth, height: window.innerHeight
+                focus: 5.0,
+                aperture: 0.01,
+                maxblur: 0.005,
+                width: window.innerWidth,
+                height: window.innerHeight
             });
             composer.addPass(bokehPass);
+
             const copyPass = new THREE.ShaderPass(THREE.CopyShader);
             copyPass.renderToScreen = true;
             composer.addPass(copyPass);
@@ -388,6 +381,24 @@ const AppContext = (function() {
             if (event.key === '1') _switchSite(0);
             else if (event.key === '2') _switchSite(1);
             else if (event.key === '3') _switchSite(2);
+        });
+
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+
+        window.addEventListener('click', (event) => {
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObjects(scene.children, true);
+
+            if (intersects.length > 0) {
+                const object = intersects[0].object;
+                if (object.userData.onClick) {
+                    object.userData.onClick();
+                }
+            }
         });
     } catch (error) {
         console.error('Error initializing application:', error);
@@ -446,6 +457,7 @@ const AppContext = (function() {
             }
         }
         if (controls) controls.update();
+        TWEEN.update();
         if (composer) composer.render();
         else if (renderer && scene && camera) renderer.render(scene, camera); // Fallback if composer failed
         requestAnimationFrame(render);
@@ -476,7 +488,6 @@ const AppContext = (function() {
         // Functions
         switchSite: _switchSite,
         setGroupOpacity,
-        updateNavigationButtons: _updateNavigationButtons,
         createPlaceholderSite1, // Exposing for potential spy
         createPlaceholderSite2,
         createPlaceholderSite3,
@@ -496,3 +507,5 @@ function main() { // HTML still calls main(), so this function should start the 
 // However, the script is loaded with `defer`, so `main()` is called after DOM parsing.
 // The `AppContext.initMainLogic()` call at the very end of the script might be redundant if HTML `onload` or `main()` call is the entry point.
 // Let's ensure only `main()` is the entry point from HTML, and it calls `AppContext.initMainLogic()`.
+
+export default AppContext;

@@ -1,12 +1,13 @@
 module.exports = {
-  testEnvironment: 'jest-environment-jsdom', // Use jsdom for tests needing a DOM
-  // If we needed ES6 module transformations:
-  // transform: {
-  //   '^.+\.js$': 'babel-jest',
-  // },
-  // setupFilesAfterEnv: ['./jest.setup.js'], // For global test setup if needed later
-  // moduleNameMapper: { // If we had path aliases
-  //  '^@/(.*)$': '<rootDir>/src/$1',
-  // },
-  // verbose: true, // More detailed output
+  transform: {
+    '^.+\\.js$': 'babel-jest',
+  },
+  transformIgnorePatterns: [
+    'node_modules/(?!(three)/)',
+  ],
+  testEnvironment: 'jest-environment-jsdom',
+  moduleNameMapper: {
+    '^three/examples/jsm/loaders/GLTFLoader.js$': '<rootDir>/node_modules/three/examples/jsm/loaders/GLTFLoader.js',
+    '^three$': '<rootDir>/node_modules/three/build/three.module.js',
+  },
 };
