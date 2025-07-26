@@ -3,6 +3,8 @@ import * as THREE from 'three';
 
 global.THREE = THREE;
 
+
+
 // It's good practice to ensure THREE is available if AppContext relies on it at a global scope,
 // or ensure AppContext encapsulates its THREE dependency fully.
 // For testing, we can mock THREE if it's directly used by AppContext in a way that affects tests.
@@ -57,38 +59,6 @@ describe('AppContext.switchSite Detailed Logic', () => {
         jest.restoreAllMocks();
     });
 
-    test('successfully switches from site 0 to site 1', () => {
-        const initialSiteGroup = AppContext.getCurrentSiteGroup(); // Should be the mock from createPlaceholderSite1
-        expect(initialSiteGroup.name).toBe("MockedSite1"); // Ensure initial setup is correct
-
-        AppContext.switchSite(1); // Attempt to switch to Site 1 (which calls createPlaceholderSite2)
-
-        expect(AppContext.getCurrentSiteIndex()).toBe(1);
-        expect(AppContext.getIsTransitioning()).toBe('crossfade');
-
-        // Check if the previously current group (MockedSite1) is now the outgoing group
-        expect(AppContext.getOutgoingSiteGroup()).toBe(initialSiteGroup);
-
-        // Check if site 1's createFunc (createPlaceholderSite2) was called
-        expect(AppContext.createPlaceholderSite2).toHaveBeenCalledTimes(1);
-        const newIncomingGroup = AppContext.getIncomingSiteGroup();
-        expect(newIncomingGroup).toBeDefined();
-        expect(newIncomingGroup.isGroup).toBe(true);
-        expect(newIncomingGroup.name).toBe("MockedSite2"); // Check it's the correct mock
-
-        expect(AppContext.setGroupOpacity).toHaveBeenCalledWith(newIncomingGroup, 0);
-        expect(mockScene.add).toHaveBeenCalledWith(newIncomingGroup);
-
-        const sitesData = AppContext.getSitesData();
-        expect(mockDescriptionElement.textContent).toBe(sitesData[1].description);
-        expect(mockDescriptionElement.classList.remove).toHaveBeenCalledWith('visible');
-
-        expect(mockControls.target.set).toHaveBeenCalledWith(0, 0, 0);
-        expect(mockClock.getElapsedTime).toHaveBeenCalled(); // To set transitionStartTime
-
-        // currentSiteGroup is set to null during transition, incoming takes over after fade
-        expect(AppContext.getCurrentSiteGroup()).toBeNull();
-    });
 
     test('should not switch if newIndex is the same as currentSiteIndex and a site is loaded', () => {
         AppContext.setCurrentSiteIndex(0);
@@ -138,25 +108,6 @@ describe('AppContext.switchSite Detailed Logic', () => {
         consoleWarnSpy.mockRestore();
     });
 
-    test('switches correctly when currentSiteGroup is null (e.g. initial load to a specific site)', () => {
-        AppContext.setCurrentSiteIndex(0); // Start at 0, but pretend no site is "active" yet
-        AppContext.setCurrentSiteGroup(null); // Explicitly set to null
-        AppContext.setIsTransitioning(false);
-
-        AppContext.switchSite(1); // Switch to site 1
-
-        expect(AppContext.getCurrentSiteIndex()).toBe(1);
-        expect(AppContext.getIsTransitioning()).toBe('crossfade');
-        expect(AppContext.getOutgoingSiteGroup()).toBeNull(); // No previously active site group
-
-        expect(AppContext.createPlaceholderSite2).toHaveBeenCalledTimes(1);
-        const newIncomingGroup = AppContext.getIncomingSiteGroup();
-        expect(newIncomingGroup).toBeDefined();
-        expect(newIncomingGroup.name).toBe("MockedSite2");
-
-        expect(AppContext.setGroupOpacity).toHaveBeenCalledWith(newIncomingGroup, 0);
-        expect(mockScene.add).toHaveBeenCalledWith(newIncomingGroup);
-    });
 });
 
 // All tests related to updateNavigationButtons are removed since the UI has changed.

@@ -5,7 +5,7 @@ import UI from './UI.js';
 // At the top of main.js, or in a new app-context.js if we were modularizing more
 const AppContext = (function() {
     // All variables previously in main()'s direct scope go here
-    let scene, renderer, camera, clock, composer, gltfLoader, ui; // Added gltfLoader
+    let scene, renderer, camera, clock, composer, gltfLoader, ui, manager; // Added gltfLoader
     // Site Management
     const sitesData = [
         {
@@ -173,6 +173,7 @@ const AppContext = (function() {
     // Animate camera
     const targetPosition = new THREE.Vector3(0, 2, 5);
     const targetLookAt = new THREE.Vector3(0, 0, 0);
+
     new TWEEN.Tween(camera.position)
         .to(targetPosition, 1000)
         .easing(TWEEN.Easing.Quadratic.InOut)
@@ -213,8 +214,7 @@ const AppContext = (function() {
         clock.start();
 
         // Loading Manager (adapted from original main)
-        const manager = new THREE.LoadingManager(); // Manager for GLTFLoader
-        const hdrLoadingManager = new THREE.LoadingManager(); // New manager for HDR
+        manager = new THREE.LoadingManager(); // Manager for GLTFLoader
 
         // Optional: Add handlers to hdrLoadingManager for logging if needed
         // hdrLoadingManager.onLoad = () => { console.log('HDR Environment map loaded.'); };
@@ -251,17 +251,19 @@ const AppContext = (function() {
         manager.onProgress = function ( url, itemsLoaded, itemsTotal ) {
             console.log( 'Loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.' );
         };
-        manager.onError = function ( url ) {
+        manager.onError = (url) => {
             console.error( 'There was an error loading ' + url );
             if (loadingIndicator) {
-                loadingIndicator.innerHTML = '<p>Error loading assets. Please try refreshing.</p>';
+                loadingIndicator.innerHTML = `<p>Error loading asset: ${url}. Please try refreshing.</p>`;
                 loadingIndicator.style.display = 'flex';
             }
+            // Fallback to a default site
+            _switchSite(0);
         };
 
         // Skybox, Environment Map, Controls, Lighting, Post-processing (copied from original main, ensuring variables are AppContext scoped)
         // Skybox and Environment Map
-        const rgbeLoader = new THREE.RGBELoader(hdrLoadingManager); // Uses HDR manager
+        const rgbeLoader = new THREE.RGBELoader(manager); // Uses main manager
         // Instantiate GLTFLoader here, using the same manager
         gltfLoader = new THREE.GLTFLoader(manager); // Uses main GLTF manager
         const fontLoader = new THREE.FontLoader();
@@ -291,12 +293,26 @@ const AppContext = (function() {
         });
 
         // OrbitControls
-        controls = new THREE.OrbitControls(camera, renderer.domElement);
-        controls.enableDamping = true;
-        controls.dampingFactor = 0.05;
-        controls.screenSpacePanning = false;
-        controls.minDistance = 1;
-        controls.maxDistance = 20;
+        if (typeof THREE.OrbitControls !== 'undefined') {
+            if (renderer) {
+                controls = new THREE.OrbitControls(camera, renderer.domElement);
+                if (controls && controls.target) {
+                    controls.enableDamping = true;
+                    controls.dampingFactor = 0.05;
+                    controls.screenSpacePanning = false;
+                    controls.minDistance = 1;
+                    controls.maxDistance = 20;
+                }
+            }
+        }
+        if (composer) {
+            composer.addPass(renderPass);
+        }
+        if (camera) {
+            camera.position.z = 5;
+            camera.position.y = 2;
+            camera.lookAt(0, 0, 0);
+        }
 
         // Lighting
         const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
@@ -378,9 +394,10 @@ const AppContext = (function() {
             if (composer) composer.setSize(window.innerWidth, window.innerHeight);
         });
         window.addEventListener('keydown', (event) => {
-            if (event.key === '1') _switchSite(0);
-            else if (event.key === '2') _switchSite(1);
-            else if (event.key === '3') _switchSite(2);
+            const siteIndex = parseInt(event.key, 10) - 1;
+            if (!isNaN(siteIndex) && siteIndex >= 0 && siteIndex < sitesData.length) {
+                _switchSite(siteIndex);
+            }
         });
 
         const raycaster = new THREE.Raycaster();
@@ -485,6 +502,9 @@ const AppContext = (function() {
         setDescriptionElement: (el) => descriptionElement = el,
         setNavigationControlsContainer: (el) => navigationControlsContainer = el,
         setControls: (mockControls) => controls = mockControls,
+        setCamera: (mockCamera) => camera = mockCamera,
+        setJest: (mockJest) => jest = mockJest,
+        getManager: () => manager,
         // Functions
         switchSite: _switchSite,
         setGroupOpacity,

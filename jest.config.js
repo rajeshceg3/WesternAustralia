@@ -1,13 +1,13 @@
 module.exports = {
+  testEnvironment: 'jest-environment-jsdom',
   transform: {
     '^.+\\.js$': 'babel-jest',
   },
   transformIgnorePatterns: [
-    'node_modules/(?!(three)/)',
+    '/node_modules/(?!three/.*)'
   ],
-  testEnvironment: 'jest-environment-jsdom',
   moduleNameMapper: {
-    '^three/examples/jsm/loaders/GLTFLoader.js$': '<rootDir>/node_modules/three/examples/jsm/loaders/GLTFLoader.js',
     '^three$': '<rootDir>/node_modules/three/build/three.module.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.umd.js': '<rootDir>/__mocks__/tween.umd.js',
   },
 };

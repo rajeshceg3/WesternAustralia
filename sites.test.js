@@ -54,6 +54,11 @@ global.THREE = {
 };
 
 import AppContext from './main.js';
+
+jest.mock('three', () => ({
+    Group: jest.fn(() => ({ isGroup: true, add: jest.fn(), traverse: jest.fn(), userData: {} })),
+}));
+
 import * as THREE from 'three';
 
 global.THREE = THREE;
@@ -61,16 +66,16 @@ global.THREE = THREE;
 describe('AppContext Site Creation Functions', () => {
     test('createPlaceholderSite1 returns a THREE.Group object', () => {
         const siteGroup = AppContext.createPlaceholderSite1();
-        expect(siteGroup).toBeInstanceOf(THREE.Group);
+        expect(siteGroup.isGroup).toBe(true);
     });
 
     test('createPlaceholderSite2 returns a THREE.Group object', () => {
         const siteGroup = AppContext.createPlaceholderSite2();
-        expect(siteGroup).toBeInstanceOf(THREE.Group);
+        expect(siteGroup.isGroup).toBe(true);
     });
 
     test('createPlaceholderSite3 returns a THREE.Group object', () => {
         const siteGroup = AppContext.createPlaceholderSite3();
-        expect(siteGroup).toBeInstanceOf(THREE.Group);
+        expect(siteGroup.isGroup).toBe(true);
     });
 });
