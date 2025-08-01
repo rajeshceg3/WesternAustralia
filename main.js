@@ -4,6 +4,11 @@ import UI from './UI.js';
 
 // At the top of main.js, or in a new app-context.js if we were modularizing more
 const AppContext = (function() {
+    // This self-reference is the key to making the module's internal methods testable.
+    // Internal functions will call methods off of `self` instead of calling each other directly.
+    // This allows spies to be attached to the public interface in tests.
+    let self;
+
     // All variables previously in main()'s direct scope go here
     let scene, renderer, camera, clock, composer, gltfLoader, ui; // Added gltfLoader
     // Site Management
@@ -141,7 +146,9 @@ const AppContext = (function() {
         console.warn("Transition in progress or site already loaded/targetted:", index, "current:", currentSiteIndex, "transitioning:", isTransitioning);
         return;
     }
-    if (index < 0 || index >= sitesData.length) {
+    // The guard clause must also use the public getter to ensure it uses
+    // the same (potentially mocked) data as the rest of the function.
+    if (index < 0 || index >= self.getSitesData().length) {
         console.warn("Invalid site index:", index);
         return;
     }
@@ -160,9 +167,10 @@ const AppContext = (function() {
         }
     }
 
-    const newSiteData = sitesData[currentSiteIndex];
+    // Use the public getter to allow this to be mocked in tests.
+    const newSiteData = self.getSitesData()[currentSiteIndex];
     incomingSiteGroup = newSiteData.createFunc();
-    setGroupOpacity(incomingSiteGroup, 0);
+    self.setGroupOpacity(incomingSiteGroup, 0); // Call via self to allow spying
     if (scene) scene.add(incomingSiteGroup);
 
     if (descriptionElement) {
@@ -465,7 +473,7 @@ const AppContext = (function() {
 
 
     // Public API for testing
-    return {
+    self = {
         // State
         getSitesData: getSitesData, // Expose the internal function
         getCurrentSiteIndex: () => currentSiteIndex,
@@ -482,6 +490,7 @@ const AppContext = (function() {
         // Mockable dependencies
         setScene: (mockScene) => scene = mockScene,
         setClock: (mockClock) => clock = mockClock,
+        setCamera: (mockCamera) => camera = mockCamera, // Expose for testing
         setDescriptionElement: (el) => descriptionElement = el,
         setNavigationControlsContainer: (el) => navigationControlsContainer = el,
         setControls: (mockControls) => controls = mockControls,
@@ -493,6 +502,7 @@ const AppContext = (function() {
         createPlaceholderSite3,
         initMainLogic
     };
+    return self;
 })();
 
 // Add event listeners for navigation buttons are now inside AppContext.initMainLogic
