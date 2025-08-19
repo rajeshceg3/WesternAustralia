@@ -53,7 +53,7 @@ export default class SiteManager {
         return groundPlane;
     }
 
-    createParrotSite(modelUrl) {
+    createParrotSite() {
         const siteGroup = new THREE.Group();
         // Diorama elements
         siteGroup.add(this.createGroundPlane(0x228B22)); // ForestGreen
@@ -63,28 +63,28 @@ export default class SiteManager {
             tree.castShadow = true;
             siteGroup.add(tree);
         }
-        this.loadAndAddModel(modelUrl, siteGroup, { scale: 0.5 });
+        this.loadAndAddModel(this.sitesData[0].modelUrl, siteGroup, { scale: 0.5 });
         return siteGroup;
     }
 
-    createFlamingoSite(modelUrl) {
+    createFlamingoSite() {
         const siteGroup = new THREE.Group();
         siteGroup.add(this.createGroundPlane(0xF4A460)); // SandyBrown
-        this.loadAndAddModel(modelUrl, siteGroup, { scale: 0.5 });
+        this.loadAndAddModel(this.sitesData[3].modelUrl, siteGroup, { scale: 0.5 });
         return siteGroup;
     }
 
-    createDuckSite(modelUrl) {
+    createDuckSite() {
         const siteGroup = new THREE.Group();
         const pond = new THREE.Mesh(new THREE.CircleGeometry(5, 32), new THREE.MeshStandardMaterial({ color: 0x4682B4, transparent: true, opacity: 0.7 }));
         pond.rotation.x = -Math.PI / 2;
         pond.position.y = -0.9;
         siteGroup.add(pond);
-        this.loadAndAddModel(modelUrl, siteGroup, { scale: 1.0 });
+        this.loadAndAddModel(this.sitesData[1].modelUrl, siteGroup, { scale: 1.0 });
         return siteGroup;
     }
 
-    createHorseSite(modelUrl) {
+    createHorseSite() {
         const siteGroup = new THREE.Group();
         siteGroup.add(this.createGroundPlane(0x90EE90)); // LightGreen
         // Simple fence
@@ -93,7 +93,7 @@ export default class SiteManager {
             post.position.set(-5 + i, -0.75, -5);
             siteGroup.add(post);
         }
-        this.loadAndAddModel(modelUrl, siteGroup, { scale: 0.5 });
+        this.loadAndAddModel(this.sitesData[2].modelUrl, siteGroup, { scale: 0.5 });
         return siteGroup;
     }
 
@@ -137,7 +137,7 @@ export default class SiteManager {
 
         this.currentSiteIndex = index;
         const newSiteData = this.sitesData[this.currentSiteIndex];
-        this.incomingSiteGroup = newSiteData.createFunc(newSiteData.modelUrl);
+        this.incomingSiteGroup = newSiteData.createFunc();
         this.setGroupOpacity(this.incomingSiteGroup, 0);
         this.scene.add(this.incomingSiteGroup);
 

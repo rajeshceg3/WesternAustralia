@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     sceneManager.gltfLoader.manager.onError = (url) => {
         console.error('Error loading assets from ' + url);
-        loadingIndicator.textContent = 'Error loading assets. Please refresh.';
+        loadingIndicator.textContent = `Error loading asset: ${url}. Please refresh.`;
     };
 
 

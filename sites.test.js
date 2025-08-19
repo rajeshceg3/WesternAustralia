@@ -1,76 +1,81 @@
-// Mock basic Three.js components used by the site creation functions
-const mockGroup = {
-    isGroup: true,
-    children: [],
-    add: jest.fn(function(child) { this.children.push(child); }),
-    traverse: jest.fn(), // Keep it simple or mock behavior if needed for setGroupOpacity
-    // position, rotation, scale if needed
-};
-const mockMesh = {
-    isMesh: true,
-    castShadow: false,
-    receiveShadow: false,
-    position: { y: 0, set: jest.fn() },
-    rotation: { y: 0, x: 0 },
-    scale: { set: jest.fn() },
-    geometry: { type: 'UnknownGeometry' }, // Store type for assertion
-    material: { type: 'UnknownMaterial' }  // Store type for assertion
-};
-const mockPoints = { isPoints: true, geometry: {}, material: {} };
-const mockBufferGeometry = { setAttribute: jest.fn(), type: 'BufferGeometry' };
-const mockFloat32BufferAttribute = jest.fn(); // Constructor
-const mockPointsMaterial = { type: 'PointsMaterial' };
-const mockStandardMaterial = { type: 'MeshStandardMaterial', color: 0x000000, roughness: 0, metalness: 0 };
-const mockDodecahedronGeometry = { type: 'DodecahedronGeometry' };
-const mockBoxGeometry = { type: 'BoxGeometry' };
-const mockPlaneGeometry = { type: 'PlaneGeometry' };
-const mockCylinderGeometry = { type: 'CylinderGeometry' };
-const mockShape = { moveTo: jest.fn(), absarc: jest.fn(), lineTo: jest.fn() };
-const mockExtrudeGeometry = { type: 'ExtrudeGeometry' };
-
-// Make THREE global as it's used like that in main.js's AppContext site creation functions
-global.THREE = {
-    Group: jest.fn(() => ({ ...mockGroup, children: [], add: jest.fn(function(child) { this.children.push(child); }) })),
-    Mesh: jest.fn((geometry, material) => ({
-        ...mockMesh,
-        geometry,
-        material,
-        position: {y:0, set:jest.fn()},
-        rotation:{y:0,x:0},
-        scale:{set:jest.fn()}
-    })),
-    Points: jest.fn((geometry, material) => ({ ...mockPoints, geometry, material })),
-    BufferGeometry: jest.fn(() => ({...mockBufferGeometry, setAttribute: jest.fn()})), // ensure setAttribute is on the instance
-    Float32BufferAttribute: mockFloat32BufferAttribute,
-    PointsMaterial: jest.fn((props) => ({...mockPointsMaterial, ...props})),
-    MeshStandardMaterial: jest.fn((props) => ({...mockStandardMaterial, ...props})),
-    DodecahedronGeometry: jest.fn(() => ({...mockDodecahedronGeometry})),
-    BoxGeometry: jest.fn(() => ({...mockBoxGeometry})),
-    PlaneGeometry: jest.fn(() => ({...mockPlaneGeometry})),
-    CylinderGeometry: jest.fn((...args) => ({...mockCylinderGeometry, args})), // Store args for inspection if needed
-    Shape: jest.fn(() => ({...mockShape, moveTo: jest.fn(), absarc: jest.fn(), lineTo: jest.fn()})),
-    ExtrudeGeometry: jest.fn(() => ({...mockExtrudeGeometry})),
-    // Add any other THREE components used directly by site functions
-};
-
-import AppContext from './main.js';
+import SiteManager from './SiteManager.js';
 import * as THREE from 'three';
 
-global.THREE = THREE;
+// A more robust mocking approach for Three.js
+jest.mock('three', () => {
+    const originalThree = jest.requireActual('three');
 
-describe('AppContext Site Creation Functions', () => {
-    test('createPlaceholderSite1 returns a THREE.Group object', () => {
-        const siteGroup = AppContext.createPlaceholderSite1();
-        expect(siteGroup).toBeInstanceOf(THREE.Group);
+    // Mock Group to be a class-like function
+    const MockGroup = jest.fn(function() {
+        this.isGroup = true;
+        this.add = jest.fn();
+        this.traverse = jest.fn();
+        this.position = { set: jest.fn() };
+        this.rotation = { set: jest.fn() };
+        this.scale = { set: jest.fn() };
+        this.userData = {};
+        return this;
     });
 
-    test('createPlaceholderSite2 returns a THREE.Group object', () => {
-        const siteGroup = AppContext.createPlaceholderSite2();
-        expect(siteGroup).toBeInstanceOf(THREE.Group);
+    const MockMesh = jest.fn(function() {
+        this.isMesh = true;
+        this.position = { set: jest.fn() };
+        this.rotation = { x: 0 };
+        this.castShadow = false;
+        this.receiveShadow = false;
+        return this;
     });
 
-    test('createPlaceholderSite3 returns a THREE.Group object', () => {
-        const siteGroup = AppContext.createPlaceholderSite3();
-        expect(siteGroup).toBeInstanceOf(THREE.Group);
+    return {
+        ...originalThree,
+        Group: MockGroup,
+        Mesh: MockMesh,
+        PlaneGeometry: jest.fn(),
+        CylinderGeometry: jest.fn(),
+        CircleGeometry: jest.fn(),
+        BoxGeometry: jest.fn(),
+        MeshStandardMaterial: jest.fn(),
+    };
+});
+
+// Mock GLTFLoader
+const mockGltfLoader = {
+    load: jest.fn(),
+};
+
+describe('SiteManager Site Creation Functions', () => {
+    let siteManager;
+
+    beforeEach(() => {
+        jest.clearAllMocks();
+        siteManager = new SiteManager(new THREE.Scene(), mockGltfLoader, () => {});
+    });
+
+    test('createParrotSite returns a THREE.Group object', () => {
+        const siteGroup = siteManager.createParrotSite();
+        expect(siteGroup.isGroup).toBe(true);
+        expect(THREE.Mesh).toHaveBeenCalledWith(expect.any(Object), expect.any(Object));
+        expect(mockGltfLoader.load).toHaveBeenCalledWith(expect.any(String), expect.any(Function), undefined, expect.any(Function));
+    });
+
+    test('createDuckSite returns a THREE.Group object', () => {
+        const siteGroup = siteManager.createDuckSite();
+        expect(siteGroup.isGroup).toBe(true);
+        expect(THREE.Mesh).toHaveBeenCalledWith(expect.any(Object), expect.any(Object));
+        expect(mockGltfLoader.load).toHaveBeenCalledWith(expect.any(String), expect.any(Function), undefined, expect.any(Function));
+    });
+
+    test('createHorseSite returns a THREE.Group object', () => {
+        const siteGroup = siteManager.createHorseSite();
+        expect(siteGroup.isGroup).toBe(true);
+        expect(THREE.Mesh).toHaveBeenCalledWith(expect.any(Object), expect.any(Object));
+        expect(mockGltfLoader.load).toHaveBeenCalledWith(expect.any(String), expect.any(Function), undefined, expect.any(Function));
+    });
+
+    test('createFlamingoSite returns a THREE.Group object', () => {
+        const siteGroup = siteManager.createFlamingoSite();
+        expect(siteGroup.isGroup).toBe(true);
+        expect(THREE.Mesh).toHaveBeenCalledWith(expect.any(Object), expect.any(Object));
+        expect(mockGltfLoader.load).toHaveBeenCalledWith(expect.any(String), expect.any(Function), undefined, expect.any(Function));
     });
 });

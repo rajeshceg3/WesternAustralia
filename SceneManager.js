@@ -7,7 +7,7 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { BloomPass } from 'three/examples/jsm/postprocessing/BloomPass.js';
 import { FilmPass } from 'three/examples/jsm/postprocessing/FilmPass.js';
-import TWEEN from 'tween';
+import TWEEN from '@tweenjs/tween.js';
 
 export default class SceneManager {
     constructor(canvas) {
