@@ -98,38 +98,38 @@
             opacity: 1;
             transform: translateY(0);
         }
+
+        #titleOverlay {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 2em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+            pointer-events: none; /* Make sure it doesn't interfere with controls */
+            z-index: 150;
+        }
     </style>
 </head>
 <body>
     <div id="loadingIndicator"><p>Loading...</p></div>
     <canvas id="webglCanvas"></canvas>
-    <!-- Update to latest Three.js version -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.153.0/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.153.0/examples/js/controls/OrbitControls.js"></script>
-    <!-- Post-processing scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/three@0.153.0/examples/js/postprocessing/EffectComposer.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.153.0/examples/js/postprocessing/RenderPass.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.153.0/examples/js/shaders/CopyShader.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.153.0/examples/js/shaders/ConvolutionShader.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.153.0/examples/js/postprocessing/BloomPass.js"></script>
-    <!-- BokehPass and its shader dependencies -->
-    <script src="https://cdn.jsdelivr.net/npm/three@0.153.0/examples/js/shaders/BokehShader2.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.153.0/examples/js/postprocessing/BokehPass.js"></script>
-    <!-- RGBELoader for HDR environment maps -->
-    <script src="https://cdn.jsdelivr.net/npm/three@0.153.0/examples/js/loaders/RGBELoader.js"></script>
-    <!-- GLTFLoader for loading 3D models -->
-    <script src="https://cdn.jsdelivr.net/npm/three@0.153.0/examples/js/loaders/GLTFLoader.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.umd.js"></script>
-    <script>
-        // Add error handlers for script loading
-        window.addEventListener('error', function(e) {
-            console.error('Script loading error:', e);
-            const loadingIndicator = document.getElementById('loadingIndicator');
-            if (loadingIndicator) {
-                loadingIndicator.innerHTML = '<p>Error loading 3D libraries. Please check console and refresh.</p>';
-            }
-        }, true);
+    <div id="titleOverlay">
+        <h1>Western Australia 3D Sites Viewer</h1>
+    </div>
+
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.153.0/build/three.module.js",
+            "three/examples/jsm/": "https://cdn.jsdelivr.net/npm/three@0.153.0/examples/jsm/",
+            "tween": "https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.umd.js"
+        }
+    }
     </script>
-    <script src="main.js"></script>
+
+    <script type="module" src="main.js"></script>
 </body>
 </html>
