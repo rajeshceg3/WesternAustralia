@@ -1,121 +1,96 @@
-import AppContext from './main.js';
+import SiteManager from './SiteManager.js';
 import * as THREE from 'three';
 
-global.THREE = THREE;
+// Mock Three.js components
+jest.mock('three', () => {
+    const originalThree = jest.requireActual('three');
+    const MockGroup = jest.fn(function() {
+        this.isGroup = true;
+        this.add = jest.fn();
+        this.traverse = jest.fn();
+        this.position = { set: jest.fn() };
+        this.rotation = { set: jest.fn() };
+        this.scale = { set: jest.fn() };
+        this.userData = {}; // Ensure userData exists
+        return this;
+    });
+    return {
+        ...originalThree,
+        Group: MockGroup,
+    };
+});
 
-describe('AppContext.switchSite Detailed Logic', () => {
-    let mockScene, mockClock, mockDescriptionElement, mockControls, mockCamera;
-    let mockCreateSite1, mockCreateSite2, mockCreateSite3;
+describe('SiteManager.switchSite', () => {
+    let siteManager;
+    let mockScene;
+    let mockGltfLoader;
+    let onTransitionEndCallback;
 
     beforeEach(() => {
-        // Mock TWEEN
-        global.TWEEN = {
-            Tween: jest.fn(() => ({
-                to: jest.fn(() => ({
-                    easing: jest.fn(() => ({
-                        start: jest.fn(),
-                    })),
-                })),
-            })),
-            Easing: {
-                Quadratic: {
-                    InOut: jest.fn(),
-                },
-            },
+        mockScene = {
+            add: jest.fn(),
+            remove: jest.fn(),
         };
-
-        // Mock dependencies
-        mockScene = { add: jest.fn(), remove: jest.fn() };
-        mockClock = { getElapsedTime: jest.fn(() => 123) };
-        mockDescriptionElement = {
-            textContent: '',
-            classList: { remove: jest.fn(), add: jest.fn() }
+        mockGltfLoader = {
+            load: jest.fn(),
         };
-        mockCamera = new THREE.PerspectiveCamera();
-        mockControls = { target: new THREE.Vector3(0, 0, 0) };
+        onTransitionEndCallback = jest.fn();
 
-        // Set mocks into AppContext
-        AppContext.setScene(mockScene);
-        AppContext.setClock(mockClock);
-        AppContext.setCamera(mockCamera);
-        AppContext.setDescriptionElement(mockDescriptionElement);
-        AppContext.setControls(mockControls);
-        AppContext.setNavigationControlsContainer({ querySelectorAll: jest.fn(() => []), appendChild: jest.fn() });
+        siteManager = new SiteManager(mockScene, mockGltfLoader, onTransitionEndCallback);
 
-        // --- NEW TESTING STRATEGY ---
-        // Create mock functions for site creation
-        mockCreateSite1 = jest.fn().mockReturnValue({ isGroup: true, name: "MockedSite1", userData: {} });
-        mockCreateSite2 = jest.fn().mockReturnValue({ isGroup: true, name: "MockedSite2", userData: {} });
-        mockCreateSite3 = jest.fn().mockReturnValue({ isGroup: true, name: "MockedSite3", userData: {} });
-
-        // Get the real data to use as a base
-        const realSitesData = AppContext.getSitesData();
-
-        // Create a mock sitesData array that uses our mock functions
-        const mockSitesData = [
-            { ...realSitesData[0], createFunc: mockCreateSite1 },
-            { ...realSitesData[1], createFunc: mockCreateSite2 },
-            { ...realSitesData[2], createFunc: mockCreateSite3 },
-        ];
-
-        // Spy on getSitesData and return our mocked array
-        jest.spyOn(AppContext, 'getSitesData').mockReturnValue(mockSitesData);
-        // Also spy on setGroupOpacity as it's not relevant to this logic test
-        jest.spyOn(AppContext, 'setGroupOpacity').mockImplementation(() => {});
-
-        // Reset state before each test
-        AppContext.setCurrentSiteIndex(0);
-        AppContext.setIsTransitioning(false);
-        AppContext.setCurrentSiteGroup({ isGroup: true, name: "InitialGroup", userData: {} });
-        AppContext.setOutgoingSiteGroup(null);
-        AppContext.setIncomingSiteGroup(null);
-        AppContext.setTransitionStartTime(0);
+        // Mock the createFunc for each site to return a new mock group
+        siteManager.sitesData.forEach(site => {
+            site.createFunc = jest.fn(() => new THREE.Group());
+        });
     });
 
-    afterEach(() => {
-        jest.restoreAllMocks();
+    test('successfully switches from no site to site 0', () => {
+        const mockClock = { getElapsedTime: () => 0 };
+        const siteInfo = siteManager.switchSite(0, mockClock);
+
+        expect(siteManager.currentSiteIndex).toBe(0);
+        expect(siteManager.isTransitioning).toBe(true);
+        expect(siteManager.incomingSiteGroup.isGroup).toBe(true);
+        expect(mockScene.add).toHaveBeenCalledWith(siteManager.incomingSiteGroup);
+        expect(siteInfo.description).toBe(siteManager.sitesData[0].description);
+        expect(siteManager.sitesData[0].createFunc).toHaveBeenCalled();
     });
 
     test('successfully switches from site 0 to site 1', () => {
-        AppContext.switchSite(1);
+        // First, set up initial state as if site 0 is active
+        siteManager.currentSiteIndex = 0;
+        siteManager.currentSiteGroup = new THREE.Group(); // This will have userData from our mock
 
-        expect(AppContext.getCurrentSiteIndex()).toBe(1);
-        expect(AppContext.getIsTransitioning()).toBe('crossfade');
+        const mockClock = { getElapsedTime: () => 0 };
+        const siteInfo = siteManager.switchSite(1, mockClock);
 
-        // Now we check if our injected mock function was called
-        expect(mockCreateSite2).toHaveBeenCalledTimes(1);
-
-        const newIncomingGroup = AppContext.getIncomingSiteGroup();
-        expect(newIncomingGroup).toBeDefined();
-        expect(newIncomingGroup.name).toBe("MockedSite2");
-
-        expect(mockScene.add).toHaveBeenCalledWith(newIncomingGroup);
+        expect(siteManager.currentSiteIndex).toBe(1);
+        expect(siteManager.isTransitioning).toBe(true);
+        expect(siteManager.outgoingSiteGroup).toBe(siteManager.currentSiteGroup);
+        expect(siteManager.incomingSiteGroup.isGroup).toBe(true);
+        expect(mockScene.add).toHaveBeenCalledWith(siteManager.incomingSiteGroup);
+        expect(siteInfo.description).toBe(siteManager.sitesData[1].description);
+        expect(siteManager.sitesData[1].createFunc).toHaveBeenCalled();
     });
 
-    test('should not switch if newIndex is the same as currentSiteIndex and a site is loaded', () => {
+    test('does not switch if index is the same as current', () => {
+        siteManager.currentSiteIndex = 0;
+        const result = siteManager.switchSite(0, {});
+        expect(result).toBeUndefined();
+        expect(siteManager.isTransitioning).toBe(false);
+    });
+
+    test('does not switch if a transition is in progress', () => {
+        siteManager.isTransitioning = true;
+        const result = siteManager.switchSite(1, {});
+        expect(result).toBeUndefined();
+    });
+
+    test('does not switch for an invalid index', () => {
         const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
-        AppContext.switchSite(0);
-        expect(consoleWarnSpy).toHaveBeenCalled();
-        expect(mockCreateSite1).not.toHaveBeenCalled();
+        const result = siteManager.switchSite(99, {});
+        expect(result).toBeUndefined();
+        expect(consoleWarnSpy).toHaveBeenCalledWith("Invalid site index:", 99);
         consoleWarnSpy.mockRestore();
-    });
-
-    test('should not switch if a transition is in progress', () => {
-        AppContext.setIsTransitioning(true);
-        const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
-        AppContext.switchSite(1);
-        expect(consoleWarnSpy).toHaveBeenCalled();
-        expect(mockCreateSite2).not.toHaveBeenCalled();
-        consoleWarnSpy.mockRestore();
-    });
-
-    test('switches correctly when currentSiteGroup is null', () => {
-        AppContext.setCurrentSiteGroup(null);
-        AppContext.switchSite(1);
-        expect(AppContext.getIsTransitioning()).toBe('crossfade');
-        expect(AppContext.getOutgoingSiteGroup()).toBeNull();
-        expect(mockCreateSite2).toHaveBeenCalledTimes(1);
-        const newIncomingGroup = AppContext.getIncomingSiteGroup();
-        expect(newIncomingGroup.name).toBe("MockedSite2");
     });
 });

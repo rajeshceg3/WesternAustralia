@@ -17,6 +17,7 @@ export default class UIManager {
         this.sitesData.forEach((site, index) => {
             const button = document.createElement('button');
             button.textContent = site.name;
+            button.setAttribute('aria-label', `View site ${index + 1}: ${site.name}`);
             button.addEventListener('click', () => {
                 // Inhibit clicking if a transition is active
                 if (this.navigationContainer.classList.contains('transitioning')) return;
