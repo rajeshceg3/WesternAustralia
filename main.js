@@ -39,11 +39,12 @@ document.addEventListener('DOMContentLoaded', () => {
     uiManager.createNavigationButtons();
     loadingIndicator.style.display = 'flex';
 
+    // Start loading the first site immediately.
+    switchSite(0);
+
     // Use the GLTFLoader's manager to detect when all initial assets are loaded.
     sceneManager.gltfLoader.manager.onLoad = () => {
         loadingIndicator.style.display = 'none';
-        // Load the first site.
-        switchSite(0);
     };
 
     sceneManager.gltfLoader.manager.onStart = () => {

@@ -113,6 +113,10 @@ export default class SiteManager {
             }
         }, undefined, (error) => {
             console.error(`Error loading model from ${modelUrl}:`, error);
+            // Propagate error to the manager to let the UI know
+            if (this.gltfLoader.manager.onError) {
+                this.gltfLoader.manager.onError(modelUrl);
+            }
         });
     }
 
@@ -147,6 +151,31 @@ export default class SiteManager {
         };
     }
 
+    disposeNode(node) {
+        if (node instanceof THREE.Mesh) {
+            if (node.geometry) {
+                node.geometry.dispose();
+            }
+            if (node.material) {
+                const materials = Array.isArray(node.material) ? node.material : [node.material];
+                materials.forEach(material => {
+                    // Dispose of textures first
+                    for (const key in material) {
+                        if (material[key] && material[key].isTexture) {
+                            material[key].dispose();
+                        }
+                    }
+                    material.dispose();
+                });
+            }
+        }
+    }
+
+    disposeGroup(group) {
+        if (!group) return;
+        group.traverse(this.disposeNode.bind(this));
+    }
+
     update(delta, elapsedTime) {
         if (this.currentSiteGroup && this.currentSiteGroup.userData.mixer) {
             this.currentSiteGroup.userData.mixer.update(delta);
@@ -165,6 +194,7 @@ export default class SiteManager {
             if (progress >= 1) {
                 if (this.outgoingSiteGroup) {
                     this.scene.remove(this.outgoingSiteGroup);
+                    this.disposeGroup(this.outgoingSiteGroup);
                 }
                 this.outgoingSiteGroup = null;
                 this.currentSiteGroup = this.incomingSiteGroup;
