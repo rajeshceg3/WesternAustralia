@@ -53,8 +53,16 @@ export default class UIManager {
     setTransitioning(isTransitioning) {
         if (isTransitioning) {
             this.navigationContainer.classList.add('transitioning');
+            this.navButtons.forEach(btn => {
+                btn.style.opacity = '0.5';
+                btn.style.cursor = 'not-allowed';
+            });
         } else {
             this.navigationContainer.classList.remove('transitioning');
+            this.navButtons.forEach(btn => {
+                btn.style.opacity = '1';
+                btn.style.cursor = 'pointer';
+            });
         }
     }
 }

@@ -37,7 +37,7 @@ export default class SceneManager {
         const manager = new THREE.LoadingManager();
         this.gltfLoader = new GLTFLoader(manager);
 
-        const rgbeLoader = new RGBELoader();
+        const rgbeLoader = new RGBELoader(manager);
         rgbeLoader.load('https://threejs.org/examples/textures/equirectangular/venice_sunset_1k.hdr', (texture) => {
             texture.mapping = THREE.EquirectangularReflectionMapping;
             this.scene.background = texture;
