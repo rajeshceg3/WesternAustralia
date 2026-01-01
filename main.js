@@ -19,8 +19,52 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const siteManager = new SiteManager(sceneManager.scene, sceneManager.gltfLoader, onTransitionEnd);
 
+    // Error tracking for loading
+    let loadingError = false;
+
+    // Configure LoadingManager callbacks BEFORE starting any loads (switchSite)
+    sceneManager.gltfLoader.manager.onStart = (url, itemsLoaded, itemsTotal) => {
+        console.log(`Loading started: ${url} (${itemsLoaded}/${itemsTotal})`);
+        // We do not reset loadingError here because onStart can be called multiple times
+        // We reset it in switchSite
+    };
+
+    sceneManager.gltfLoader.manager.onError = (url) => {
+        console.error('Error loading assets from ' + url);
+        loadingError = true;
+        loadingIndicator.textContent = `Error loading asset: ${url}. Please refresh.`;
+        // Ensure it's visible
+        loadingIndicator.style.display = 'flex';
+    };
+
+    sceneManager.gltfLoader.manager.onLoad = () => {
+        if (!loadingError) {
+            loadingIndicator.style.display = 'none';
+        } else {
+            console.warn('Loading finished but errors were detected.');
+        }
+    };
+
     const switchSite = (index) => {
         if (siteManager.isTransitioning) return;
+
+        // Reset error state for new site load, if we want to allow retries or new navigations
+        // However, if the error is fatal (network down), it might persist.
+        // For now, let's assume a new attempt might succeed or we want to clear the old error.
+        loadingError = false;
+        loadingIndicator.textContent = 'Loading...';
+        // We only show the indicator if we anticipate a load.
+        // SiteManager calls loadAndAddModel.
+        // We can preemptively show it, but LoadingManager will handle it if we want?
+        // Actually, if we switch sites, we expect loading.
+        // But if the model is cached, it might be instant.
+        // Let's rely on LoadingManager.
+        // Wait, if I hide it in onLoad, I need to show it somewhere.
+        // Usually onStart? But onStart might be too late if we want instant feedback?
+        // Let's show it here if we know we are fetching data?
+        // SiteManager always calls loadAndAddModel.
+        loadingIndicator.style.display = 'flex';
+
         uiManager.setTransitioning(true);
         uiManager.hideDescription();
         const siteInfo = siteManager.switchSite(index, sceneManager.clock);
@@ -30,6 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             // If switchSite fails (e.g. invalid index), unlock UI
             uiManager.setTransitioning(false);
+            loadingIndicator.style.display = 'none';
         }
     };
 
@@ -37,25 +82,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initial setup
     uiManager.createNavigationButtons();
-    loadingIndicator.style.display = 'flex';
 
     // Start loading the first site immediately.
     switchSite(0);
-
-    // Use the GLTFLoader's manager to detect when all initial assets are loaded.
-    sceneManager.gltfLoader.manager.onLoad = () => {
-        loadingIndicator.style.display = 'none';
-    };
-
-    sceneManager.gltfLoader.manager.onStart = () => {
-        console.log('Loading assets...');
-    };
-
-    sceneManager.gltfLoader.manager.onError = (url) => {
-        console.error('Error loading assets from ' + url);
-        loadingIndicator.textContent = `Error loading asset: ${url}. Please refresh.`;
-    };
-
 
     sceneManager.render((delta, elapsedTime) => {
         siteManager.update(delta, elapsedTime);
@@ -63,9 +92,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Keyboard controls
     window.addEventListener('keydown', (event) => {
-        const key = parseInt(event.key);
-        if (!isNaN(key) && key > 0 && key <= siteManager.sitesData.length) {
-            switchSite(key - 1);
+        const key = event.key;
+
+        // Number keys
+        const numKey = parseInt(key);
+        if (!isNaN(numKey) && numKey > 0 && numKey <= siteManager.sitesData.length) {
+            switchSite(numKey - 1);
+            return;
+        }
+
+        // Arrow keys
+        if (key === 'ArrowLeft') {
+            uiManager.navigatePrevious();
+        } else if (key === 'ArrowRight') {
+            uiManager.navigateNext();
         }
     });
 });
