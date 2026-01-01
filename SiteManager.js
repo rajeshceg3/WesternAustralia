@@ -152,7 +152,7 @@ export default class SiteManager {
     }
 
     disposeNode(node) {
-        if (node instanceof THREE.Mesh) {
+        if (node.isMesh || node.isLine || node.isPoints) {
             if (node.geometry) {
                 node.geometry.dispose();
             }
