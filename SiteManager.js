@@ -76,6 +76,8 @@ export default class SiteManager {
 
     createDuckSite() {
         const siteGroup = new THREE.Group();
+        // Add a ground plane below the pond for continuity
+        siteGroup.add(this.createGroundPlane(0x228B22)); // ForestGreen ground
         const pond = new THREE.Mesh(new THREE.CircleGeometry(5, 32), new THREE.MeshStandardMaterial({ color: 0x4682B4, transparent: true, opacity: 0.7 }));
         pond.rotation.x = -Math.PI / 2;
         pond.position.y = -0.9;
@@ -173,6 +175,11 @@ export default class SiteManager {
 
     disposeGroup(group) {
         if (!group) return;
+        if (group.userData.mixer) {
+            group.userData.mixer.stopAllAction();
+            group.userData.mixer.uncacheRoot(group);
+            delete group.userData.mixer;
+        }
         group.traverse(this.disposeNode.bind(this));
     }
 

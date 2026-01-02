@@ -33,6 +33,11 @@
             border-radius: 5px;
             animation: pulsate 2s infinite; /* Pulsating animation */
         }
+        @media (prefers-reduced-motion: reduce) {
+            #loadingIndicator p {
+                animation: none;
+            }
+        }
         #navigationControls {
             position: absolute;
             bottom: 25px; /* Moved down to separate from description */
