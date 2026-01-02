@@ -25,6 +25,7 @@ export default class SceneManager {
     init() {
         this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, antialias: true });
         this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         this.renderer.shadowMap.enabled = true;
 
         this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
@@ -68,12 +69,19 @@ export default class SceneManager {
     }
 
     animateCameraToTarget(targetPosition, targetLookAt, duration = 1000) {
-        new TWEEN.Tween(this.camera.position)
-            .to(targetPosition, duration)
+        if (this.cameraTween) this.cameraTween.stop();
+        if (this.controlsTween) this.controlsTween.stop();
+
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const actualDuration = prefersReducedMotion ? 0 : duration;
+
+        this.cameraTween = new TWEEN.Tween(this.camera.position)
+            .to(targetPosition, actualDuration)
             .easing(TWEEN.Easing.Quadratic.InOut)
             .start();
-        new TWEEN.Tween(this.controls.target)
-            .to(targetLookAt, duration)
+
+        this.controlsTween = new TWEEN.Tween(this.controls.target)
+            .to(targetLookAt, actualDuration)
             .easing(TWEEN.Easing.Quadratic.InOut)
             .start();
     }
