@@ -82,6 +82,15 @@
             font-weight: bold;
             box-shadow: 0 2px 4px rgba(0,0,0,0.5) inset; /* Slightly inset shadow for active */
         }
+        /* Focus styles for accessibility */
+        #navigationControls button:focus-visible {
+            outline: 2px solid #fff;
+            outline-offset: 2px;
+        }
+        #siteDescription:focus {
+            outline: none; /* Programmatic focus only */
+        }
+
         #siteDescription {
             position: absolute;
     bottom: 100px; /* Adjusted to make space for nav controls */
@@ -129,7 +138,7 @@
         <h1>Western Australia 3D Sites Viewer</h1>
     </div>
     <div id="navigationControls"></div>
-    <div id="siteDescription"></div>
+    <div id="siteDescription" aria-live="polite" tabindex="-1"></div>
 
     <script type="importmap">
     {

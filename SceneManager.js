@@ -87,7 +87,6 @@ export default class SceneManager {
     }
 
     render(updateCallback) {
-        requestAnimationFrame(() => this.render(updateCallback));
         const delta = this.clock.getDelta();
         const elapsedTime = this.clock.getElapsedTime();
 
@@ -99,5 +98,6 @@ export default class SceneManager {
         }
 
         this.composer.render();
+        requestAnimationFrame(() => this.render(updateCallback));
     }
 }

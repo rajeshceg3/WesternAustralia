@@ -115,6 +115,15 @@ export default class SiteManager {
             }
         }, undefined, (error) => {
             console.error(`Error loading model from ${modelUrl}:`, error);
+
+            // Create a placeholder if loading fails
+            const placeholderGeometry = new THREE.BoxGeometry(1, 1, 1);
+            const placeholderMaterial = new THREE.MeshStandardMaterial({ color: 0xff0000, wireframe: true });
+            const placeholder = new THREE.Mesh(placeholderGeometry, placeholderMaterial);
+            placeholder.position.y = 0;
+            placeholder.scale.set(scale, scale, scale);
+            siteGroup.add(placeholder);
+
             // Propagate error to the manager to let the UI know
             if (this.gltfLoader.manager.onError) {
                 this.gltfLoader.manager.onError(modelUrl);
@@ -169,6 +178,10 @@ export default class SiteManager {
                     }
                     material.dispose();
                 });
+            }
+
+            if (node.skeleton) {
+                node.skeleton.dispose();
             }
         }
     }
