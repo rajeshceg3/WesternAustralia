@@ -1,0 +1,85 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  # CI Phase: Test and Lint
+  test:
+    name: CI - Test & Validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Tests
+        run: npm test
+
+      # Security Scan (Basic)
+      - name: Security Audit
+        # Audit dependencies. We use --audit-level=high to avoid failing on minor issues in dev dependencies
+        run: npm audit --audit-level=high
+
+  # Build Phase: Prepare Artifacts
+  build:
+    name: Build Artifact
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Create Distribution
+        # Architecture Decision:
+        # This is a static site using ES Modules and CDNs.
+        # We simulate a build step by isolating production assets into a clean 'dist' directory.
+        # This prevents shipping test files, config files, or node_modules to production.
+        run: |
+          mkdir -p dist
+          cp index.html main.js SceneManager.js SiteManager.js UIManager.js dist/
+          # Ensure file permissions are correct
+          chmod -R 755 dist
+
+      - name: Upload Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist'
+
+  # Deployment Phase
+  deploy:
+    name: Deploy to GitHub Pages
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
