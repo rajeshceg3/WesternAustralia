@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
         uiManager.setTransitioning(false);
         uiManager.updateActiveButton(siteManager.currentSiteIndex);
         uiManager.showDescription();
+        siteDescription.focus();
     };
 
     const siteManager = new SiteManager(sceneManager.scene, sceneManager.gltfLoader, onTransitionEnd);
@@ -32,16 +33,13 @@ document.addEventListener('DOMContentLoaded', () => {
     sceneManager.gltfLoader.manager.onError = (url) => {
         console.error('Error loading assets from ' + url);
         loadingError = true;
-        loadingIndicator.textContent = `Error loading asset: ${url}. Please refresh.`;
-        // Ensure it's visible
-        loadingIndicator.style.display = 'flex';
+        loadingIndicator.textContent = `Error loading ${url}. Using placeholder.`;
     };
 
     sceneManager.gltfLoader.manager.onLoad = () => {
-        if (!loadingError) {
-            loadingIndicator.style.display = 'none';
-        } else {
-            console.warn('Loading finished but errors were detected.');
+        loadingIndicator.style.display = 'none';
+        if (loadingError) {
+            console.warn('Loading finished but errors were detected. Placeholders used.');
         }
     };
 
