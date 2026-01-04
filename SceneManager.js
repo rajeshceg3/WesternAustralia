@@ -43,6 +43,11 @@ export default class SceneManager {
             texture.mapping = THREE.EquirectangularReflectionMapping;
             this.scene.background = texture;
             this.scene.environment = texture;
+        }, undefined, (error) => {
+            console.error('An error occurred loading the HDR texture:', error);
+            // Fallback to a simple color if HDR fails
+            this.scene.background = new THREE.Color(0x87CEEB); // Sky blue
+            this.scene.environment = null;
         });
 
         // Lights
