@@ -3,7 +3,16 @@ import SiteManager from './SiteManager.js';
 import UIManager from './UIManager.js';
 import * as THREE from 'three';
 
+import WebGL from 'three/examples/jsm/capabilities/WebGL.js';
+
 document.addEventListener('DOMContentLoaded', () => {
+    if (!WebGL.isWebGL2Available()) {
+        const warning = WebGL.getWebGL2ErrorMessage();
+        document.body.appendChild(warning);
+        document.getElementById('loadingIndicator').style.display = 'none';
+        return;
+    }
+
     const canvas = document.getElementById('webglCanvas');
     const navigationControls = document.getElementById('navigationControls');
     const siteDescription = document.getElementById('siteDescription');
