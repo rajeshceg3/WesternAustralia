@@ -51,7 +51,8 @@ export default class SceneManager {
         });
 
         // Lights
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        // Boost ambient light slightly to compensate if HDR fails
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
         this.scene.add(ambientLight);
         const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
         directionalLight.position.set(5, 10, 7.5);
@@ -92,17 +93,26 @@ export default class SceneManager {
     }
 
     render(updateCallback) {
-        const delta = this.clock.getDelta();
-        const elapsedTime = this.clock.getElapsedTime();
-
-        this.controls.update();
-        TWEEN.update();
-
-        if (updateCallback) {
-            updateCallback(delta, elapsedTime);
-        }
-
-        this.composer.render();
         requestAnimationFrame(() => this.render(updateCallback));
+
+        try {
+            const delta = this.clock.getDelta();
+            const elapsedTime = this.clock.getElapsedTime();
+
+            this.controls.update();
+            TWEEN.update();
+
+            if (updateCallback) {
+                updateCallback(delta, elapsedTime);
+            }
+
+            this.composer.render();
+        } catch (error) {
+            console.error("Error in render loop:", error);
+            // Optionally stop the loop or show a user-facing error
+            // For now, we log it. Since requestAnimationFrame is already called, it will retry.
+            // If the error is persistent, it will spam the console.
+            // Ideally we might want to pause if errors persist.
+        }
     }
 }
