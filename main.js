@@ -74,7 +74,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         uiManager.setTransitioning(true);
         uiManager.hideDescription();
-        const siteInfo = siteManager.switchSite(index, sceneManager.clock);
+
+        const onProgress = (xhr) => {
+            if (xhr.lengthComputable) {
+                const percentComplete = Math.round((xhr.loaded / xhr.total) * 100);
+                loadingIndicator.textContent = `Loading... ${percentComplete}%`;
+            }
+        };
+
+        const siteInfo = siteManager.switchSite(index, sceneManager.clock, onProgress);
         if (siteInfo) {
             uiManager.updateSiteDescription(siteInfo.description);
             sceneManager.animateCameraToTarget(new THREE.Vector3(0, 2, 5), new THREE.Vector3(0, 0, 0));

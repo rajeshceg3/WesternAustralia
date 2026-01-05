@@ -53,7 +53,7 @@ export default class SiteManager {
         return groundPlane;
     }
 
-    createParrotSite() {
+    createParrotSite(onProgress) {
         const siteGroup = new THREE.Group();
         // Diorama elements
         siteGroup.add(this.createGroundPlane(0x228B22)); // ForestGreen
@@ -63,18 +63,18 @@ export default class SiteManager {
             tree.castShadow = true;
             siteGroup.add(tree);
         }
-        this.loadAndAddModel(this.sitesData[0].modelUrl, siteGroup, { scale: 0.5 });
+        this.loadAndAddModel(this.sitesData[0].modelUrl, siteGroup, { scale: 0.5 }, onProgress);
         return siteGroup;
     }
 
-    createFlamingoSite() {
+    createFlamingoSite(onProgress) {
         const siteGroup = new THREE.Group();
         siteGroup.add(this.createGroundPlane(0xF4A460)); // SandyBrown
-        this.loadAndAddModel(this.sitesData[3].modelUrl, siteGroup, { scale: 0.5 });
+        this.loadAndAddModel(this.sitesData[3].modelUrl, siteGroup, { scale: 0.5 }, onProgress);
         return siteGroup;
     }
 
-    createDuckSite() {
+    createDuckSite(onProgress) {
         const siteGroup = new THREE.Group();
         // Add a ground plane below the pond for continuity
         siteGroup.add(this.createGroundPlane(0x228B22)); // ForestGreen ground
@@ -82,11 +82,11 @@ export default class SiteManager {
         pond.rotation.x = -Math.PI / 2;
         pond.position.y = -0.9;
         siteGroup.add(pond);
-        this.loadAndAddModel(this.sitesData[1].modelUrl, siteGroup, { scale: 1.0 });
+        this.loadAndAddModel(this.sitesData[1].modelUrl, siteGroup, { scale: 1.0 }, onProgress);
         return siteGroup;
     }
 
-    createHorseSite() {
+    createHorseSite(onProgress) {
         const siteGroup = new THREE.Group();
         siteGroup.add(this.createGroundPlane(0x90EE90)); // LightGreen
         // Simple fence
@@ -95,11 +95,11 @@ export default class SiteManager {
             post.position.set(-5 + i, -0.75, -5);
             siteGroup.add(post);
         }
-        this.loadAndAddModel(this.sitesData[2].modelUrl, siteGroup, { scale: 0.5 });
+        this.loadAndAddModel(this.sitesData[2].modelUrl, siteGroup, { scale: 0.5 }, onProgress);
         return siteGroup;
     }
 
-    loadAndAddModel(modelUrl, siteGroup, { scale = 1.0 }) {
+    loadAndAddModel(modelUrl, siteGroup, { scale = 1.0 }, onProgress) {
         if (!this.gltfLoader) return;
         this.gltfLoader.load(modelUrl, (gltf) => {
             const model = gltf.scene;
@@ -128,10 +128,10 @@ export default class SiteManager {
             if (this.gltfLoader.manager.onError) {
                 this.gltfLoader.manager.onError(modelUrl);
             }
-        });
+        }, onProgress); // Pass the progress callback
     }
 
-    switchSite(index, clock) {
+    switchSite(index, clock, onProgress) {
         if (this.isTransitioning || index === this.currentSiteIndex) {
             return;
         }
@@ -152,7 +152,19 @@ export default class SiteManager {
 
         this.currentSiteIndex = index;
         const newSiteData = this.sitesData[this.currentSiteIndex];
-        this.incomingSiteGroup = newSiteData.createFunc();
+
+        // We need to inject the onProgress callback into the createFunc or modify how createFunc works.
+        // The current createFuncs call loadAndAddModel directly.
+        // We can override createFunc temporarily or modify them to accept options.
+        // But createFunc is bound to this class.
+        // Let's modify the createFuncs to accept onProgress? No, they take no args currently.
+        // But we are calling newSiteData.createFunc().
+        // Wait, the createFuncs are defined in sitesData as bound methods.
+        // I need to change how they are called or change their signature.
+
+        // It is cleaner to pass onProgress to createFunc.
+        // I need to update all createFuncs signatures in this file.
+        this.incomingSiteGroup = newSiteData.createFunc(onProgress);
         this.setGroupOpacity(this.incomingSiteGroup, 0);
         this.scene.add(this.incomingSiteGroup);
 
@@ -171,8 +183,22 @@ export default class SiteManager {
                 const materials = Array.isArray(node.material) ? node.material : [node.material];
                 materials.forEach(material => {
                     // Dispose of textures first
+                    // We check common texture map keys specifically to avoid issues with some properties
+                    const textureMaps = [
+                        'map', 'aoMap', 'alphaMap', 'bumpMap', 'displacementMap',
+                        'emissiveMap', 'envMap', 'lightMap', 'metalnessMap',
+                        'normalMap', 'roughnessMap'
+                    ];
+
+                    textureMaps.forEach(mapName => {
+                        if (material[mapName]) {
+                             material[mapName].dispose();
+                        }
+                    });
+
+                    // Also iterate keys just in case we missed custom ones, but be careful
                     for (const key in material) {
-                        if (material[key] && material[key].isTexture) {
+                        if (material[key] && material[key].isTexture && !textureMaps.includes(key)) {
                             material[key].dispose();
                         }
                     }
