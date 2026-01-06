@@ -10,25 +10,25 @@ export default class SiteManager {
         this.sitesData = [
             {
                 name: "Parrot's Perch",
-                modelUrl: 'https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/models/gltf/Parrot.glb',
+                modelUrl: 'https://cdn.jsdelivr.net/gh/mrdoob/three.js@master/examples/models/gltf/Parrot.glb',
                 description: "A colorful parrot rests in a lush, jungle-like clearing. The vibrant foliage and ancient trees create a serene, natural atmosphere.",
                 createFunc: this.createParrotSite.bind(this)
             },
             {
                 name: "Duck's Pond",
-                modelUrl: 'https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/models/gltf/Duck.glb',
+                modelUrl: 'https://cdn.jsdelivr.net/gh/mrdoob/three.js@master/examples/models/gltf/Duck.glb',
                 description: "A gentle duck glides across a tranquil pond. The water ripples softly, reflecting the sky above.",
                 createFunc: this.createDuckSite.bind(this)
             },
             {
                 name: "Horse's Meadow",
-                modelUrl: 'https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/models/gltf/Horse.glb',
+                modelUrl: 'https://cdn.jsdelivr.net/gh/mrdoob/three.js@master/examples/models/gltf/Horse.glb',
                 description: "A majestic horse stands in a wide, open meadow. A rustic fence lines the field, adding to the pastoral charm.",
                 createFunc: this.createHorseSite.bind(this)
             },
             {
                 name: "Flamingo Beach",
-                modelUrl: 'https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/models/gltf/Flamingo.glb',
+                modelUrl: 'https://cdn.jsdelivr.net/gh/mrdoob/three.js@master/examples/models/gltf/Flamingo.glb',
                 description: "A graceful flamingo wades in the shallow waters of a sandy beach. The sun glistens on its vibrant pink feathers.",
                 createFunc: this.createFlamingoSite.bind(this)
             }

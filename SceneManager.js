@@ -93,6 +93,7 @@ export default class SceneManager {
     }
 
     render(updateCallback) {
+        if (this.rendererStopped) return;
         requestAnimationFrame(() => this.render(updateCallback));
 
         try {
@@ -107,12 +108,16 @@ export default class SceneManager {
             }
 
             this.composer.render();
+            this.consecutiveErrors = 0; // Reset counter on successful render
         } catch (error) {
-            console.error("Error in render loop:", error);
-            // Optionally stop the loop or show a user-facing error
-            // For now, we log it. Since requestAnimationFrame is already called, it will retry.
-            // If the error is persistent, it will spam the console.
-            // Ideally we might want to pause if errors persist.
+            this.consecutiveErrors = (this.consecutiveErrors || 0) + 1;
+            console.error(`Error in render loop (Attempt ${this.consecutiveErrors}):`, error);
+
+            if (this.consecutiveErrors > 10) {
+                console.error("Too many consecutive render errors. Stopping render loop.");
+                this.rendererStopped = true;
+                // Ideally notify UI via a callback or event, but for now we safeguard the browser.
+            }
         }
     }
 }

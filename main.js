@@ -42,7 +42,23 @@ document.addEventListener('DOMContentLoaded', () => {
     sceneManager.gltfLoader.manager.onError = (url) => {
         console.error('Error loading assets from ' + url);
         loadingError = true;
-        loadingIndicator.textContent = `Error loading ${url}. Using placeholder.`;
+
+        // Show retry button
+        loadingIndicator.innerHTML = '';
+        const msg = document.createElement('p');
+        msg.textContent = `Error loading ${url}. Using placeholder.`;
+        loadingIndicator.appendChild(msg);
+
+        const retryBtn = document.createElement('button');
+        retryBtn.textContent = 'Retry Loading';
+        retryBtn.style.marginTop = '10px';
+        retryBtn.style.padding = '8px 16px';
+        retryBtn.style.cursor = 'pointer';
+        retryBtn.onclick = () => {
+            // Retry the current site
+            switchSite(siteManager.currentSiteIndex);
+        };
+        loadingIndicator.appendChild(retryBtn);
     };
 
     sceneManager.gltfLoader.manager.onLoad = () => {
@@ -85,6 +101,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const siteInfo = siteManager.switchSite(index, sceneManager.clock, onProgress);
         if (siteInfo) {
             uiManager.updateSiteDescription(siteInfo.description);
+            // Update canvas accessibility label
+            const siteName = siteManager.sitesData[index].name;
+            canvas.setAttribute('aria-label', `3D View of ${siteName}`);
+
             sceneManager.animateCameraToTarget(new THREE.Vector3(0, 2, 5), new THREE.Vector3(0, 0, 0));
         } else {
             // If switchSite fails (e.g. invalid index), unlock UI
