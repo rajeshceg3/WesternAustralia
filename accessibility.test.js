@@ -23,4 +23,10 @@ describe('Accessibility Checks', () => {
         const loader = document.getElementById('loadingIndicator');
         expect(loader).toBeTruthy();
     });
+
+    test('Navigation container should be a nav element with label', () => {
+        const nav = document.getElementById('navigationControls');
+        expect(nav.tagName).toBe('NAV');
+        expect(nav.getAttribute('aria-label')).toBe('Site Navigation');
+    });
 });
