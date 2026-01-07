@@ -18,7 +18,7 @@ export default class UIManager {
         // Previous Button
         const prevButton = document.createElement('button');
         prevButton.textContent = 'Previous';
-        prevButton.setAttribute('aria-label', 'View previous site');
+        prevButton.setAttribute('aria-label', 'Go to previous site');
         prevButton.addEventListener('click', () => this.navigatePrevious());
         this.navigationContainer.appendChild(prevButton);
         this.navButtons.push(prevButton); // Add to general list for disabling
@@ -40,7 +40,7 @@ export default class UIManager {
         // Next Button
         const nextButton = document.createElement('button');
         nextButton.textContent = 'Next';
-        nextButton.setAttribute('aria-label', 'View next site');
+        nextButton.setAttribute('aria-label', 'Go to next site');
         nextButton.addEventListener('click', () => this.navigateNext());
         this.navigationContainer.appendChild(nextButton);
         this.navButtons.push(nextButton);

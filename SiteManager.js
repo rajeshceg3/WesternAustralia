@@ -10,25 +10,25 @@ export default class SiteManager {
         this.sitesData = [
             {
                 name: "Parrot's Perch",
-                modelUrl: 'https://cdn.jsdelivr.net/gh/mrdoob/three.js@master/examples/models/gltf/Parrot.glb',
+                modelUrl: './assets/models/Parrot.glb',
                 description: "A colorful parrot rests in a lush, jungle-like clearing. The vibrant foliage and ancient trees create a serene, natural atmosphere.",
                 createFunc: this.createParrotSite.bind(this)
             },
             {
-                name: "Duck's Pond",
-                modelUrl: 'https://cdn.jsdelivr.net/gh/mrdoob/three.js@master/examples/models/gltf/Duck.glb',
-                description: "A gentle duck glides across a tranquil pond. The water ripples softly, reflecting the sky above.",
+                name: "Stork's Sanctuary",
+                modelUrl: './assets/models/Stork.glb',
+                description: "A white stork wades gracefully through the wetland sanctuary. Its long legs move slowly through the water as it hunts.",
                 createFunc: this.createDuckSite.bind(this)
             },
             {
                 name: "Horse's Meadow",
-                modelUrl: 'https://cdn.jsdelivr.net/gh/mrdoob/three.js@master/examples/models/gltf/Horse.glb',
+                modelUrl: './assets/models/Horse.glb',
                 description: "A majestic horse stands in a wide, open meadow. A rustic fence lines the field, adding to the pastoral charm.",
                 createFunc: this.createHorseSite.bind(this)
             },
             {
                 name: "Flamingo Beach",
-                modelUrl: 'https://cdn.jsdelivr.net/gh/mrdoob/three.js@master/examples/models/gltf/Flamingo.glb',
+                modelUrl: './assets/models/Flamingo.glb',
                 description: "A graceful flamingo wades in the shallow waters of a sandy beach. The sun glistens on its vibrant pink feathers.",
                 createFunc: this.createFlamingoSite.bind(this)
             }
