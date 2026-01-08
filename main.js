@@ -127,6 +127,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Keyboard controls
     window.addEventListener('keydown', (event) => {
+        // Prevent interference if user is interacting with UI elements
+        const tagName = document.activeElement.tagName.toLowerCase();
+        if (tagName === 'input' || tagName === 'textarea' || tagName === 'button') {
+             // Let default browser behavior happen for buttons (Space/Enter)
+             // But if it is an arrow key on a button, it might not do much unless it's a radio group.
+             // However, to be safe and avoid "double navigation" or unexpected behavior:
+             return;
+        }
+
         const key = event.key;
 
         // Number keys

@@ -64,6 +64,7 @@ export default class SiteManager {
             siteGroup.add(tree);
         }
         this.loadAndAddModel(this.sitesData[0].modelUrl, siteGroup, { scale: 0.5 }, onProgress);
+        this.cacheMeshes(siteGroup);
         return siteGroup;
     }
 
@@ -71,6 +72,7 @@ export default class SiteManager {
         const siteGroup = new THREE.Group();
         siteGroup.add(this.createGroundPlane(0xF4A460)); // SandyBrown
         this.loadAndAddModel(this.sitesData[3].modelUrl, siteGroup, { scale: 0.5 }, onProgress);
+        this.cacheMeshes(siteGroup);
         return siteGroup;
     }
 
@@ -83,6 +85,7 @@ export default class SiteManager {
         pond.position.y = -0.9;
         siteGroup.add(pond);
         this.loadAndAddModel(this.sitesData[1].modelUrl, siteGroup, { scale: 1.0 }, onProgress);
+        this.cacheMeshes(siteGroup);
         return siteGroup;
     }
 
@@ -96,6 +99,7 @@ export default class SiteManager {
             siteGroup.add(post);
         }
         this.loadAndAddModel(this.sitesData[2].modelUrl, siteGroup, { scale: 0.5 }, onProgress);
+        this.cacheMeshes(siteGroup);
         return siteGroup;
     }
 
@@ -113,6 +117,8 @@ export default class SiteManager {
                 gltf.animations.forEach((clip) => mixer.clipAction(clip).play());
                 siteGroup.userData.mixer = mixer;
             }
+            // Update cache after async load
+            this.cacheMeshes(siteGroup);
         }, undefined, (error) => {
             console.error(`Error loading model from ${modelUrl}:`, error);
 
@@ -128,6 +134,8 @@ export default class SiteManager {
             if (this.gltfLoader.manager.onError) {
                 this.gltfLoader.manager.onError(modelUrl);
             }
+            // Update cache even if placeholder
+            this.cacheMeshes(siteGroup);
         }, onProgress); // Pass the progress callback
     }
 
@@ -183,11 +191,15 @@ export default class SiteManager {
                 const materials = Array.isArray(node.material) ? node.material : [node.material];
                 materials.forEach(material => {
                     // Dispose of textures first
-                    // We check common texture map keys specifically to avoid issues with some properties
+                    // Extended list of texture maps including PBR
                     const textureMaps = [
                         'map', 'aoMap', 'alphaMap', 'bumpMap', 'displacementMap',
                         'emissiveMap', 'envMap', 'lightMap', 'metalnessMap',
-                        'normalMap', 'roughnessMap'
+                        'normalMap', 'roughnessMap', 'clearcoatMap', 'clearcoatRoughnessMap',
+                        'clearcoatNormalMap', 'sheenColorMap', 'sheenRoughnessMap',
+                        'transmissionMap', 'thicknessMap', 'specularIntensityMap',
+                        'specularColorMap', 'iridescenceMap', 'iridescenceThicknessMap',
+                        'anisotropyMap'
                     ];
 
                     textureMaps.forEach(mapName => {
@@ -253,17 +265,35 @@ export default class SiteManager {
         }
     }
 
-    setGroupOpacity(group, opacity) {
-        if (!group) return;
+    cacheMeshes(group) {
+        group.userData.meshMaterials = [];
         group.traverse(child => {
             if (child.isMesh && child.material) {
                 const materials = Array.isArray(child.material) ? child.material : [child.material];
-                materials.forEach(mat => {
-                    mat.transparent = true;
-                    mat.opacity = opacity;
-                });
+                group.userData.meshMaterials.push(...materials);
             }
         });
+    }
+
+    setGroupOpacity(group, opacity) {
+        if (!group) return;
+        // Use cached materials if available, otherwise fallback to traverse
+        if (group.userData.meshMaterials) {
+            group.userData.meshMaterials.forEach(mat => {
+                mat.transparent = true;
+                mat.opacity = opacity;
+            });
+        } else {
+            group.traverse(child => {
+                if (child.isMesh && child.material) {
+                    const materials = Array.isArray(child.material) ? child.material : [child.material];
+                    materials.forEach(mat => {
+                        mat.transparent = true;
+                        mat.opacity = opacity;
+                    });
+                }
+            });
+        }
     }
 
     getCurrentSiteData() {
