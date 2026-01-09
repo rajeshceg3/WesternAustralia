@@ -55,27 +55,27 @@ describe('SiteManager Site Creation Functions', () => {
         const siteGroup = siteManager.createParrotSite();
         expect(siteGroup.isGroup).toBe(true);
         expect(THREE.Mesh).toHaveBeenCalledWith(expect.any(Object), expect.any(Object));
-        expect(mockGltfLoader.load).toHaveBeenCalledWith(expect.any(String), expect.any(Function), undefined, expect.any(Function), undefined);
+        expect(mockGltfLoader.load).toHaveBeenCalledWith(expect.any(String), expect.any(Function), undefined, expect.any(Function));
     });
 
     test('createDuckSite returns a THREE.Group object', () => {
         const siteGroup = siteManager.createDuckSite();
         expect(siteGroup.isGroup).toBe(true);
         expect(THREE.Mesh).toHaveBeenCalledWith(expect.any(Object), expect.any(Object));
-        expect(mockGltfLoader.load).toHaveBeenCalledWith(expect.any(String), expect.any(Function), undefined, expect.any(Function), undefined);
+        expect(mockGltfLoader.load).toHaveBeenCalledWith(expect.any(String), expect.any(Function), undefined, expect.any(Function));
     });
 
     test('createHorseSite returns a THREE.Group object', () => {
         const siteGroup = siteManager.createHorseSite();
         expect(siteGroup.isGroup).toBe(true);
         expect(THREE.Mesh).toHaveBeenCalledWith(expect.any(Object), expect.any(Object));
-        expect(mockGltfLoader.load).toHaveBeenCalledWith(expect.any(String), expect.any(Function), undefined, expect.any(Function), undefined);
+        expect(mockGltfLoader.load).toHaveBeenCalledWith(expect.any(String), expect.any(Function), undefined, expect.any(Function));
     });
 
     test('createFlamingoSite returns a THREE.Group object', () => {
         const siteGroup = siteManager.createFlamingoSite();
         expect(siteGroup.isGroup).toBe(true);
         expect(THREE.Mesh).toHaveBeenCalledWith(expect.any(Object), expect.any(Object));
-        expect(mockGltfLoader.load).toHaveBeenCalledWith(expect.any(String), expect.any(Function), undefined, expect.any(Function), undefined);
+        expect(mockGltfLoader.load).toHaveBeenCalledWith(expect.any(String), expect.any(Function), undefined, expect.any(Function));
     });
 });

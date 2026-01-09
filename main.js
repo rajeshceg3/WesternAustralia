@@ -75,7 +75,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // However, if the error is fatal (network down), it might persist.
         // For now, let's assume a new attempt might succeed or we want to clear the old error.
         loadingError = false;
-        loadingIndicator.textContent = 'Loading...';
+
+        // Reset loading indicator structure
+        loadingIndicator.innerHTML = '<p>Loading...</p>';
+
         // We only show the indicator if we anticipate a load.
         // SiteManager calls loadAndAddModel.
         // We can preemptively show it, but LoadingManager will handle it if we want?
@@ -94,7 +97,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const onProgress = (xhr) => {
             if (xhr.lengthComputable) {
                 const percentComplete = Math.round((xhr.loaded / xhr.total) * 100);
-                loadingIndicator.textContent = `Loading... ${percentComplete}%`;
+                // Update the text content of the paragraph inside the loader
+                const p = loadingIndicator.querySelector('p');
+                if (p) p.textContent = `Loading... ${percentComplete}%`;
             }
         };
 
@@ -104,6 +109,13 @@ document.addEventListener('DOMContentLoaded', () => {
             // Update canvas accessibility label
             const siteName = siteManager.sitesData[index].name;
             canvas.setAttribute('aria-label', `3D View of ${siteName}`);
+
+            // Update document title for accessibility and context
+            document.title = `${siteName} - Western Australia 3D Sites`;
+
+            // Announce site change to screen readers via a live region if needed,
+            // though focus management usually suffices.
+            // We can also update the main heading if we had one that changed.
 
             sceneManager.animateCameraToTarget(new THREE.Vector3(0, 2, 5), new THREE.Vector3(0, 0, 0));
         } else {
