@@ -9,7 +9,7 @@
 ## 📌 A. Repository Intelligence Summary
 
 **Overview**
-The repository hosts a client-side 3D visualization application ("Western Australia 3D Sites") built with vanilla JavaScript (ES6 Modules) and Three.js. It allows users to navigate through different 3D scenes (Parrot, Duck, Horse, Flamingo) loaded dynamically.
+The repository hosts a client-side 3D visualization application ("Western Australia 3D Sites") built with vanilla JavaScript (ES6 Modules) and Three.js. It allows users to navigate through different 3D scenes (Parrot, Stork, Horse, Flamingo) loaded dynamically.
 
 **Runtime Architecture**
 *   **Type:** Single Page Application (SPA) / Static Site.
