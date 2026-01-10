@@ -18,7 +18,7 @@ export default class SiteManager {
                 name: "Stork's Sanctuary",
                 modelUrl: './assets/models/Stork.glb',
                 description: "A white stork wades gracefully through the wetland sanctuary. Its long legs move slowly through the water as it hunts.",
-                createFunc: this.createDuckSite.bind(this)
+                createFunc: this.createStorkSite.bind(this)
             },
             {
                 name: "Horse's Meadow",
@@ -76,7 +76,7 @@ export default class SiteManager {
         return siteGroup;
     }
 
-    createDuckSite(onProgress) {
+    createStorkSite(onProgress) {
         const siteGroup = new THREE.Group();
         // Add a ground plane below the pond for continuity
         siteGroup.add(this.createGroundPlane(0x228B22)); // ForestGreen ground
@@ -270,6 +270,12 @@ export default class SiteManager {
         group.traverse(child => {
             if (child.isMesh && child.material) {
                 const materials = Array.isArray(child.material) ? child.material : [child.material];
+                materials.forEach(mat => {
+                    // Store original opacity if not already set
+                    if (mat.userData.originalOpacity === undefined) {
+                        mat.userData.originalOpacity = mat.opacity;
+                    }
+                });
                 group.userData.meshMaterials.push(...materials);
             }
         });
@@ -281,7 +287,8 @@ export default class SiteManager {
         if (group.userData.meshMaterials) {
             group.userData.meshMaterials.forEach(mat => {
                 mat.transparent = true;
-                mat.opacity = opacity;
+                const originalOpacity = mat.userData.originalOpacity !== undefined ? mat.userData.originalOpacity : 1;
+                mat.opacity = opacity * originalOpacity;
             });
         } else {
             group.traverse(child => {
@@ -289,7 +296,8 @@ export default class SiteManager {
                     const materials = Array.isArray(child.material) ? child.material : [child.material];
                     materials.forEach(mat => {
                         mat.transparent = true;
-                        mat.opacity = opacity;
+                        const originalOpacity = mat.userData.originalOpacity !== undefined ? mat.userData.originalOpacity : 1;
+                        mat.opacity = opacity * originalOpacity;
                     });
                 }
             });

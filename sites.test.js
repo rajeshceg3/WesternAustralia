@@ -58,8 +58,8 @@ describe('SiteManager Site Creation Functions', () => {
         expect(mockGltfLoader.load).toHaveBeenCalledWith(expect.any(String), expect.any(Function), undefined, expect.any(Function));
     });
 
-    test('createDuckSite returns a THREE.Group object', () => {
-        const siteGroup = siteManager.createDuckSite();
+    test('createStorkSite returns a THREE.Group object', () => {
+        const siteGroup = siteManager.createStorkSite();
         expect(siteGroup.isGroup).toBe(true);
         expect(THREE.Mesh).toHaveBeenCalledWith(expect.any(Object), expect.any(Object));
         expect(mockGltfLoader.load).toHaveBeenCalledWith(expect.any(String), expect.any(Function), undefined, expect.any(Function));
@@ -77,5 +77,59 @@ describe('SiteManager Site Creation Functions', () => {
         expect(siteGroup.isGroup).toBe(true);
         expect(THREE.Mesh).toHaveBeenCalledWith(expect.any(Object), expect.any(Object));
         expect(mockGltfLoader.load).toHaveBeenCalledWith(expect.any(String), expect.any(Function), undefined, expect.any(Function));
+    });
+
+    test('setGroupOpacity respects originalOpacity', () => {
+        const mockMat = { opacity: 0.5, userData: { originalOpacity: 0.5 }, transparent: false };
+        const mockMesh = { isMesh: true, material: mockMat };
+        const mockGroup = {
+            traverse: jest.fn((cb) => cb(mockMesh)),
+            userData: {}
+        };
+
+        siteManager.setGroupOpacity(mockGroup, 0.5);
+
+        expect(mockMat.transparent).toBe(true);
+        expect(mockMat.opacity).toBe(0.25);
+    });
+
+    test('setGroupOpacity defaults to 1 if originalOpacity missing', () => {
+        const mockMat = { opacity: 0.5, userData: {}, transparent: false };
+        const mockMesh = { isMesh: true, material: mockMat };
+        const mockGroup = {
+            traverse: jest.fn((cb) => cb(mockMesh)),
+            userData: {}
+        };
+
+        siteManager.setGroupOpacity(mockGroup, 0.5);
+
+        expect(mockMat.opacity).toBe(0.5);
+    });
+
+    test('cacheMeshes stores originalOpacity', () => {
+        const mockMat = { opacity: 0.8, userData: {} };
+        const mockMesh = { isMesh: true, material: mockMat };
+        const mockGroup = {
+            traverse: jest.fn((cb) => cb(mockMesh)),
+            userData: {}
+        };
+
+        siteManager.cacheMeshes(mockGroup);
+
+        expect(mockMat.userData.originalOpacity).toBe(0.8);
+        expect(mockGroup.userData.meshMaterials).toContain(mockMat);
+    });
+
+    test('setGroupOpacity uses cached materials', () => {
+        const mockMat = { opacity: 0.8, userData: { originalOpacity: 0.8 }, transparent: false };
+        const mockGroup = {
+            traverse: jest.fn(), // Should not be called
+            userData: { meshMaterials: [mockMat] }
+        };
+
+        siteManager.setGroupOpacity(mockGroup, 0.5);
+
+        expect(mockGroup.traverse).not.toHaveBeenCalled();
+        expect(mockMat.opacity).toBe(0.4); // 0.5 * 0.8
     });
 });
