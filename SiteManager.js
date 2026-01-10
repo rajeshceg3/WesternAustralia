@@ -119,7 +119,7 @@ export default class SiteManager {
             }
             // Update cache after async load
             this.cacheMeshes(siteGroup);
-        }, undefined, (error) => {
+        }, onProgress, (error) => {
             console.error(`Error loading model from ${modelUrl}:`, error);
 
             // Create a placeholder if loading fails
@@ -136,7 +136,7 @@ export default class SiteManager {
             }
             // Update cache even if placeholder
             this.cacheMeshes(siteGroup);
-        }, onProgress); // Pass the progress callback
+        });
     }
 
     switchSite(index, clock, onProgress) {
