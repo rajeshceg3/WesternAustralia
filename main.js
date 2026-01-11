@@ -62,8 +62,11 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     sceneManager.gltfLoader.manager.onLoad = () => {
-        loadingIndicator.style.display = 'none';
-        if (loadingError) {
+        // Only hide the loading indicator if no errors occurred.
+        // If errors occurred, the indicator contains the error message and retry button.
+        if (!loadingError) {
+            loadingIndicator.style.display = 'none';
+        } else {
             console.warn('Loading finished but errors were detected. Placeholders used.');
         }
     };
@@ -113,9 +116,11 @@ document.addEventListener('DOMContentLoaded', () => {
             // Update document title for accessibility and context
             document.title = `${siteName} - Western Australia 3D Sites`;
 
-            // Announce site change to screen readers via a live region if needed,
-            // though focus management usually suffices.
-            // We can also update the main heading if we had one that changed.
+            // Update on-screen site title
+            const siteTitleElement = document.getElementById('currentSiteTitle');
+            if (siteTitleElement) {
+                siteTitleElement.textContent = siteName;
+            }
 
             sceneManager.animateCameraToTarget(new THREE.Vector3(0, 2, 5), new THREE.Vector3(0, 0, 0));
         } else {

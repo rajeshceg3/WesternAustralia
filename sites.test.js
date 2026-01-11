@@ -58,8 +58,8 @@ describe('SiteManager Site Creation Functions', () => {
         expect(mockGltfLoader.load).toHaveBeenCalledWith(expect.any(String), expect.any(Function), undefined, expect.any(Function));
     });
 
-    test('createDuckSite returns a THREE.Group object', () => {
-        const siteGroup = siteManager.createDuckSite();
+    test('createStorkSite returns a THREE.Group object', () => {
+        const siteGroup = siteManager.createStorkSite();
         expect(siteGroup.isGroup).toBe(true);
         expect(THREE.Mesh).toHaveBeenCalledWith(expect.any(Object), expect.any(Object));
         expect(mockGltfLoader.load).toHaveBeenCalledWith(expect.any(String), expect.any(Function), undefined, expect.any(Function));
