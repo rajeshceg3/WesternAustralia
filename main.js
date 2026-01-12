@@ -43,22 +43,43 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Error loading assets from ' + url);
         loadingError = true;
 
-        // Show retry button
+        // Show retry button with semi-transparent background to see the placeholder
         loadingIndicator.innerHTML = '';
+        loadingIndicator.style.backgroundColor = 'rgba(0, 0, 0, 0.6)'; // Semi-transparent
+
+        const errorContainer = document.createElement('div');
+        errorContainer.style.backgroundColor = '#1a1a1a';
+        errorContainer.style.padding = '20px';
+        errorContainer.style.borderRadius = '8px';
+        errorContainer.style.textAlign = 'center';
+        errorContainer.style.boxShadow = '0 4px 6px rgba(0,0,0,0.3)';
+
         const msg = document.createElement('p');
         msg.textContent = `Error loading ${url}. Using placeholder.`;
-        loadingIndicator.appendChild(msg);
+        msg.style.marginBottom = '15px';
+        errorContainer.appendChild(msg);
 
         const retryBtn = document.createElement('button');
         retryBtn.textContent = 'Retry Loading';
-        retryBtn.style.marginTop = '10px';
+        retryBtn.style.marginRight = '10px';
         retryBtn.style.padding = '8px 16px';
         retryBtn.style.cursor = 'pointer';
         retryBtn.onclick = () => {
             // Retry the current site
             switchSite(siteManager.currentSiteIndex);
         };
-        loadingIndicator.appendChild(retryBtn);
+        errorContainer.appendChild(retryBtn);
+
+        const dismissBtn = document.createElement('button');
+        dismissBtn.textContent = 'Dismiss';
+        dismissBtn.style.padding = '8px 16px';
+        dismissBtn.style.cursor = 'pointer';
+        dismissBtn.onclick = () => {
+            loadingIndicator.style.display = 'none';
+        };
+        errorContainer.appendChild(dismissBtn);
+
+        loadingIndicator.appendChild(errorContainer);
     };
 
     sceneManager.gltfLoader.manager.onLoad = () => {
@@ -146,10 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('keydown', (event) => {
         // Prevent interference if user is interacting with UI elements
         const tagName = document.activeElement.tagName.toLowerCase();
-        if (tagName === 'input' || tagName === 'textarea' || tagName === 'button') {
-             // Let default browser behavior happen for buttons (Space/Enter)
-             // But if it is an arrow key on a button, it might not do much unless it's a radio group.
-             // However, to be safe and avoid "double navigation" or unexpected behavior:
+        if (tagName === 'input' || tagName === 'textarea') {
              return;
         }
 
