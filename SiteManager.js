@@ -53,7 +53,7 @@ export default class SiteManager {
         return groundPlane;
     }
 
-    createParrotSite(onProgress) {
+    createParrotSite(siteData, onProgress) {
         const siteGroup = new THREE.Group();
         // Diorama elements
         siteGroup.add(this.createGroundPlane(0x228B22)); // ForestGreen
@@ -63,20 +63,20 @@ export default class SiteManager {
             tree.castShadow = true;
             siteGroup.add(tree);
         }
-        this.loadAndAddModel(this.sitesData[0].modelUrl, siteGroup, { scale: 0.5 }, onProgress);
+        this.loadAndAddModel(siteData.modelUrl, siteGroup, { scale: 0.5 }, onProgress);
         this.cacheMeshes(siteGroup);
         return siteGroup;
     }
 
-    createFlamingoSite(onProgress) {
+    createFlamingoSite(siteData, onProgress) {
         const siteGroup = new THREE.Group();
         siteGroup.add(this.createGroundPlane(0xF4A460)); // SandyBrown
-        this.loadAndAddModel(this.sitesData[3].modelUrl, siteGroup, { scale: 0.5 }, onProgress);
+        this.loadAndAddModel(siteData.modelUrl, siteGroup, { scale: 0.5 }, onProgress);
         this.cacheMeshes(siteGroup);
         return siteGroup;
     }
 
-    createStorkSite(onProgress) {
+    createStorkSite(siteData, onProgress) {
         const siteGroup = new THREE.Group();
         // Add a ground plane below the pond for continuity
         siteGroup.add(this.createGroundPlane(0x228B22)); // ForestGreen ground
@@ -84,12 +84,12 @@ export default class SiteManager {
         pond.rotation.x = -Math.PI / 2;
         pond.position.y = -0.9;
         siteGroup.add(pond);
-        this.loadAndAddModel(this.sitesData[1].modelUrl, siteGroup, { scale: 1.0 }, onProgress);
+        this.loadAndAddModel(siteData.modelUrl, siteGroup, { scale: 1.0 }, onProgress);
         this.cacheMeshes(siteGroup);
         return siteGroup;
     }
 
-    createHorseSite(onProgress) {
+    createHorseSite(siteData, onProgress) {
         const siteGroup = new THREE.Group();
         siteGroup.add(this.createGroundPlane(0x90EE90)); // LightGreen
         // Simple fence
@@ -98,7 +98,7 @@ export default class SiteManager {
             post.position.set(-5 + i, -0.75, -5);
             siteGroup.add(post);
         }
-        this.loadAndAddModel(this.sitesData[2].modelUrl, siteGroup, { scale: 0.5 }, onProgress);
+        this.loadAndAddModel(siteData.modelUrl, siteGroup, { scale: 0.5 }, onProgress);
         this.cacheMeshes(siteGroup);
         return siteGroup;
     }
@@ -172,7 +172,7 @@ export default class SiteManager {
 
         // It is cleaner to pass onProgress to createFunc.
         // I need to update all createFuncs signatures in this file.
-        this.incomingSiteGroup = newSiteData.createFunc(onProgress);
+        this.incomingSiteGroup = newSiteData.createFunc(newSiteData, onProgress);
         this.setGroupOpacity(this.incomingSiteGroup, 0);
         this.scene.add(this.incomingSiteGroup);
 

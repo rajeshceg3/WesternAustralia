@@ -1,0 +1,147 @@
+body { margin: 0; overflow: hidden; }
+canvas { display: block; }
+
+#loadingIndicator {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #1a1a1a; /* Dark background */
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Modern font */
+    font-size: 1.5em;
+    z-index: 200; /* Ensure it's above other elements */
+}
+@keyframes pulsate {
+    0% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.05); }
+    100% { opacity: 1; transform: scale(1); }
+}
+#loadingIndicator p {
+    padding: 10px;
+    border: 1px solid #fff;
+    border-radius: 5px;
+    animation: pulsate 2s infinite; /* Pulsating animation */
+}
+@media (prefers-reduced-motion: reduce) {
+    #loadingIndicator p {
+        animation: none;
+    }
+}
+#navigationControls {
+    position: absolute;
+    bottom: 25px; /* Moved down to separate from description */
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px;
+    background-color: rgba(30, 30, 30, 0.85);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+    z-index: 150;
+    display: flex;
+    gap: 10px; /* Spacing between buttons */
+    flex-wrap: wrap; /* Allow wrapping on small screens */
+    justify-content: center;
+    width: max-content;
+    max-width: 90%;
+}
+
+#navigationControls button {
+    padding: 10px 18px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Modern font */
+    font-size: 14px;
+    background-color: rgba(60, 60, 60, 0.8); /* Darker base for buttons */
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3); /* Subtle shadow for 3D effect */
+}
+
+#navigationControls button:hover {
+    background-color: rgba(80, 80, 80, 0.95); /* Lighter on hover */
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 5px 10px rgba(0,0,0,0.4); /* Enhanced shadow on hover */
+    transform: scale(1.05); /* Slight scaling effect */
+}
+
+#navigationControls button.active {
+    background-color: rgba(100, 100, 100, 1); /* Distinct active state */
+    border-color: rgba(255, 255, 255, 0.6);
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.5) inset; /* Slightly inset shadow for active */
+}
+/* Focus styles for accessibility */
+#navigationControls button:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+}
+#siteDescription:focus {
+    outline: none; /* Programmatic focus only */
+}
+
+#siteDescription {
+    position: absolute;
+    bottom: 100px; /* Adjusted to make space for nav controls */
+    left: 25px; /* Adjusted */
+    padding: 18px; /* Increased padding */
+    background-color: rgba(25, 25, 25, 0.75); /* More transparent background */
+    color: #f0f0f0; /* Lighter text color */
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Modern font stack */
+    font-size: 15px;
+    border-radius: 12px; /* Softer corners */
+    max-width: 320px; /* Slightly wider */
+    backdrop-filter: blur(5px); /* Frosted glass effect */
+    -webkit-backdrop-filter: blur(5px); /* Safari support */
+    z-index: 100;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.55); /* More pronounced shadow */
+    border: 1px solid rgba(255, 255, 255, 0.15); /* Subtle light border */
+    line-height: 1.5; /* Improved readability */
+    opacity: 0; /* Initially hidden for animation */
+    transform: translateY(10px); /* Initial position for slide-up animation */
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out; /* Animation for appearing */
+}
+#siteDescription.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+#titleOverlay {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 2em;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+    pointer-events: none; /* Make sure it doesn't interfere with controls */
+    z-index: 150;
+}
+
+/* Moved inline styles */
+#currentSiteTitle {
+    font-size: 0.5em;
+    margin: 0;
+    text-align: center;
+    opacity: 0.9;
+}
+
+.noscript-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
