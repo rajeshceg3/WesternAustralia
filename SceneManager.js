@@ -120,4 +120,13 @@ export default class SceneManager {
             }
         }
     }
+
+    restartRenderLoop(updateCallback) {
+        if (this.rendererStopped) {
+            console.log("Restarting render loop...");
+            this.rendererStopped = false;
+            this.consecutiveErrors = 0;
+            this.render(updateCallback);
+        }
+    }
 }

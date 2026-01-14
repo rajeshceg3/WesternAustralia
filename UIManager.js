@@ -95,7 +95,7 @@ export default class UIManager {
                 btn.style.opacity = '0.5';
                 btn.style.cursor = 'not-allowed';
                 btn.setAttribute('aria-disabled', 'true');
-                btn.disabled = true;
+                // btn.disabled = true; // Removed to maintain focusability
             });
         } else {
             this.navigationContainer.classList.remove('transitioning');
@@ -103,7 +103,7 @@ export default class UIManager {
                 btn.style.opacity = '1';
                 btn.style.cursor = 'pointer';
                 btn.removeAttribute('aria-disabled');
-                btn.disabled = false;
+                // btn.disabled = false;
             });
         }
     }

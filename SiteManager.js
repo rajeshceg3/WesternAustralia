@@ -139,8 +139,8 @@ export default class SiteManager {
         });
     }
 
-    switchSite(index, clock, onProgress) {
-        if (this.isTransitioning || index === this.currentSiteIndex) {
+    switchSite(index, clock, onProgress, force = false) {
+        if (this.isTransitioning || (index === this.currentSiteIndex && !force)) {
             return;
         }
         if (index < 0 || index >= this.sitesData.length) {
