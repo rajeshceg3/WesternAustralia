@@ -66,7 +66,11 @@ document.addEventListener('DOMContentLoaded', () => {
         retryBtn.style.cursor = 'pointer';
         retryBtn.onclick = () => {
             // Retry the current site
-            switchSite(siteManager.currentSiteIndex);
+            // Ensure render loop is running (it might have stopped after errors)
+            sceneManager.restartRenderLoop((delta, elapsedTime) => {
+                siteManager.update(delta, elapsedTime);
+            });
+            switchSite(siteManager.currentSiteIndex, true);
         };
         errorContainer.appendChild(retryBtn);
 
@@ -92,8 +96,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    const switchSite = (index) => {
-        if (siteManager.isTransitioning) return;
+    const switchSite = (index, force = false) => {
+        // Pass force to siteManager to allow retrying current site
+        if (!force && siteManager.isTransitioning) return;
 
         // Reset error state for new site load, if we want to allow retries or new navigations
         // However, if the error is fatal (network down), it might persist.
@@ -127,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
 
-        const siteInfo = siteManager.switchSite(index, sceneManager.clock, onProgress);
+        const siteInfo = siteManager.switchSite(index, sceneManager.clock, onProgress, force);
         if (siteInfo) {
             uiManager.updateSiteDescription(siteInfo.description);
             // Update canvas accessibility label
