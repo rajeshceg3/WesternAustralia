@@ -48,6 +48,8 @@ document.addEventListener('DOMContentLoaded', () => {
         loadingIndicator.style.backgroundColor = 'rgba(0, 0, 0, 0.6)'; // Semi-transparent
 
         const errorContainer = document.createElement('div');
+        errorContainer.id = 'errorContainer';
+        errorContainer.setAttribute('role', 'alert');
         errorContainer.style.backgroundColor = '#1a1a1a';
         errorContainer.style.padding = '20px';
         errorContainer.style.borderRadius = '8px';
@@ -106,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
         loadingError = false;
 
         // Reset loading indicator structure
-        loadingIndicator.innerHTML = '<p>Loading...</p>';
+        loadingIndicator.innerHTML = '<p id="loadingText">Loading...</p>';
 
         // We only show the indicator if we anticipate a load.
         // SiteManager calls loadAndAddModel.
@@ -119,15 +121,17 @@ document.addEventListener('DOMContentLoaded', () => {
         // Let's show it here if we know we are fetching data?
         // SiteManager always calls loadAndAddModel.
         loadingIndicator.style.display = 'flex';
+        loadingIndicator.style.backgroundColor = '#1a1a1a'; // Reset background color
 
         uiManager.setTransitioning(true);
         uiManager.hideDescription();
 
         const onProgress = (xhr) => {
+            if (loadingError) return; // Prevent overwriting error message
             if (xhr.lengthComputable) {
                 const percentComplete = Math.round((xhr.loaded / xhr.total) * 100);
                 // Update the text content of the paragraph inside the loader
-                const p = loadingIndicator.querySelector('p');
+                const p = document.getElementById('loadingText');
                 if (p) p.textContent = `Loading... ${percentComplete}%`;
             }
         };

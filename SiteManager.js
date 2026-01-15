@@ -57,8 +57,13 @@ export default class SiteManager {
         const siteGroup = new THREE.Group();
         // Diorama elements
         siteGroup.add(this.createGroundPlane(0x228B22)); // ForestGreen
+
+        // Shared resources for trees
+        const treeGeometry = new THREE.CylinderGeometry(0.1, 0.2, 2, 8);
+        const treeMaterial = new THREE.MeshStandardMaterial({ color: 0x8B4513 });
+
         for (let i = 0; i < 5; i++) {
-            const tree = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.2, 2, 8), new THREE.MeshStandardMaterial({ color: 0x8B4513 }));
+            const tree = new THREE.Mesh(treeGeometry, treeMaterial);
             tree.position.set((Math.random() - 0.5) * 10, 0, (Math.random() - 0.5) * 10);
             tree.castShadow = true;
             siteGroup.add(tree);
@@ -92,9 +97,14 @@ export default class SiteManager {
     createHorseSite(siteData, onProgress) {
         const siteGroup = new THREE.Group();
         siteGroup.add(this.createGroundPlane(0x90EE90)); // LightGreen
+
+        // Shared resources for fence posts
+        const postGeometry = new THREE.BoxGeometry(0.1, 0.5, 0.1);
+        const postMaterial = new THREE.MeshStandardMaterial({ color: 0x8B4513 });
+
         // Simple fence
         for (let i = 0; i < 10; i++) {
-            const post = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.5, 0.1), new THREE.MeshStandardMaterial({ color: 0x8B4513 }));
+            const post = new THREE.Mesh(postGeometry, postMaterial);
             post.position.set(-5 + i, -0.75, -5);
             siteGroup.add(post);
         }
