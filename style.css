@@ -1,6 +1,24 @@
 body { margin: 0; overflow: hidden; }
 canvas { display: block; }
 
+.skip-link {
+    position: absolute;
+    top: -50px;
+    left: 10px;
+    background: #000000;
+    color: #ffffff;
+    padding: 10px;
+    z-index: 1001;
+    text-decoration: none;
+    border-radius: 4px;
+    font-family: sans-serif;
+    transition: top 0.3s;
+}
+
+.skip-link:focus {
+    top: 10px;
+}
+
 #loadingIndicator {
     position: absolute;
     top: 0;
@@ -54,9 +72,9 @@ canvas { display: block; }
     padding: 10px 18px;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Modern font */
     font-size: 14px;
-    background-color: rgba(60, 60, 60, 0.8); /* Darker base for buttons */
-    color: white;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background-color: rgba(30, 30, 30, 0.95); /* Higher contrast base */
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease; /* Smooth transitions */
@@ -64,15 +82,15 @@ canvas { display: block; }
 }
 
 #navigationControls button:hover {
-    background-color: rgba(80, 80, 80, 0.95); /* Lighter on hover */
-    border-color: rgba(255, 255, 255, 0.4);
+    background-color: rgba(50, 50, 50, 1); /* Slightly lighter on hover */
+    border-color: rgba(255, 255, 255, 0.8);
     box-shadow: 0 5px 10px rgba(0,0,0,0.4); /* Enhanced shadow on hover */
     transform: scale(1.05); /* Slight scaling effect */
 }
 
 #navigationControls button.active {
-    background-color: rgba(100, 100, 100, 1); /* Distinct active state */
-    border-color: rgba(255, 255, 255, 0.6);
+    background-color: rgba(70, 70, 70, 1); /* Distinct active state */
+    border-color: #ffffff;
     font-weight: bold;
     box-shadow: 0 2px 4px rgba(0,0,0,0.5) inset; /* Slightly inset shadow for active */
 }
