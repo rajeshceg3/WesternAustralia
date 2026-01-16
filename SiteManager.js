@@ -120,6 +120,29 @@ export default class SiteManager {
             model.scale.set(scale, scale, scale);
             model.position.y = -1;
             model.traverse(node => { if (node.isMesh) node.castShadow = true; });
+
+            // Sync opacity with existing group elements to prevent pop-in
+            let currentOpacityFactor = 1;
+            let referenceMat = null;
+
+            if (siteGroup.userData.meshMaterials && siteGroup.userData.meshMaterials.length > 0) {
+                referenceMat = siteGroup.userData.meshMaterials[0];
+            } else {
+                const referenceMesh = siteGroup.children.find(c => c.isMesh && c.material);
+                if (referenceMesh) {
+                    referenceMat = Array.isArray(referenceMesh.material) ? referenceMesh.material[0] : referenceMesh.material;
+                }
+            }
+
+            if (referenceMat) {
+                if (referenceMat.userData.originalOpacity !== undefined && referenceMat.userData.originalOpacity > 0) {
+                    currentOpacityFactor = referenceMat.opacity / referenceMat.userData.originalOpacity;
+                } else {
+                    currentOpacityFactor = referenceMat.opacity;
+                }
+            }
+            this.setGroupOpacity(model, currentOpacityFactor);
+
             siteGroup.add(model);
 
             if (gltf.animations && gltf.animations.length) {
@@ -295,15 +318,21 @@ export default class SiteManager {
         if (!group) return;
 
         const applyOpacity = (mat) => {
+            // Ensure we have originals cached
+            if (mat.userData.originalTransparent === undefined) {
+                mat.userData.originalTransparent = mat.transparent;
+                mat.userData.originalOpacity = mat.opacity;
+            }
+
             if (opacity < 1) {
                 mat.transparent = true;
-                mat.opacity = opacity;
+                mat.opacity = opacity * mat.userData.originalOpacity;
             } else {
                 if (mat.userData.originalTransparent !== undefined) {
                     mat.transparent = mat.userData.originalTransparent;
                     mat.opacity = mat.userData.originalOpacity;
                 } else {
-                    // Fallback if not cached properly
+                    // Fallback if not cached properly (should be covered by top check, but safe to keep)
                     mat.transparent = false;
                     mat.opacity = 1;
                 }
