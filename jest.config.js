@@ -15,4 +15,25 @@ module.exports = {
     '^three$': '<rootDir>/node_modules/three/build/three.module.js',
     '^tween$': '<rootDir>/node_modules/@tweenjs/tween.js/dist/tween.esm.js',
   },
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    '/tests/e2e/'
+  ],
+  collectCoverage: true,
+  collectCoverageFrom: [
+    'src/**/*.js',
+    '*.js',
+    '!*.config.js',
+    '!coverage/**',
+    '!tests/**',
+    '!main.js'
+  ],
+  coverageThreshold: {
+    global: {
+      branches: 35,
+      functions: 50,
+      lines: 50,
+      statements: 50,
+    },
+  },
 };
