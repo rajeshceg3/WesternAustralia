@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Elite Test Pipeline & Deploy
 
 on:
   push:
@@ -34,8 +34,26 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: Run Tests
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
+      - name: Run Unit Tests (Jest)
         run: npm test
+        env:
+          CI: true
+
+      - name: Run E2E Tests (Playwright)
+        run: npx playwright test
+        env:
+          CI: true
+
+      - name: Upload Playwright Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
 
       # Security Scan (Basic)
       - name: Security Audit
@@ -56,12 +74,14 @@ jobs:
 
       - name: Create Distribution
         # Architecture Decision:
-        # This is a static site using ES Modules and CDNs.
+        # This is a static site using ES Modules.
         # We simulate a build step by isolating production assets into a clean 'dist' directory.
-        # This prevents shipping test files, config files, or node_modules to production.
         run: |
           mkdir -p dist
-          cp index.html main.js SceneManager.js SiteManager.js UIManager.js dist/
+          # Copy core files
+          cp index.html main.js SceneManager.js SiteManager.js UIManager.js style.css dist/
+          # Copy assets
+          cp -r assets dist/
           # Ensure file permissions are correct
           chmod -R 755 dist
 

@@ -1,5 +1,5 @@
 
-import UIManager from './UIManager.js';
+import UIManager from '../../UIManager.js';
 
 describe('UIManager Extended Tests', () => {
     let uiManager;

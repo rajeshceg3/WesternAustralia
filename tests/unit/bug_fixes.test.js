@@ -1,5 +1,5 @@
-import SiteManager from './SiteManager.js';
-import SceneManager from './SceneManager.js';
+import SiteManager from '../../SiteManager.js';
+import SceneManager from '../../SceneManager.js';
 import * as THREE from 'three';
 
 // Mock Three.js parts that cause issues in JSDOM or are heavy

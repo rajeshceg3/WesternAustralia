@@ -1,4 +1,4 @@
-import SiteManager from './SiteManager.js';
+import SiteManager from '../../SiteManager.js';
 import * as THREE from 'three';
 
 // A more robust mocking approach for Three.js
