@@ -1,5 +1,5 @@
 // SceneManager.js
-import * as THREE from 'three'
+import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
@@ -39,16 +39,21 @@ export default class SceneManager {
         this.gltfLoader = new GLTFLoader(manager);
 
         const rgbeLoader = new RGBELoader(manager);
-        rgbeLoader.load('./assets/textures/venice_sunset_1k.hdr', (texture) => {
-            texture.mapping = THREE.EquirectangularReflectionMapping;
-            this.scene.background = texture;
-            this.scene.environment = texture;
-        }, undefined, (error) => {
-            console.error('An error occurred loading the HDR texture:', error);
-            // Fallback to a simple color if HDR fails
-            this.scene.background = new THREE.Color(0x87CEEB); // Sky blue
-            this.scene.environment = null;
-        });
+        rgbeLoader.load(
+            './assets/textures/venice_sunset_1k.hdr',
+            (texture) => {
+                texture.mapping = THREE.EquirectangularReflectionMapping;
+                this.scene.background = texture;
+                this.scene.environment = texture;
+            },
+            undefined,
+            (error) => {
+                console.error('An error occurred loading the HDR texture:', error);
+                // Fallback to a simple color if HDR fails
+                this.scene.background = new THREE.Color(0x87ceeb); // Sky blue
+                this.scene.environment = null;
+            },
+        );
 
         // Lights
         // Boost ambient light slightly to compensate if HDR fails
@@ -114,7 +119,7 @@ export default class SceneManager {
             console.error(`Error in render loop (Attempt ${this.consecutiveErrors}):`, error);
 
             if (this.consecutiveErrors > 10) {
-                console.error("Too many consecutive render errors. Stopping render loop.");
+                console.error('Too many consecutive render errors. Stopping render loop.');
                 this.rendererStopped = true;
                 // Ideally notify UI via a callback or event, but for now we safeguard the browser.
             }
@@ -123,7 +128,7 @@ export default class SceneManager {
 
     restartRenderLoop(updateCallback) {
         if (this.rendererStopped) {
-            console.log("Restarting render loop...");
+            console.log('Restarting render loop...');
             this.rendererStopped = false;
             this.consecutiveErrors = 0;
             this.render(updateCallback);

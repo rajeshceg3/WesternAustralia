@@ -1,10 +1,9 @@
-
 const { test, expect } = require('@playwright/test');
 
 test.describe('Error Handling', () => {
     test('should handle asset loading failure gracefully', async ({ page }) => {
         // Abort requests to .glb files
-        await page.route('**/*.glb', route => route.abort());
+        await page.route('**/*.glb', (route) => route.abort());
 
         await page.goto('/');
 
@@ -14,8 +13,16 @@ test.describe('Error Handling', () => {
         const canvas = page.locator('#webglCanvas');
         await expect(canvas).toBeVisible();
 
-        // Check if loading indicator goes away
+        // Check if loading indicator shows error
         const loader = page.locator('#loadingIndicator');
+        await expect(loader).toBeVisible();
+        await expect(loader).toContainText('Error loading');
+
+        // Dismiss error
+        const dismissBtn = page.getByRole('button', { name: 'Dismiss' });
+        await dismissBtn.click();
+
+        // Check if loading indicator goes away
         await expect(loader).not.toBeVisible({ timeout: 10000 });
 
         // Check if we can still navigate (circuit breaker might trigger or placeholder used)

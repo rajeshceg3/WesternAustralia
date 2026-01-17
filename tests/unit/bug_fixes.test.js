@@ -13,22 +13,22 @@ jest.mock('three', () => {
             render: jest.fn(),
             // Mock domElement as a simple object to avoid accessing document in factory
             domElement: { addEventListener: jest.fn() },
-            shadowMap: { enabled: true }
+            shadowMap: { enabled: true },
         })),
         Scene: jest.fn().mockImplementation(() => ({
             add: jest.fn(),
             background: null,
-            environment: null
+            environment: null,
         })),
         Clock: jest.fn().mockImplementation(() => ({
             getDelta: jest.fn(() => 0.016),
-            getElapsedTime: jest.fn(() => 1)
+            getElapsedTime: jest.fn(() => 1),
         })),
         Group: jest.fn().mockImplementation(() => ({
             add: jest.fn(),
             traverse: jest.fn(),
-            userData: {}
-        }))
+            userData: {},
+        })),
     };
 });
 
@@ -36,39 +36,38 @@ jest.mock('three', () => {
 jest.mock('three/examples/jsm/controls/OrbitControls.js', () => ({
     OrbitControls: jest.fn().mockImplementation(() => ({
         enableDamping: true,
-        update: jest.fn()
-    }))
+        update: jest.fn(),
+    })),
 }));
 jest.mock('three/examples/jsm/loaders/GLTFLoader.js', () => ({
     GLTFLoader: jest.fn().mockImplementation(() => ({
         manager: {},
-        load: jest.fn()
-    }))
+        load: jest.fn(),
+    })),
 }));
 jest.mock('three/examples/jsm/loaders/RGBELoader.js', () => ({
     RGBELoader: jest.fn().mockImplementation(() => ({
-        load: jest.fn()
-    }))
+        load: jest.fn(),
+    })),
 }));
 jest.mock('three/examples/jsm/postprocessing/EffectComposer.js', () => ({
     EffectComposer: jest.fn().mockImplementation(() => ({
         addPass: jest.fn(),
         setSize: jest.fn(),
-        render: jest.fn()
-    }))
+        render: jest.fn(),
+    })),
 }));
 jest.mock('three/examples/jsm/postprocessing/RenderPass.js', () => ({
-    RenderPass: jest.fn()
+    RenderPass: jest.fn(),
 }));
 jest.mock('three/examples/jsm/postprocessing/BloomPass.js', () => ({
-    BloomPass: jest.fn()
+    BloomPass: jest.fn(),
 }));
 jest.mock('three/examples/jsm/postprocessing/FilmPass.js', () => ({
-    FilmPass: jest.fn()
+    FilmPass: jest.fn(),
 }));
 
 describe('Bug Fixes Verification', () => {
-
     test('SceneManager should restart render loop', () => {
         const canvas = document.createElement('canvas');
         const sceneManager = new SceneManager(canvas);
@@ -94,7 +93,7 @@ describe('Bug Fixes Verification', () => {
         const mockScene = new THREE.Scene();
         const mockLoader = {
             load: jest.fn(),
-            manager: {}
+            manager: {},
         };
         const siteManager = new SiteManager(mockScene, mockLoader, jest.fn());
 
@@ -104,8 +103,8 @@ describe('Bug Fixes Verification', () => {
                 name: 'Test',
                 description: 'Desc',
                 modelUrl: 'test.glb',
-                createFunc: jest.fn().mockReturnValue(new THREE.Group())
-            }
+                createFunc: jest.fn().mockReturnValue(new THREE.Group()),
+            },
         ];
 
         // Set current state

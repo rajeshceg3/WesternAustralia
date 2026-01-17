@@ -5,6 +5,9 @@ import * as THREE from 'three';
 
 import WebGL from 'three/examples/jsm/capabilities/WebGL.js';
 
+// Enable Three.js file cache
+THREE.Cache.enabled = true;
+
 document.addEventListener('DOMContentLoaded', () => {
     if (!WebGL.isWebGL2Available()) {
         const warning = WebGL.getWebGL2ErrorMessage();
@@ -25,6 +28,10 @@ document.addEventListener('DOMContentLoaded', () => {
         uiManager.updateActiveButton(siteManager.currentSiteIndex);
         uiManager.showDescription();
         siteDescription.focus();
+
+        // Preload next site
+        // const nextIndex = (siteManager.currentSiteIndex + 1) % siteManager.sitesData.length;
+        // siteManager.preloadSite(nextIndex);
     };
 
     const siteManager = new SiteManager(sceneManager.scene, sceneManager.gltfLoader, onTransitionEnd);
@@ -43,56 +50,28 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Error loading assets from ' + url);
         loadingError = true;
 
-        // Show retry button with semi-transparent background to see the placeholder
-        loadingIndicator.innerHTML = '';
-        loadingIndicator.style.backgroundColor = 'rgba(0, 0, 0, 0.6)'; // Semi-transparent
-
-        const errorContainer = document.createElement('div');
-        errorContainer.id = 'errorContainer';
-        errorContainer.setAttribute('role', 'alert');
-        errorContainer.style.backgroundColor = '#1a1a1a';
-        errorContainer.style.padding = '20px';
-        errorContainer.style.borderRadius = '8px';
-        errorContainer.style.textAlign = 'center';
-        errorContainer.style.boxShadow = '0 4px 6px rgba(0,0,0,0.3)';
-
-        const msg = document.createElement('p');
-        msg.textContent = `Error loading ${url}. Using placeholder.`;
-        msg.style.marginBottom = '15px';
-        errorContainer.appendChild(msg);
-
-        const retryBtn = document.createElement('button');
-        retryBtn.textContent = 'Retry Loading';
-        retryBtn.style.marginRight = '10px';
-        retryBtn.style.padding = '8px 16px';
-        retryBtn.style.cursor = 'pointer';
-        retryBtn.onclick = () => {
-            // Retry the current site
-            // Ensure render loop is running (it might have stopped after errors)
-            sceneManager.restartRenderLoop((delta, elapsedTime) => {
-                siteManager.update(delta, elapsedTime);
-            });
-            switchSite(siteManager.currentSiteIndex, true);
-        };
-        errorContainer.appendChild(retryBtn);
-
-        const dismissBtn = document.createElement('button');
-        dismissBtn.textContent = 'Dismiss';
-        dismissBtn.style.padding = '8px 16px';
-        dismissBtn.style.cursor = 'pointer';
-        dismissBtn.onclick = () => {
-            loadingIndicator.style.display = 'none';
-        };
-        errorContainer.appendChild(dismissBtn);
-
-        loadingIndicator.appendChild(errorContainer);
+        uiManager.showError(
+            url,
+            () => {
+                // Retry callback
+                // Ensure render loop is running (it might have stopped after errors)
+                sceneManager.restartRenderLoop((delta, elapsedTime) => {
+                    siteManager.update(delta, elapsedTime);
+                });
+                switchSite(siteManager.currentSiteIndex, true);
+            },
+            () => {
+                // Dismiss callback
+                uiManager.hideLoading();
+            },
+        );
     };
 
     sceneManager.gltfLoader.manager.onLoad = () => {
         // Only hide the loading indicator if no errors occurred.
         // If errors occurred, the indicator contains the error message and retry button.
         if (!loadingError) {
-            loadingIndicator.style.display = 'none';
+            uiManager.hideLoading();
         } else {
             console.warn('Loading finished but errors were detected. Placeholders used.');
         }
@@ -103,25 +82,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!force && siteManager.isTransitioning) return;
 
         // Reset error state for new site load, if we want to allow retries or new navigations
-        // However, if the error is fatal (network down), it might persist.
-        // For now, let's assume a new attempt might succeed or we want to clear the old error.
         loadingError = false;
 
-        // Reset loading indicator structure
-        loadingIndicator.innerHTML = '<p id="loadingText">Loading...</p>';
-
-        // We only show the indicator if we anticipate a load.
-        // SiteManager calls loadAndAddModel.
-        // We can preemptively show it, but LoadingManager will handle it if we want?
-        // Actually, if we switch sites, we expect loading.
-        // But if the model is cached, it might be instant.
-        // Let's rely on LoadingManager.
-        // Wait, if I hide it in onLoad, I need to show it somewhere.
-        // Usually onStart? But onStart might be too late if we want instant feedback?
-        // Let's show it here if we know we are fetching data?
-        // SiteManager always calls loadAndAddModel.
-        loadingIndicator.style.display = 'flex';
-        loadingIndicator.style.backgroundColor = '#1a1a1a'; // Reset background color
+        uiManager.showLoading();
 
         uiManager.setTransitioning(true);
         uiManager.hideDescription();
@@ -130,9 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (loadingError) return; // Prevent overwriting error message
             if (xhr.lengthComputable) {
                 const percentComplete = Math.round((xhr.loaded / xhr.total) * 100);
-                // Update the text content of the paragraph inside the loader
-                const p = document.getElementById('loadingText');
-                if (p) p.textContent = `Loading... ${percentComplete}%`;
+                uiManager.updateLoadingProgress(percentComplete);
             }
         };
 
@@ -160,7 +121,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    const uiManager = new UIManager(siteManager.sitesData, switchSite, navigationControls, siteDescription);
+    const uiManager = new UIManager(
+        siteManager.sitesData,
+        switchSite,
+        navigationControls,
+        siteDescription,
+        loadingIndicator,
+    );
 
     // Initial setup
     uiManager.createNavigationButtons();
@@ -177,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Prevent interference if user is interacting with UI elements
         const tagName = document.activeElement.tagName.toLowerCase();
         if (tagName === 'input' || tagName === 'textarea') {
-             return;
+            return;
         }
 
         const key = event.key;

@@ -1,4 +1,3 @@
-
 import SceneManager from '../../SceneManager.js';
 import * as THREE from 'three';
 
@@ -8,24 +7,24 @@ jest.mock('three', () => {
         Scene: jest.fn(() => ({
             add: jest.fn(),
             background: null,
-            environment: null
+            environment: null,
         })),
         Clock: jest.fn(() => ({
             getDelta: jest.fn(() => 0.016),
-            getElapsedTime: jest.fn(() => 1.0)
+            getElapsedTime: jest.fn(() => 1.0),
         })),
         WebGLRenderer: jest.fn(() => ({
             setSize: jest.fn(),
             setPixelRatio: jest.fn(),
             domElement: { addEventListener: jest.fn() }, // Mock domElement
             shadowMap: { enabled: false },
-            render: jest.fn() // Only if using raw renderer, but we use composer
+            render: jest.fn(), // Only if using raw renderer, but we use composer
         })),
         PerspectiveCamera: jest.fn(() => ({
             position: { set: jest.fn() },
             lookAt: jest.fn(),
             updateProjectionMatrix: jest.fn(),
-            aspect: 1
+            aspect: 1,
         })),
         LoadingManager: jest.fn(),
         AmbientLight: jest.fn(),
@@ -39,38 +38,38 @@ jest.mock('three/examples/jsm/controls/OrbitControls.js', () => ({
     OrbitControls: jest.fn(() => ({
         enableDamping: true,
         update: jest.fn(),
-        target: { to: jest.fn() } // for tweening
-    }))
+        target: { to: jest.fn() }, // for tweening
+    })),
 }));
 
 jest.mock('three/examples/jsm/loaders/GLTFLoader.js', () => ({
-    GLTFLoader: jest.fn()
+    GLTFLoader: jest.fn(),
 }));
 
 jest.mock('three/examples/jsm/loaders/RGBELoader.js', () => ({
     RGBELoader: jest.fn(() => ({
-        load: jest.fn()
-    }))
+        load: jest.fn(),
+    })),
 }));
 
 jest.mock('three/examples/jsm/postprocessing/EffectComposer.js', () => ({
     EffectComposer: jest.fn(() => ({
         addPass: jest.fn(),
         setSize: jest.fn(),
-        render: jest.fn()
-    }))
+        render: jest.fn(),
+    })),
 }));
 
 jest.mock('three/examples/jsm/postprocessing/RenderPass.js', () => ({
-    RenderPass: jest.fn()
+    RenderPass: jest.fn(),
 }));
 
 jest.mock('three/examples/jsm/postprocessing/BloomPass.js', () => ({
-    BloomPass: jest.fn()
+    BloomPass: jest.fn(),
 }));
 
 jest.mock('three/examples/jsm/postprocessing/FilmPass.js', () => ({
-    FilmPass: jest.fn()
+    FilmPass: jest.fn(),
 }));
 
 jest.mock('@tweenjs/tween.js', () => ({
@@ -78,12 +77,11 @@ jest.mock('@tweenjs/tween.js', () => ({
         to: jest.fn().mockReturnThis(),
         easing: jest.fn().mockReturnThis(),
         start: jest.fn().mockReturnThis(),
-        stop: jest.fn()
+        stop: jest.fn(),
     })),
     Easing: { Quadratic: { InOut: jest.fn() } },
-    update: jest.fn()
+    update: jest.fn(),
 }));
-
 
 describe('SceneManager', () => {
     let canvas;
@@ -107,7 +105,7 @@ describe('SceneManager', () => {
         const updateCallback = jest.fn();
 
         // Hijack requestAnimationFrame to run once
-        jest.spyOn(window, 'requestAnimationFrame').mockImplementation(cb => null);
+        jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => null);
 
         sceneManager.render(updateCallback);
 
@@ -117,7 +115,7 @@ describe('SceneManager', () => {
     });
 
     test('circuit breaker stops loop after too many errors', () => {
-        jest.spyOn(window, 'requestAnimationFrame').mockImplementation(cb => cb()); // Instant recursion? No, just run once.
+        jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => cb()); // Instant recursion? No, just run once.
         // We need to simulate multiple calls.
 
         // Mock render to throw
@@ -129,13 +127,13 @@ describe('SceneManager', () => {
 
         // Call render 11 times
         for (let i = 0; i < 11; i++) {
-             // We need to reset the recursive call manually or mock requestAnimationFrame differently to avoid infinite stack
-             jest.spyOn(window, 'requestAnimationFrame').mockImplementationOnce(cb => null);
-             sceneManager.render();
+            // We need to reset the recursive call manually or mock requestAnimationFrame differently to avoid infinite stack
+            jest.spyOn(window, 'requestAnimationFrame').mockImplementationOnce((cb) => null);
+            sceneManager.render();
         }
 
         expect(sceneManager.rendererStopped).toBe(true);
-        expect(consoleErrorSpy).toHaveBeenCalledWith("Too many consecutive render errors. Stopping render loop.");
+        expect(consoleErrorSpy).toHaveBeenCalledWith('Too many consecutive render errors. Stopping render loop.');
 
         consoleErrorSpy.mockRestore();
     });
@@ -144,7 +142,7 @@ describe('SceneManager', () => {
         sceneManager.rendererStopped = true;
         sceneManager.consecutiveErrors = 10;
 
-        jest.spyOn(window, 'requestAnimationFrame').mockImplementation(cb => null);
+        jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => null);
 
         sceneManager.restartRenderLoop();
 

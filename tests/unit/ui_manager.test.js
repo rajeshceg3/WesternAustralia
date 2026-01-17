@@ -1,4 +1,3 @@
-
 import UIManager from '../../UIManager.js';
 
 describe('UIManager', () => {
@@ -11,7 +10,7 @@ describe('UIManager', () => {
     beforeEach(() => {
         sitesData = [
             { name: 'Site 1', description: 'Desc 1' },
-            { name: 'Site 2', description: 'Desc 2' }
+            { name: 'Site 2', description: 'Desc 2' },
         ];
         mockSwitchSiteCallback = jest.fn();
         navContainer = document.createElement('nav');

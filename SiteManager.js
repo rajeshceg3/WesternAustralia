@@ -1,38 +1,25 @@
 // SiteManager.js
 import * as THREE from 'three';
+import { sitesConfig } from './sitesConfig.js';
 
 export default class SiteManager {
     constructor(scene, gltfLoader, onTransitionEndCallback) {
         this.scene = scene;
         this.gltfLoader = gltfLoader;
         this.onTransitionEnd = onTransitionEndCallback;
+        this.modelCache = new Map();
 
-        this.sitesData = [
-            {
-                name: "Parrot's Perch",
-                modelUrl: './assets/models/Parrot.glb',
-                description: "A colorful parrot rests in a lush, jungle-like clearing. The vibrant foliage and ancient trees create a serene, natural atmosphere.",
-                createFunc: this.createParrotSite.bind(this)
-            },
-            {
-                name: "Stork's Sanctuary",
-                modelUrl: './assets/models/Stork.glb',
-                description: "A white stork wades gracefully through the wetland sanctuary. Its long legs move slowly through the water as it hunts.",
-                createFunc: this.createStorkSite.bind(this)
-            },
-            {
-                name: "Horse's Meadow",
-                modelUrl: './assets/models/Horse.glb',
-                description: "A majestic horse stands in a wide, open meadow. A rustic fence lines the field, adding to the pastoral charm.",
-                createFunc: this.createHorseSite.bind(this)
-            },
-            {
-                name: "Flamingo Beach",
-                modelUrl: './assets/models/Flamingo.glb',
-                description: "A graceful flamingo wades in the shallow waters of a sandy beach. The sun glistens on its vibrant pink feathers.",
-                createFunc: this.createFlamingoSite.bind(this)
-            }
-        ];
+        this.siteCreators = {
+            parrot: this.createParrotSite.bind(this),
+            stork: this.createStorkSite.bind(this),
+            horse: this.createHorseSite.bind(this),
+            flamingo: this.createFlamingoSite.bind(this),
+        };
+
+        this.sitesData = sitesConfig.map((site) => ({
+            ...site,
+            createFunc: this.siteCreators[site.id],
+        }));
 
         this.currentSiteIndex = -1;
         this.currentSiteGroup = null;
@@ -56,11 +43,11 @@ export default class SiteManager {
     createParrotSite(siteData, onProgress) {
         const siteGroup = new THREE.Group();
         // Diorama elements
-        siteGroup.add(this.createGroundPlane(0x228B22)); // ForestGreen
+        siteGroup.add(this.createGroundPlane(0x228b22)); // ForestGreen
 
         // Shared resources for trees
         const treeGeometry = new THREE.CylinderGeometry(0.1, 0.2, 2, 8);
-        const treeMaterial = new THREE.MeshStandardMaterial({ color: 0x8B4513 });
+        const treeMaterial = new THREE.MeshStandardMaterial({ color: 0x8b4513 });
 
         for (let i = 0; i < 5; i++) {
             const tree = new THREE.Mesh(treeGeometry, treeMaterial);
@@ -75,7 +62,7 @@ export default class SiteManager {
 
     createFlamingoSite(siteData, onProgress) {
         const siteGroup = new THREE.Group();
-        siteGroup.add(this.createGroundPlane(0xF4A460)); // SandyBrown
+        siteGroup.add(this.createGroundPlane(0xf4a460)); // SandyBrown
         this.loadAndAddModel(siteData.modelUrl, siteGroup, { scale: 0.5 }, onProgress);
         this.cacheMeshes(siteGroup);
         return siteGroup;
@@ -84,8 +71,11 @@ export default class SiteManager {
     createStorkSite(siteData, onProgress) {
         const siteGroup = new THREE.Group();
         // Add a ground plane below the pond for continuity
-        siteGroup.add(this.createGroundPlane(0x228B22)); // ForestGreen ground
-        const pond = new THREE.Mesh(new THREE.CircleGeometry(5, 32), new THREE.MeshStandardMaterial({ color: 0x4682B4, transparent: true, opacity: 0.7 }));
+        siteGroup.add(this.createGroundPlane(0x228b22)); // ForestGreen ground
+        const pond = new THREE.Mesh(
+            new THREE.CircleGeometry(5, 32),
+            new THREE.MeshStandardMaterial({ color: 0x4682b4, transparent: true, opacity: 0.7 }),
+        );
         pond.rotation.x = -Math.PI / 2;
         pond.position.y = -0.9;
         siteGroup.add(pond);
@@ -96,11 +86,11 @@ export default class SiteManager {
 
     createHorseSite(siteData, onProgress) {
         const siteGroup = new THREE.Group();
-        siteGroup.add(this.createGroundPlane(0x90EE90)); // LightGreen
+        siteGroup.add(this.createGroundPlane(0x90ee90)); // LightGreen
 
         // Shared resources for fence posts
         const postGeometry = new THREE.BoxGeometry(0.1, 0.5, 0.1);
-        const postMaterial = new THREE.MeshStandardMaterial({ color: 0x8B4513 });
+        const postMaterial = new THREE.MeshStandardMaterial({ color: 0x8b4513 });
 
         // Simple fence
         for (let i = 0; i < 10; i++) {
@@ -113,63 +103,113 @@ export default class SiteManager {
         return siteGroup;
     }
 
+    processLoadedModel(model, animations, siteGroup, scale) {
+        model.scale.set(scale, scale, scale);
+        model.position.y = -1;
+        model.traverse((node) => {
+            if (node.isMesh) node.castShadow = true;
+        });
+
+        // Sync opacity with existing group elements to prevent pop-in
+        let currentOpacityFactor = 1;
+        let referenceMat = null;
+
+        if (siteGroup.userData.meshMaterials && siteGroup.userData.meshMaterials.length > 0) {
+            referenceMat = siteGroup.userData.meshMaterials[0];
+        } else {
+            const referenceMesh = siteGroup.children.find((c) => c.isMesh && c.material);
+            if (referenceMesh) {
+                referenceMat = Array.isArray(referenceMesh.material)
+                    ? referenceMesh.material[0]
+                    : referenceMesh.material;
+            }
+        }
+
+        if (referenceMat) {
+            if (
+                referenceMat.userData.originalOpacity !== undefined &&
+                referenceMat.userData.originalOpacity > 0
+            ) {
+                currentOpacityFactor = referenceMat.opacity / referenceMat.userData.originalOpacity;
+            } else {
+                currentOpacityFactor = referenceMat.opacity;
+            }
+        }
+        this.setGroupOpacity(model, currentOpacityFactor);
+
+        siteGroup.add(model);
+
+        if (animations && animations.length) {
+            const mixer = new THREE.AnimationMixer(model);
+            animations.forEach((clip) => mixer.clipAction(clip).play());
+            siteGroup.userData.mixer = mixer;
+        }
+        // Update cache after async load
+        this.cacheMeshes(siteGroup);
+    }
+
     loadAndAddModel(modelUrl, siteGroup, { scale = 1.0 }, onProgress) {
         if (!this.gltfLoader) return;
-        this.gltfLoader.load(modelUrl, (gltf) => {
-            const model = gltf.scene;
-            model.scale.set(scale, scale, scale);
-            model.position.y = -1;
-            model.traverse(node => { if (node.isMesh) node.castShadow = true; });
 
-            // Sync opacity with existing group elements to prevent pop-in
-            let currentOpacityFactor = 1;
-            let referenceMat = null;
+        if (this.modelCache.has(modelUrl)) {
+            const gltf = this.modelCache.get(modelUrl);
+            const clonedScene = gltf.scene.clone();
+            this.processLoadedModel(clonedScene, gltf.animations, siteGroup, scale);
+            if (onProgress) {
+                // Simulate instant load
+                onProgress({ lengthComputable: true, loaded: 100, total: 100 });
+            }
+            return;
+        }
 
-            if (siteGroup.userData.meshMaterials && siteGroup.userData.meshMaterials.length > 0) {
-                referenceMat = siteGroup.userData.meshMaterials[0];
-            } else {
-                const referenceMesh = siteGroup.children.find(c => c.isMesh && c.material);
-                if (referenceMesh) {
-                    referenceMat = Array.isArray(referenceMesh.material) ? referenceMesh.material[0] : referenceMesh.material;
+        this.gltfLoader.load(
+            modelUrl,
+            (gltf) => {
+                this.modelCache.set(modelUrl, gltf);
+                const clonedScene = gltf.scene.clone();
+                this.processLoadedModel(clonedScene, gltf.animations, siteGroup, scale);
+            },
+            onProgress,
+            (error) => {
+                console.error(`Error loading model from ${modelUrl}:`, error);
+
+                // Create a placeholder if loading fails
+                const placeholderGeometry = new THREE.BoxGeometry(1, 1, 1);
+                const placeholderMaterial = new THREE.MeshStandardMaterial({ color: 0xff0000, wireframe: true });
+                const placeholder = new THREE.Mesh(placeholderGeometry, placeholderMaterial);
+                placeholder.position.y = 0;
+                placeholder.scale.set(scale, scale, scale);
+                siteGroup.add(placeholder);
+
+                // Propagate error to the manager to let the UI know
+                if (this.gltfLoader.manager.onError) {
+                    this.gltfLoader.manager.onError(modelUrl);
                 }
-            }
+                // Update cache even if placeholder
+                this.cacheMeshes(siteGroup);
+            },
+        );
+    }
 
-            if (referenceMat) {
-                if (referenceMat.userData.originalOpacity !== undefined && referenceMat.userData.originalOpacity > 0) {
-                    currentOpacityFactor = referenceMat.opacity / referenceMat.userData.originalOpacity;
-                } else {
-                    currentOpacityFactor = referenceMat.opacity;
+    preloadSite(index) {
+        if (index < 0 || index >= this.sitesData.length) return;
+        const modelUrl = this.sitesData[index].modelUrl;
+        if (this.modelCache.has(modelUrl)) return;
+
+        console.log(`Preloading site ${index}: ${modelUrl}`);
+        this.gltfLoader.load(
+            modelUrl,
+            (gltf) => {
+                if (!this.modelCache.has(modelUrl)) {
+                    this.modelCache.set(modelUrl, gltf);
+                    console.log(`Preloaded finished: ${modelUrl}`);
                 }
-            }
-            this.setGroupOpacity(model, currentOpacityFactor);
-
-            siteGroup.add(model);
-
-            if (gltf.animations && gltf.animations.length) {
-                const mixer = new THREE.AnimationMixer(model);
-                gltf.animations.forEach((clip) => mixer.clipAction(clip).play());
-                siteGroup.userData.mixer = mixer;
-            }
-            // Update cache after async load
-            this.cacheMeshes(siteGroup);
-        }, onProgress, (error) => {
-            console.error(`Error loading model from ${modelUrl}:`, error);
-
-            // Create a placeholder if loading fails
-            const placeholderGeometry = new THREE.BoxGeometry(1, 1, 1);
-            const placeholderMaterial = new THREE.MeshStandardMaterial({ color: 0xff0000, wireframe: true });
-            const placeholder = new THREE.Mesh(placeholderGeometry, placeholderMaterial);
-            placeholder.position.y = 0;
-            placeholder.scale.set(scale, scale, scale);
-            siteGroup.add(placeholder);
-
-            // Propagate error to the manager to let the UI know
-            if (this.gltfLoader.manager.onError) {
-                this.gltfLoader.manager.onError(modelUrl);
-            }
-            // Update cache even if placeholder
-            this.cacheMeshes(siteGroup);
-        });
+            },
+            undefined, // No onProgress
+            (error) => {
+                console.warn(`Failed to preload ${modelUrl}`, error);
+            },
+        );
     }
 
     switchSite(index, clock, onProgress, force = false) {
@@ -177,7 +217,7 @@ export default class SiteManager {
             return;
         }
         if (index < 0 || index >= this.sitesData.length) {
-            console.warn("Invalid site index:", index);
+            console.warn('Invalid site index:', index);
             return;
         }
 
@@ -194,24 +234,12 @@ export default class SiteManager {
         this.currentSiteIndex = index;
         const newSiteData = this.sitesData[this.currentSiteIndex];
 
-        // We need to inject the onProgress callback into the createFunc or modify how createFunc works.
-        // The current createFuncs call loadAndAddModel directly.
-        // We can override createFunc temporarily or modify them to accept options.
-        // But createFunc is bound to this class.
-        // Let's modify the createFuncs to accept onProgress? No, they take no args currently.
-        // But we are calling newSiteData.createFunc().
-        // Wait, the createFuncs are defined in sitesData as bound methods.
-        // I need to change how they are called or change their signature.
-
-        // It is cleaner to pass onProgress to createFunc.
-        // I need to update all createFuncs signatures in this file.
         this.incomingSiteGroup = newSiteData.createFunc(newSiteData, onProgress);
         this.setGroupOpacity(this.incomingSiteGroup, 0);
         this.scene.add(this.incomingSiteGroup);
 
-        // The main app will handle camera and description updates
         return {
-            description: newSiteData.description
+            description: newSiteData.description,
         };
     }
 
@@ -222,26 +250,39 @@ export default class SiteManager {
             }
             if (node.material) {
                 const materials = Array.isArray(node.material) ? node.material : [node.material];
-                materials.forEach(material => {
-                    // Dispose of textures first
-                    // Extended list of texture maps including PBR
+                materials.forEach((material) => {
                     const textureMaps = [
-                        'map', 'aoMap', 'alphaMap', 'bumpMap', 'displacementMap',
-                        'emissiveMap', 'envMap', 'lightMap', 'metalnessMap',
-                        'normalMap', 'roughnessMap', 'clearcoatMap', 'clearcoatRoughnessMap',
-                        'clearcoatNormalMap', 'sheenColorMap', 'sheenRoughnessMap',
-                        'transmissionMap', 'thicknessMap', 'specularIntensityMap',
-                        'specularColorMap', 'iridescenceMap', 'iridescenceThicknessMap',
-                        'anisotropyMap'
+                        'map',
+                        'aoMap',
+                        'alphaMap',
+                        'bumpMap',
+                        'displacementMap',
+                        'emissiveMap',
+                        'envMap',
+                        'lightMap',
+                        'metalnessMap',
+                        'normalMap',
+                        'roughnessMap',
+                        'clearcoatMap',
+                        'clearcoatRoughnessMap',
+                        'clearcoatNormalMap',
+                        'sheenColorMap',
+                        'sheenRoughnessMap',
+                        'transmissionMap',
+                        'thicknessMap',
+                        'specularIntensityMap',
+                        'specularColorMap',
+                        'iridescenceMap',
+                        'iridescenceThicknessMap',
+                        'anisotropyMap',
                     ];
 
-                    textureMaps.forEach(mapName => {
+                    textureMaps.forEach((mapName) => {
                         if (material[mapName]) {
-                             material[mapName].dispose();
+                            material[mapName].dispose();
                         }
                     });
 
-                    // Also iterate keys just in case we missed custom ones, but be careful
                     for (const key in material) {
                         if (material[key] && material[key].isTexture && !textureMaps.includes(key)) {
                             material[key].dispose();
@@ -300,10 +341,10 @@ export default class SiteManager {
 
     cacheMeshes(group) {
         group.userData.meshMaterials = [];
-        group.traverse(child => {
+        group.traverse((child) => {
             if (child.isMesh && child.material) {
                 const materials = Array.isArray(child.material) ? child.material : [child.material];
-                materials.forEach(mat => {
+                materials.forEach((mat) => {
                     if (mat.userData.originalTransparent === undefined) {
                         mat.userData.originalTransparent = mat.transparent;
                         mat.userData.originalOpacity = mat.opacity;
@@ -332,18 +373,16 @@ export default class SiteManager {
                     mat.transparent = mat.userData.originalTransparent;
                     mat.opacity = mat.userData.originalOpacity;
                 } else {
-                    // Fallback if not cached properly (should be covered by top check, but safe to keep)
                     mat.transparent = false;
                     mat.opacity = 1;
                 }
             }
         };
 
-        // Use cached materials if available, otherwise fallback to traverse
         if (group.userData.meshMaterials) {
             group.userData.meshMaterials.forEach(applyOpacity);
         } else {
-            group.traverse(child => {
+            group.traverse((child) => {
                 if (child.isMesh && child.material) {
                     const materials = Array.isArray(child.material) ? child.material : [child.material];
                     materials.forEach(applyOpacity);

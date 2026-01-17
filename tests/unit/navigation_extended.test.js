@@ -1,4 +1,3 @@
-
 import UIManager from '../../UIManager.js';
 
 describe('UIManager Extended Tests', () => {
@@ -12,7 +11,7 @@ describe('UIManager Extended Tests', () => {
         sitesData = [
             { name: 'Site 1', description: 'Desc 1' },
             { name: 'Site 2', description: 'Desc 2' },
-            { name: 'Site 3', description: 'Desc 3' }
+            { name: 'Site 3', description: 'Desc 3' },
         ];
         mockSwitchSite = jest.fn();
         mockNavigationContainer = document.createElement('div');
@@ -71,12 +70,12 @@ describe('UIManager Extended Tests', () => {
     test('Disabling buttons sets aria-disabled', () => {
         uiManager.setTransitioning(true);
         const allButtons = uiManager.navButtons;
-        allButtons.forEach(btn => {
+        allButtons.forEach((btn) => {
             expect(btn.getAttribute('aria-disabled')).toBe('true');
         });
 
         uiManager.setTransitioning(false);
-        allButtons.forEach(btn => {
+        allButtons.forEach((btn) => {
             expect(btn.hasAttribute('aria-disabled')).toBe(false);
         });
     });

@@ -4,7 +4,7 @@ import * as THREE from 'three';
 // Mock Three.js components
 jest.mock('three', () => {
     const originalThree = jest.requireActual('three');
-    const MockGroup = jest.fn(function() {
+    const MockGroup = jest.fn(function () {
         this.isGroup = true;
         this.add = jest.fn();
         this.traverse = jest.fn();
@@ -39,7 +39,7 @@ describe('SiteManager.switchSite', () => {
         siteManager = new SiteManager(mockScene, mockGltfLoader, onTransitionEndCallback);
 
         // Mock the createFunc for each site to return a new mock group
-        siteManager.sitesData.forEach(site => {
+        siteManager.sitesData.forEach((site) => {
             site.createFunc = jest.fn(() => new THREE.Group());
         });
     });
@@ -90,7 +90,7 @@ describe('SiteManager.switchSite', () => {
         const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
         const result = siteManager.switchSite(99, {});
         expect(result).toBeUndefined();
-        expect(consoleWarnSpy).toHaveBeenCalledWith("Invalid site index:", 99);
+        expect(consoleWarnSpy).toHaveBeenCalledWith('Invalid site index:', 99);
         consoleWarnSpy.mockRestore();
     });
 });

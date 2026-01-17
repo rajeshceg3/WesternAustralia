@@ -1,105 +1,105 @@
 name: Elite Test Pipeline & Deploy
 
 on:
-  push:
-    branches: ["main"]
-  pull_request:
-    branches: ["main"]
-  workflow_dispatch:
+    push:
+        branches: ['main']
+    pull_request:
+        branches: ['main']
+    workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+    contents: read
+    pages: write
+    id-token: write
 
 concurrency:
-  group: "pages"
-  cancel-in-progress: false
+    group: 'pages'
+    cancel-in-progress: false
 
 jobs:
-  # CI Phase: Test and Lint
-  test:
-    name: CI - Test & Validate
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+    # CI Phase: Test and Lint
+    test:
+        name: CI - Test & Validate
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          cache: 'npm'
+            - name: Setup Node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '20'
+                  cache: 'npm'
 
-      - name: Install Dependencies
-        run: npm ci
+            - name: Install Dependencies
+              run: npm ci
 
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+            - name: Install Playwright Browsers
+              run: npx playwright install --with-deps
 
-      - name: Run Unit Tests (Jest)
-        run: npm test
-        env:
-          CI: true
+            - name: Run Unit Tests (Jest)
+              run: npm test
+              env:
+                  CI: true
 
-      - name: Run E2E Tests (Playwright)
-        run: npx playwright test
-        env:
-          CI: true
+            - name: Run E2E Tests (Playwright)
+              run: npx playwright test
+              env:
+                  CI: true
 
-      - name: Upload Playwright Report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 30
+            - name: Upload Playwright Report
+              if: always()
+              uses: actions/upload-artifact@v4
+              with:
+                  name: playwright-report
+                  path: playwright-report/
+                  retention-days: 30
 
-      # Security Scan (Basic)
-      - name: Security Audit
-        # Audit dependencies. We use --audit-level=high to avoid failing on minor issues in dev dependencies
-        run: npm audit --audit-level=high
+            # Security Scan (Basic)
+            - name: Security Audit
+              # Audit dependencies. We use --audit-level=high to avoid failing on minor issues in dev dependencies
+              run: npm audit --audit-level=high
 
-  # Build Phase: Prepare Artifacts
-  build:
-    name: Build Artifact
-    runs-on: ubuntu-latest
-    needs: test
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+    # Build Phase: Prepare Artifacts
+    build:
+        name: Build Artifact
+        runs-on: ubuntu-latest
+        needs: test
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
+            - name: Setup Pages
+              uses: actions/configure-pages@v5
 
-      - name: Create Distribution
-        # Architecture Decision:
-        # This is a static site using ES Modules.
-        # We simulate a build step by isolating production assets into a clean 'dist' directory.
-        run: |
-          mkdir -p dist
-          # Copy core files
-          cp index.html main.js SceneManager.js SiteManager.js UIManager.js style.css dist/
-          # Copy assets
-          cp -r assets dist/
-          # Ensure file permissions are correct
-          chmod -R 755 dist
+            - name: Create Distribution
+              # Architecture Decision:
+              # This is a static site using ES Modules.
+              # We simulate a build step by isolating production assets into a clean 'dist' directory.
+              run: |
+                  mkdir -p dist
+                  # Copy core files
+                  cp index.html main.js SceneManager.js SiteManager.js UIManager.js style.css dist/
+                  # Copy assets
+                  cp -r assets dist/
+                  # Ensure file permissions are correct
+                  chmod -R 755 dist
 
-      - name: Upload Artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: './dist'
+            - name: Upload Artifact
+              uses: actions/upload-pages-artifact@v3
+              with:
+                  path: './dist'
 
-  # Deployment Phase
-  deploy:
-    name: Deploy to GitHub Pages
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    if: github.ref == 'refs/heads/main'
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+    # Deployment Phase
+    deploy:
+        name: Deploy to GitHub Pages
+        environment:
+            name: github-pages
+            url: ${{ steps.deployment.outputs.page_url }}
+        runs-on: ubuntu-latest
+        needs: build
+        if: github.ref == 'refs/heads/main'
+        steps:
+            - name: Deploy to GitHub Pages
+              id: deployment
+              uses: actions/deploy-pages@v4
