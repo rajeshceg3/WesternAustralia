@@ -4,20 +4,20 @@ A web-based application to explore various 3D rendered sites in Western Australi
 
 ## Features
 
-*   Interactive 3D viewing of multiple sites.
-*   Navigation controls (previous/next site, direct site selection).
-*   Dynamic site descriptions.
-*   Loading indicators and error handling.
-*   Responsive design for different screen sizes.
-*   Skybox and environment mapping for realistic rendering.
-*   Post-processing effects (Bloom, Bokeh).
+- Interactive 3D viewing of multiple sites.
+- Navigation controls (previous/next site, direct site selection).
+- Dynamic site descriptions.
+- Loading indicators and error handling.
+- Responsive design for different screen sizes.
+- Skybox and environment mapping for realistic rendering.
+- Post-processing effects (Bloom, Bokeh).
 
 ## Getting Started
 
 ### Prerequisites
 
-*   A modern web browser with WebGL support (e.g., Chrome, Firefox, Safari, Edge).
-*   Node.js and npm (for development and running tests).
+- A modern web browser with WebGL support (e.g., Chrome, Firefox, Safari, Edge).
+- Node.js and npm (for development and running tests).
 
 ### Installation
 
@@ -32,15 +32,15 @@ A web-based application to explore various 3D rendered sites in Western Australi
 
 ### Running the Project
 
-*   Open the `index.html` file in a web browser.
-*   For development, a local web server (e.g., Live Server extension in VS Code, or `python -m http.server`) might be necessary for some features like loading local files (models, textures) due to browser security restrictions (CORS).
+- Open the `index.html` file in a web browser.
+- For development, a local web server (e.g., Live Server extension in VS Code, or `python -m http.server`) might be necessary for some features like loading local files (models, textures) due to browser security restrictions (CORS).
 
 ## Usage Examples
 
-*   **Navigation Buttons:** Use the "Previous Site" and "Next Site" buttons to cycle through the available 3D sites.
-*   **Direct Site Selection:** Click on the numbered buttons (e.g., "Site 1", "Site 2") to jump directly to a specific site.
-*   **Keyboard Shortcuts:** Use the number keys (1, 2, 3, etc.) on your keyboard to quickly switch to the corresponding site.
-*   **Site Information:** Information and a brief description of the currently viewed site are displayed alongside the 3D view.
+- **Navigation Buttons:** Use the "Previous Site" and "Next Site" buttons to cycle through the available 3D sites.
+- **Direct Site Selection:** Click on the numbered buttons (e.g., "Site 1", "Site 2") to jump directly to a specific site.
+- **Keyboard Shortcuts:** Use the number keys (1, 2, 3, etc.) on your keyboard to quickly switch to the corresponding site.
+- **Site Information:** Information and a brief description of the currently viewed site are displayed alongside the 3D view.
 
 ## Bug Scanning and Fixing
 
@@ -52,11 +52,11 @@ If you encounter issues, open your browser's developer console (usually by press
 
 This project uses Jest for JavaScript testing.
 
-*   **Run tests:**
+- **Run tests:**
     ```bash
     npm test
     ```
-*   We encourage writing new tests for any new features or bug fixes to maintain code quality. Test files are typically located in a `__tests__` directory or have a `.test.js` or `.spec.js` extension.
+- We encourage writing new tests for any new features or bug fixes to maintain code quality. Test files are typically located in a `__tests__` directory or have a `.test.js` or `.spec.js` extension.
 
 ## CI/CD Pipeline Setup
 
@@ -64,9 +64,9 @@ Continuous Integration/Continuous Deployment (CI/CD) helps automate the developm
 
 ### General Best Practices
 
-*   **Automate Everything:** Automate tests, builds, and deployments.
-*   **Version Control:** Use Git for version control, with meaningful commit messages and branches for new features/fixes.
-*   **Linting and Code Style:** Use tools like ESLint or Prettier to maintain consistent code style and catch potential errors early.
+- **Automate Everything:** Automate tests, builds, and deployments.
+- **Version Control:** Use Git for version control, with meaningful commit messages and branches for new features/fixes.
+- **Linting and Code Style:** Use tools like ESLint or Prettier to maintain consistent code style and catch potential errors early.
 
 ### Example CI/CD Setup (GitHub Actions)
 
@@ -76,28 +76,28 @@ Create a workflow file in your repository, for example, at `.github/workflows/ma
 name: CI Pipeline
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
 
 jobs:
-  build-and-test:
-    runs-on: ubuntu-latest
+    build-and-test:
+        runs-on: ubuntu-latest
 
-    steps:
-    - uses: actions/checkout@v3
+        steps:
+            - uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18' # Specify your Node.js version
+            - name: Set up Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: '18' # Specify your Node.js version
 
-    - name: Install dependencies
-      run: npm install
+            - name: Install dependencies
+              run: npm install
 
-    - name: Run tests
-      run: npm test
+            - name: Run tests
+              run: npm test
 ```
 
 ## Contributing

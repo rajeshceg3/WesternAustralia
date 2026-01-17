@@ -1,4 +1,3 @@
-
 const { test, expect } = require('@playwright/test');
 
 test.describe('User Journey', () => {
@@ -6,10 +5,12 @@ test.describe('User Journey', () => {
         await page.goto('/');
         // Wait for canvas to be present
         await page.waitForSelector('#webglCanvas');
+        // Wait for initial transition to complete
+        await expect(page.locator('#navigationControls')).not.toHaveClass(/transitioning/, { timeout: 10000 });
     });
 
     test('should load the application with 3D canvas and controls', async ({ page }) => {
-        await expect(page).toHaveTitle(/Western Australia 3D Sites Viewer/i);
+        await expect(page).toHaveTitle(/Western Australia 3D Sites/i);
 
         const canvas = page.locator('#webglCanvas');
         await expect(canvas).toBeVisible();
@@ -25,35 +26,31 @@ test.describe('User Journey', () => {
     test('should navigate through sites using buttons', async ({ page }) => {
         const nextBtn = page.getByRole('button', { name: 'Next' });
         const prevBtn = page.getByRole('button', { name: 'Previous' });
+        const nav = page.locator('#navigationControls');
         const description = page.locator('#siteDescription');
-
-        // Initial state should probably be empty or specific site if set?
-        // Based on code, currentSiteIndex starts at -1 and code initializes something?
-        // Actually main.js initializes site 0 (Parrot).
 
         // Wait for initial description
         await expect(description).toContainText('colorful parrot');
 
         // Click Next
         await nextBtn.click();
-
-        // Wait for transition (description might update immediately or after transition)
-        // SiteManager.switchSite returns description immediately.
-        // But UI might disable buttons during transition.
-
         await expect(description).toContainText('white stork');
+        await expect(nav).not.toHaveClass(/transitioning/);
 
         // Click Next again
         await nextBtn.click();
         await expect(description).toContainText('majestic horse');
+        await expect(nav).not.toHaveClass(/transitioning/);
 
         // Click Prev
         await prevBtn.click();
         await expect(description).toContainText('white stork');
+        await expect(nav).not.toHaveClass(/transitioning/);
     });
 
     test('should support keyboard navigation', async ({ page }) => {
         const description = page.locator('#siteDescription');
+        const nav = page.locator('#navigationControls');
 
         // Focus body to ensure keys work
         await page.locator('body').click();
@@ -61,10 +58,12 @@ test.describe('User Journey', () => {
         // Arrow Right
         await page.keyboard.press('ArrowRight');
         await expect(description).toContainText('white stork');
+        await expect(nav).not.toHaveClass(/transitioning/);
 
         // Arrow Left
         await page.keyboard.press('ArrowLeft');
         await expect(description).toContainText('colorful parrot');
+        await expect(nav).not.toHaveClass(/transitioning/);
     });
 
     test('should maintain accessibility attributes', async ({ page }) => {
@@ -85,7 +84,7 @@ test.describe('User Journey', () => {
 
     test('should not have console errors', async ({ page }) => {
         const errors = [];
-        page.on('console', msg => {
+        page.on('console', (msg) => {
             if (msg.type() === 'error') errors.push(msg.text());
         });
 

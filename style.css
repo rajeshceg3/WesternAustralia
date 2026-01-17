@@ -1,5 +1,10 @@
-body { margin: 0; overflow: hidden; }
-canvas { display: block; }
+body {
+    margin: 0;
+    overflow: hidden;
+}
+canvas {
+    display: block;
+}
 
 .skip-link {
     position: absolute;
@@ -35,9 +40,18 @@ canvas { display: block; }
     z-index: 200; /* Ensure it's above other elements */
 }
 @keyframes pulsate {
-    0% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.7; transform: scale(1.05); }
-    100% { opacity: 1; transform: scale(1); }
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.7;
+        transform: scale(1.05);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 #loadingIndicator p {
     padding: 10px;
@@ -58,7 +72,7 @@ canvas { display: block; }
     padding: 10px;
     background-color: rgba(30, 30, 30, 0.85);
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
     z-index: 150;
     display: flex;
     gap: 10px; /* Spacing between buttons */
@@ -77,14 +91,18 @@ canvas { display: block; }
     border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease; /* Smooth transitions */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3); /* Subtle shadow for 3D effect */
+    transition:
+        background-color 0.3s ease,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease,
+        transform 0.2s ease; /* Smooth transitions */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Subtle shadow for 3D effect */
 }
 
 #navigationControls button:hover {
     background-color: rgba(50, 50, 50, 1); /* Slightly lighter on hover */
     border-color: rgba(255, 255, 255, 0.8);
-    box-shadow: 0 5px 10px rgba(0,0,0,0.4); /* Enhanced shadow on hover */
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4); /* Enhanced shadow on hover */
     transform: scale(1.05); /* Slight scaling effect */
 }
 
@@ -92,7 +110,7 @@ canvas { display: block; }
     background-color: rgba(70, 70, 70, 1); /* Distinct active state */
     border-color: #ffffff;
     font-weight: bold;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.5) inset; /* Slightly inset shadow for active */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5) inset; /* Slightly inset shadow for active */
 }
 /* Focus styles for accessibility */
 #navigationControls button:focus-visible {
@@ -117,12 +135,14 @@ canvas { display: block; }
     backdrop-filter: blur(5px); /* Frosted glass effect */
     -webkit-backdrop-filter: blur(5px); /* Safari support */
     z-index: 100;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.55); /* More pronounced shadow */
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.55); /* More pronounced shadow */
     border: 1px solid rgba(255, 255, 255, 0.15); /* Subtle light border */
     line-height: 1.5; /* Improved readability */
     opacity: 0; /* Initially hidden for animation */
     transform: translateY(10px); /* Initial position for slide-up animation */
-    transition: opacity 0.5s ease-out, transform 0.5s ease-out; /* Animation for appearing */
+    transition:
+        opacity 0.5s ease-out,
+        transform 0.5s ease-out; /* Animation for appearing */
 }
 #siteDescription.visible {
     opacity: 1;
@@ -137,7 +157,7 @@ canvas { display: block; }
     color: white;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-size: 2em;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
     pointer-events: none; /* Make sure it doesn't interfere with controls */
     z-index: 150;
 }

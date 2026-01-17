@@ -6,7 +6,7 @@ jest.mock('three', () => {
     const originalThree = jest.requireActual('three');
 
     // Mock Group to be a class-like function
-    const MockGroup = jest.fn(function() {
+    const MockGroup = jest.fn(function () {
         this.isGroup = true;
         this.add = jest.fn();
         this.traverse = jest.fn();
@@ -17,7 +17,7 @@ jest.mock('three', () => {
         return this;
     });
 
-    const MockMesh = jest.fn(function() {
+    const MockMesh = jest.fn(function () {
         this.isMesh = true;
         this.position = { set: jest.fn() };
         this.rotation = { x: 0 };
@@ -56,7 +56,12 @@ describe('SiteManager Site Creation Functions', () => {
         const siteGroup = siteManager.createParrotSite(siteData);
         expect(siteGroup.isGroup).toBe(true);
         expect(THREE.Mesh).toHaveBeenCalledWith(expect.any(Object), expect.any(Object));
-        expect(mockGltfLoader.load).toHaveBeenCalledWith(expect.any(String), expect.any(Function), undefined, expect.any(Function));
+        expect(mockGltfLoader.load).toHaveBeenCalledWith(
+            expect.any(String),
+            expect.any(Function),
+            undefined,
+            expect.any(Function),
+        );
     });
 
     test('createStorkSite returns a THREE.Group object', () => {
@@ -64,7 +69,12 @@ describe('SiteManager Site Creation Functions', () => {
         const siteGroup = siteManager.createStorkSite(siteData);
         expect(siteGroup.isGroup).toBe(true);
         expect(THREE.Mesh).toHaveBeenCalledWith(expect.any(Object), expect.any(Object));
-        expect(mockGltfLoader.load).toHaveBeenCalledWith(expect.any(String), expect.any(Function), undefined, expect.any(Function));
+        expect(mockGltfLoader.load).toHaveBeenCalledWith(
+            expect.any(String),
+            expect.any(Function),
+            undefined,
+            expect.any(Function),
+        );
     });
 
     test('createHorseSite returns a THREE.Group object', () => {
@@ -72,7 +82,12 @@ describe('SiteManager Site Creation Functions', () => {
         const siteGroup = siteManager.createHorseSite(siteData);
         expect(siteGroup.isGroup).toBe(true);
         expect(THREE.Mesh).toHaveBeenCalledWith(expect.any(Object), expect.any(Object));
-        expect(mockGltfLoader.load).toHaveBeenCalledWith(expect.any(String), expect.any(Function), undefined, expect.any(Function));
+        expect(mockGltfLoader.load).toHaveBeenCalledWith(
+            expect.any(String),
+            expect.any(Function),
+            undefined,
+            expect.any(Function),
+        );
     });
 
     test('createFlamingoSite returns a THREE.Group object', () => {
@@ -80,6 +95,11 @@ describe('SiteManager Site Creation Functions', () => {
         const siteGroup = siteManager.createFlamingoSite(siteData);
         expect(siteGroup.isGroup).toBe(true);
         expect(THREE.Mesh).toHaveBeenCalledWith(expect.any(Object), expect.any(Object));
-        expect(mockGltfLoader.load).toHaveBeenCalledWith(expect.any(String), expect.any(Function), undefined, expect.any(Function));
+        expect(mockGltfLoader.load).toHaveBeenCalledWith(
+            expect.any(String),
+            expect.any(Function),
+            undefined,
+            expect.any(Function),
+        );
     });
 });

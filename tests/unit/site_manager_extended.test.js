@@ -1,4 +1,3 @@
-
 import SiteManager from '../../SiteManager.js';
 import * as THREE from 'three';
 
@@ -7,7 +6,7 @@ jest.mock('three', () => {
     const originalThree = jest.requireActual('three');
     return {
         ...originalThree,
-        Group: jest.fn(function() {
+        Group: jest.fn(function () {
             this.add = jest.fn();
             this.remove = jest.fn();
             this.traverse = jest.fn();
@@ -16,7 +15,7 @@ jest.mock('three', () => {
             this.isGroup = true;
             return this;
         }),
-        Mesh: jest.fn(function(geo, mat) {
+        Mesh: jest.fn(function (geo, mat) {
             this.isMesh = true;
             this.geometry = geo;
             this.material = mat;
@@ -28,12 +27,12 @@ jest.mock('three', () => {
         PlaneGeometry: jest.fn(),
         MeshStandardMaterial: jest.fn(),
         BoxGeometry: jest.fn(),
-        Texture: jest.fn(function() {
+        Texture: jest.fn(function () {
             this.dispose = jest.fn();
             this.isTexture = true;
             return this;
         }),
-        AnimationMixer: jest.fn(function() {
+        AnimationMixer: jest.fn(function () {
             this.clipAction = jest.fn(() => ({ play: jest.fn() }));
             this.update = jest.fn();
             this.stopAllAction = jest.fn();
@@ -53,7 +52,7 @@ describe('SiteManager Extended Coverage', () => {
         mockScene = { add: jest.fn(), remove: jest.fn() };
         mockGltfLoader = {
             load: jest.fn(),
-            manager: { onError: jest.fn() }
+            manager: { onError: jest.fn() },
         };
         onTransitionEnd = jest.fn();
         siteManager = new SiteManager(mockScene, mockGltfLoader, onTransitionEnd);
@@ -71,23 +70,29 @@ describe('SiteManager Extended Coverage', () => {
                 modelUrl,
                 expect.any(Function),
                 onProgress,
-                expect.any(Function)
+                expect.any(Function),
             );
 
             // Simulate success callback
             const onLoadCallback = mockGltfLoader.load.mock.calls[0][1];
+
+            const clonedScene = {
+                scale: { set: jest.fn() },
+                position: { y: 0 },
+                traverse: jest.fn(),
+                userData: {},
+            };
+
             const mockGltf = {
                 scene: {
-                    scale: { set: jest.fn() },
-                    position: { y: 0 },
-                    traverse: jest.fn(),
-                    userData: {}
+                    clone: jest.fn(() => clonedScene),
                 },
-                animations: []
+                animations: [],
             };
             onLoadCallback(mockGltf);
 
-            expect(group.add).toHaveBeenCalledWith(mockGltf.scene);
+            expect(mockGltf.scene.clone).toHaveBeenCalled();
+            expect(group.add).toHaveBeenCalledWith(clonedScene);
         });
 
         it('should handle load error by adding placeholder', () => {
@@ -115,7 +120,7 @@ describe('SiteManager Extended Coverage', () => {
                 dispose: jest.fn(),
                 map: map,
                 // Add a PBR map
-                roughnessMap: new THREE.Texture()
+                roughnessMap: new THREE.Texture(),
             };
             const node = new THREE.Mesh(geometry, material);
 
