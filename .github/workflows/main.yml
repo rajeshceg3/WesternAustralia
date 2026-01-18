@@ -74,14 +74,9 @@ jobs:
 
             - name: Create Distribution
               # Architecture Decision:
-              # This is a static site using ES Modules.
-              # We simulate a build step by isolating production assets into a clean 'dist' directory.
+              # We use Vite to bundle the application for production.
               run: |
-                  mkdir -p dist
-                  # Copy core files
-                  cp index.html main.js SceneManager.js SiteManager.js UIManager.js style.css dist/
-                  # Copy assets
-                  cp -r assets dist/
+                  npm run build
                   # Ensure file permissions are correct
                   chmod -R 755 dist
 
