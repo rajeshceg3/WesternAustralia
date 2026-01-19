@@ -120,14 +120,36 @@ export default class UIManager {
 
     showLoading(message = 'Loading...') {
         if (!this.loadingIndicator) return;
-        this.loadingIndicator.innerHTML = `<p id="loadingText">${message}</p>`;
+
+        // Re-create the structure if it was overwritten by an error message
+        if (!this.loadingIndicator.querySelector('.progress-bar-container')) {
+            this.loadingIndicator.innerHTML = `
+                <div class="loading-content">
+                    <p id="loadingText">${message}</p>
+                    <div class="progress-bar-container">
+                        <div id="progressBar" class="progress-bar"></div>
+                    </div>
+                </div>
+            `;
+        } else {
+             const p = document.getElementById('loadingText');
+             if (p) p.textContent = message;
+        }
+
         this.loadingIndicator.style.display = 'flex';
         this.loadingIndicator.style.backgroundColor = '#1a1a1a';
+        this.updateLoadingProgress(0);
     }
 
     updateLoadingProgress(percent) {
         const p = document.getElementById('loadingText');
         if (p) p.textContent = `Loading... ${percent}%`;
+
+        const bar = document.getElementById('progressBar');
+        if (bar) {
+            bar.style.width = `${percent}%`;
+            bar.setAttribute('aria-valuenow', percent);
+        }
     }
 
     hideLoading() {
@@ -152,26 +174,29 @@ export default class UIManager {
 
         const msg = document.createElement('p');
         msg.textContent = `Error loading ${url}. Using placeholder.`;
-        msg.style.marginBottom = '15px';
+        msg.style.marginBottom = '20px';
         errorContainer.appendChild(msg);
+
+        const btnContainer = document.createElement('div');
+        btnContainer.style.display = 'flex';
+        btnContainer.style.gap = '10px';
+        btnContainer.style.justifyContent = 'center';
 
         if (retryCallback) {
             const retryBtn = document.createElement('button');
             retryBtn.textContent = 'Retry Loading';
-            retryBtn.style.marginRight = '10px';
-            retryBtn.style.padding = '8px 16px';
-            retryBtn.style.cursor = 'pointer';
+            retryBtn.className = 'retry-btn';
             retryBtn.onclick = retryCallback;
-            errorContainer.appendChild(retryBtn);
+            btnContainer.appendChild(retryBtn);
         }
 
         const dismissBtn = document.createElement('button');
         dismissBtn.textContent = 'Dismiss';
-        dismissBtn.style.padding = '8px 16px';
-        dismissBtn.style.cursor = 'pointer';
+        dismissBtn.className = 'dismiss-btn';
         dismissBtn.onclick = dismissCallback || (() => this.hideLoading());
-        errorContainer.appendChild(dismissBtn);
+        btnContainer.appendChild(dismissBtn);
 
+        errorContainer.appendChild(btnContainer);
         this.loadingIndicator.appendChild(errorContainer);
     }
 }
