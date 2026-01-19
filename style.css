@@ -1,6 +1,7 @@
 body {
     margin: 0;
     overflow: hidden;
+    background-color: #000; /* Ensure dark background behind canvas */
 }
 canvas {
     display: block;
@@ -59,8 +60,9 @@ canvas {
 .progress-bar {
     width: 0%;
     height: 100%;
-    background-color: #ffffff;
+    background-color: #4CAF50; /* Green for success vibe */
     transition: width 0.2s ease-out;
+    box-shadow: 0 0 10px rgba(76, 175, 80, 0.7); /* Glow effect */
 }
 
 /* Error UI Styles */
@@ -73,6 +75,7 @@ canvas {
     border-radius: 5px;
     font-weight: bold;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    transition: background-color 0.2s;
 }
 
 .retry-btn:hover {
@@ -87,6 +90,7 @@ canvas {
     border: 1px solid #555;
     border-radius: 5px;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    transition: background-color 0.2s;
 }
 
 .dismiss-btn:hover {
@@ -138,6 +142,7 @@ canvas {
     justify-content: center;
     width: max-content;
     max-width: 90%;
+    backdrop-filter: blur(8px);
 }
 
 #navigationControls button {
@@ -158,20 +163,26 @@ canvas {
 }
 
 #navigationControls button:hover {
-    background-color: rgba(50, 50, 50, 1); /* Slightly lighter on hover */
-    border-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(60, 60, 60, 1); /* Slightly lighter on hover */
+    border-color: rgba(255, 255, 255, 0.9);
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4); /* Enhanced shadow on hover */
-    transform: scale(1.05); /* Slight scaling effect */
+    transform: translateY(-2px); /* Lift effect */
+}
+
+#navigationControls button:active {
+    transform: translateY(0);
 }
 
 #navigationControls button.active {
-    background-color: rgba(70, 70, 70, 1); /* Distinct active state */
+    background-color: rgba(80, 80, 80, 1); /* Distinct active state */
     border-color: #ffffff;
     font-weight: bold;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5) inset; /* Slightly inset shadow for active */
 }
 /* Focus styles for accessibility */
-#navigationControls button:focus-visible {
+#navigationControls button:focus-visible,
+#helpToggleBtn:focus-visible,
+#closeHelpBtn:focus-visible {
     outline: 2px solid #fff;
     outline-offset: 2px;
 }
@@ -218,14 +229,24 @@ canvas {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
     pointer-events: none; /* Make sure it doesn't interfere with controls */
     z-index: 150;
+    width: 100%;
+    text-align: center;
+}
+#titleOverlay h1 {
+    font-size: 0.8em;
+    opacity: 0.7;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
 /* Moved inline styles */
 #currentSiteTitle {
-    font-size: 0.5em;
-    margin: 0;
+    font-size: 1em;
+    margin: 5px 0 0 0;
     text-align: center;
-    opacity: 0.9;
+    opacity: 1;
+    font-weight: 300;
 }
 
 .noscript-overlay {
@@ -240,4 +261,123 @@ canvas {
     justify-content: center;
     align-items: center;
     z-index: 1000;
+}
+
+/* --- HELP MODAL & TOGGLE --- */
+
+#helpToggleBtn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-color: rgba(30, 30, 30, 0.6);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 160;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+#helpToggleBtn:hover {
+    background-color: rgba(60, 60, 60, 0.9);
+    transform: scale(1.1);
+}
+
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.modal-backdrop[hidden] {
+    display: none;
+    opacity: 0;
+}
+
+.modal-content {
+    background-color: #1a1a1a;
+    color: #f0f0f0;
+    padding: 30px;
+    border-radius: 12px;
+    max-width: 400px;
+    width: 90%;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    transform: scale(1);
+    transition: transform 0.3s ease;
+}
+
+.modal-backdrop[hidden] .modal-content {
+    transform: scale(0.9);
+}
+
+.modal-content h2 {
+    margin-top: 0;
+    font-size: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.control-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 25px 0;
+}
+
+.control-list li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+}
+
+.key {
+    background-color: #333;
+    border: 1px solid #555;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-family: monospace;
+    font-weight: bold;
+    margin-right: 8px;
+    box-shadow: 0 2px 0 #111;
+    font-size: 0.85rem;
+    min-width: 20px;
+    text-align: center;
+}
+
+.primary-btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.primary-btn:hover {
+    background-color: #45a049;
 }

@@ -4,7 +4,14 @@ export default {
     build: {
         outDir: 'dist',
         emptyOutDir: true,
-        sourcemap: true
+        sourcemap: true,
+        rollupOptions: {
+            output: {
+                manualChunks: {
+                    vendor: ['three', '@tweenjs/tween.js'],
+                },
+            },
+        },
     },
     server: {
         open: true

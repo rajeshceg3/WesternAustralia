@@ -14,6 +14,45 @@ export default class UIManager {
         this.descriptionElement = descriptionElement;
         this.loadingIndicator = loadingIndicator;
         this.navButtons = [];
+
+        this.initHelp();
+    }
+
+    initHelp() {
+        this.helpToggleBtn = document.getElementById('helpToggleBtn');
+        this.helpModal = document.getElementById('helpModal');
+        this.closeHelpBtn = document.getElementById('closeHelpBtn');
+
+        if (this.helpToggleBtn && this.helpModal && this.closeHelpBtn) {
+            this.helpToggleBtn.addEventListener('click', () => this.openHelp());
+            this.closeHelpBtn.addEventListener('click', () => this.closeHelp());
+
+            // Close on backdrop click
+            this.helpModal.addEventListener('click', (e) => {
+                if (e.target === this.helpModal) {
+                    this.closeHelp();
+                }
+            });
+
+            // Close on Escape
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !this.helpModal.hidden) {
+                    this.closeHelp();
+                }
+            });
+        }
+    }
+
+    openHelp() {
+        this.helpModal.hidden = false;
+        this.helpModal.setAttribute('aria-hidden', 'false');
+        this.closeHelpBtn.focus();
+    }
+
+    closeHelp() {
+        this.helpModal.hidden = true;
+        this.helpModal.setAttribute('aria-hidden', 'true');
+        this.helpToggleBtn.focus();
     }
 
     createNavigationButtons() {
