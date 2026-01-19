@@ -43,6 +43,12 @@ jest.mock('three/examples/jsm/loaders/GLTFLoader.js', () => ({
     GLTFLoader: jest.fn().mockImplementation(() => ({
         manager: {},
         load: jest.fn(),
+        setDRACOLoader: jest.fn(),
+    })),
+}));
+jest.mock('three/examples/jsm/loaders/DRACOLoader.js', () => ({
+    DRACOLoader: jest.fn().mockImplementation(() => ({
+        setDecoderPath: jest.fn(),
     })),
 }));
 jest.mock('three/examples/jsm/loaders/RGBELoader.js', () => ({

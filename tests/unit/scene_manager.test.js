@@ -43,7 +43,15 @@ jest.mock('three/examples/jsm/controls/OrbitControls.js', () => ({
 }));
 
 jest.mock('three/examples/jsm/loaders/GLTFLoader.js', () => ({
-    GLTFLoader: jest.fn(),
+    GLTFLoader: jest.fn(() => ({
+        setDRACOLoader: jest.fn(),
+    })),
+}));
+
+jest.mock('three/examples/jsm/loaders/DRACOLoader.js', () => ({
+    DRACOLoader: jest.fn(() => ({
+        setDecoderPath: jest.fn(),
+    })),
 }));
 
 jest.mock('three/examples/jsm/loaders/RGBELoader.js', () => ({

@@ -15,8 +15,8 @@ export default [
             },
         },
         rules: {
-            'no-unused-vars': 'warn',
-            'no-console': 'off',
+            'no-unused-vars': 'error',
+            'no-console': 'warn',
             semi: ['error', 'always'],
         },
     },
@@ -28,6 +28,7 @@ export default [
         },
         rules: {
             ...pluginJest.configs['flat/recommended'].rules,
+            'no-unused-vars': 'off', // Allow unused vars in tests for mocks
         },
     },
 ];
