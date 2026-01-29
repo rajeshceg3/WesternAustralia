@@ -32,8 +32,24 @@ A web-based application to explore various 3D rendered sites in Western Australi
 
 ### Running the Project
 
-- Open the `index.html` file in a web browser.
-- For development, a local web server (e.g., Live Server extension in VS Code, or `python -m http.server`) might be necessary for some features like loading local files (models, textures) due to browser security restrictions (CORS).
+To run the project locally, you must use a development server that supports ES modules and bare imports (via Vite).
+
+1.  Start the development server:
+    ```bash
+    npm run dev
+    ```
+2.  Open the URL shown in the terminal (usually `http://localhost:5173`).
+
+To build and preview the production version:
+
+1.  Build the project:
+    ```bash
+    npm run build
+    ```
+2.  Preview the build:
+    ```bash
+    npm run preview
+    ```
 
 ## Usage Examples
 
