@@ -381,3 +381,16 @@ canvas {
 .primary-btn:hover {
     background-color: #45a049;
 }
+
+/* Small screens: keep the site description clear of the wrapped nav strip */
+@media (max-width: 480px) {
+    #navigationControls button {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+    #siteDescription {
+        bottom: 200px; /* nav bottom 25px + wrapped height + gap */
+        font-size: 14px;
+        max-width: calc(100vw - 50px);
+    }
+}
