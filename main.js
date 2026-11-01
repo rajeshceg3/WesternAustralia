@@ -131,6 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initial setup
     uiManager.createNavigationButtons();
+    uiManager.bindNavigationSwipe();
 
     // Start loading the first site immediately.
     switchSite(0);

@@ -55,6 +55,31 @@ export default class UIManager {
         this.helpToggleBtn.focus();
     }
 
+    bindNavigationSwipe() {
+        // Chapter swipe on the nav strip: horizontal swipes move between
+        // sites; scene drag stays with the 3D view. Buttons and keys
+        // remain as tap/keyboard alternatives.
+        let touchStart = null;
+        this.navigationContainer.addEventListener('touchstart', (e) => {
+            const t = e.touches[0];
+            touchStart = { x: t.clientX, y: t.clientY };
+        }, { passive: true });
+        this.navigationContainer.addEventListener('touchend', (e) => {
+            if (!touchStart) return;
+            const t = e.changedTouches[0];
+            const dx = t.clientX - touchStart.x;
+            const dy = t.clientY - touchStart.y;
+            touchStart = null;
+            if (Math.abs(dx) < 50 || Math.abs(dy) > 40) return;
+            if (this.navigationContainer.classList.contains('transitioning')) return;
+            if (dx < 0) {
+                this.navigateNext();
+            } else {
+                this.navigatePrevious();
+            }
+        }, { passive: true });
+    }
+
     createNavigationButtons() {
         // Clear existing buttons
         this.navigationContainer.innerHTML = '';
