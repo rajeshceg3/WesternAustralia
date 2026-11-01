@@ -394,3 +394,14 @@ canvas {
         max-width: calc(100vw - 50px);
     }
 }
+
+@media (max-width: 480px) {
+    /* Reserve the help-button zone so the centered title never slides under it */
+    #titleOverlay {
+        padding: 0 70px;
+        box-sizing: border-box;
+    }
+    #titleOverlay h1 {
+        font-size: 0.7em;
+    }
+}
