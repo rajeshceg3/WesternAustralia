@@ -1,0 +1,30 @@
+[
+  {
+    "scene": 0,
+    "pausedStable": true,
+    "animationChanges": true,
+    "pauseAfterPlayStable": true,
+    "angles": 4
+  },
+  {
+    "scene": 1,
+    "pausedStable": true,
+    "animationChanges": true,
+    "pauseAfterPlayStable": true,
+    "angles": 4
+  },
+  {
+    "scene": 2,
+    "pausedStable": true,
+    "animationChanges": true,
+    "pauseAfterPlayStable": true,
+    "angles": 4
+  },
+  {
+    "scene": 3,
+    "pausedStable": true,
+    "animationChanges": true,
+    "pauseAfterPlayStable": true,
+    "angles": 4
+  }
+]

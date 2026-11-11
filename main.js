@@ -1,166 +1,50 @@
-import SceneManager from './SceneManager.js';
-import SiteManager from './SiteManager.js';
-import UIManager from './UIManager.js';
 import * as THREE from 'three';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+import {clone} from 'three/addons/utils/SkeletonUtils.js';
+const places=[{"id": "parrot", "name": "Parrot's Perch", "model": "Parrot", "color": 11978935, "camera": [9, 8.5, 12], "detail": "A scarlet bird spreads its blue and yellow wings above a forest clearing. Orbit around the full wingspan, or pause motion to study the low-poly form."}, {"id": "stork", "name": "Stork's Sanctuary", "model": "Stork", "color": 13161677, "camera": [10, 6.5, 12], "detail": "White wings, dark flight feathers and a long red bill. This inherited stork model is a flight study above an imagined wetland, not a bird wading in a documented sanctuary."}, {"id": "horse", "name": "Horse's Meadow", "model": "Horse", "color": 14076839, "camera": [10, 6.5, 13], "detail": "A galloping horse crosses a fenced meadow. Pause the stride, then turn the camera to look at the shoulders, legs and tail from a new angle."}, {"id": "flamingo", "name": "Flamingo Beach", "model": "Flamingo", "color": 14928317, "camera": [10, 6.5, 12], "detail": "Pink wings and a long neck form a bright flight silhouette above a shallow lagoon. This is an imagined scene, not a claim about Western Australian wildlife."}];
+let selected=0,motion=!matchMedia('(prefers-reduced-motion: reduce)').matches,seen=new Set();try{seen=new Set(JSON.parse(localStorage.getItem('wa-studies-seen'))||[])}catch{}
+const $=s=>document.querySelector(s),canvas=$('#world');
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.setClearColor(0xb6c8b7);renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.18;
+const scene=new THREE.Scene();const camera=new THREE.PerspectiveCamera(43,1,.1,180);const controls=new OrbitControls(camera,canvas);controls.enableDamping=false;controls.minDistance=6;controls.maxDistance=35;controls.maxPolarAngle=Math.PI*.47;controls.minPolarAngle=.15;controls.enablePan=false;controls.target.set(0,2,0);
+scene.add(new THREE.HemisphereLight(0xfff1d1,0x4b655c,2));const sun=new THREE.DirectionalLight(0xffdca2,3.3);sun.position.set(-12,24,12);sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);sun.shadow.camera.left=-24;sun.shadow.camera.right=24;sun.shadow.camera.top=24;sun.shadow.camera.bottom=-24;sun.shadow.bias=-.0005;scene.add(sun);
+let dirty=true;controls.addEventListener('change',()=>dirty=true);let world=new THREE.Group();scene.add(world);let animated=[];
+const mat=(c,roughness=1)=>new THREE.MeshStandardMaterial({color:c,roughness,flatShading:true});const materials={};const M=c=>materials[c]||(materials[c]=mat(c));
+function mesh(g,c,x=0,y=0,z=0,parent=world){const m=new THREE.Mesh(g,typeof c==='number'?M(c):c);m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;parent.add(m);return m}
+function box(w,h,d,c,x=0,y=0,z=0,p=world){return mesh(new THREE.BoxGeometry(w,h,d),c,x,y,z,p)}
+function cyl(r1,r2,h,c,x=0,y=0,z=0,p=world,n=12){return mesh(new THREE.CylinderGeometry(r1,r2,h,n),c,x,y,z,p)}
+function sphere(r,c,x,y,z,p=world,sx=1,sy=1,sz=1){const m=mesh(new THREE.IcosahedronGeometry(r,2),c,x,y,z,p);m.scale.set(sx,sy,sz);return m}
+function beam(a,b,r,c,p=world){const aa=new THREE.Vector3(...a),bb=new THREE.Vector3(...b),m=cyl(r,r,aa.distanceTo(bb),c,0,0,0,p,6);m.position.copy(aa.clone().add(bb).multiplyScalar(.5));m.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),bb.sub(aa).normalize());return m}
+function ground(color){cyl(22,23,1.2,0xad9069,0,-.85,0);cyl(22,22,.3,color,0,-.15,0,world,96);for(let i=0;i<6;i++){const x=-21+i*8,z=-17-Math.sin(i*2)*2;sphere(4+i%3,0xb29d7d,x,.7,z,world,1,.4,1)}}
+function tree(x,z,scale=1,pine=true){const t=new THREE.Group();t.position.set(x,0,z);t.scale.setScalar(scale);world.add(t);cyl(.12,.24,3.5,0x76583e,0,1.75,0,t,7);if(pine){for(let i=0;i<4;i++)cyl(.05,1.3-i*.22,2, i%2?0x4f7160:0x3f6556,0,2.3+i*.7,0,t,8)}else{for(let i=0;i<5;i++){let a=i*2.4;sphere(1.1,0x829267,Math.cos(a)*.7,3.4+i*.12,Math.sin(a)*.6,t,1,.8,1)}}return t}
+function roof(w,h,d,c,x,y,z,p){const shape=new THREE.Shape();shape.moveTo(-w/2,0);shape.lineTo(w/2,0);shape.lineTo(0,h);shape.closePath();const g=new THREE.ExtrudeGeometry(shape,{depth:d,bevelEnabled:false});const m=mesh(g,c,x,y,z-d/2,p);return m}
+function house(x,z,w=2,h=3,c=0xe8d4a6){const p=new THREE.Group();p.position.set(x,0,z);world.add(p);box(w,h,2.3,c,0,h/2,0,p);roof(w+.3,.9,2.6,0xa95c44,0,h,0,p);for(let row=0;row<2;row++)for(let col=0;col<2;col++){box(.42,.65,.07,0x365b60,(col-.5)*w*.55,1+row*1.15,1.18,p);box(.52,.08,.13,0xf4dfb4,(col-.5)*w*.55,.68+row*1.15,1.21,p)}box(.5,1.1,.08,0x73543c,0,.55,1.19,p);if(c===0x80a9ae){for(let i=0;i<8;i++)for(let j=0;j<5;j++)box(.07,.07,.02,0xe6eee0,(j-2)*.32,.2+i*.35,1.2,p)}return p}
+function water(x,z,w,d){box(w,.15,d,0x599caa,x,.02,z);for(let i=0;i<30;i++){const line=box(.6+(i%4)*.45,.018,.035,i%2?0xc3d4c5:0x90bdba,x+((i*2.65)%w)-w/2,.11,z+((i*1.67)%d)-d/2);animated.push({mesh:line,type:'wave',base:line.position.x,phase:i*.7})}}
+function dome(x,y,z,r=1,c=0xefcf94,p=world){const d=mesh(new THREE.SphereGeometry(r,16,8,0,Math.PI*2,0,Math.PI/2),c,x,y,z,p);cyl(.07,.12,.7,c,x,y+r+.2,z,p,8);return d}
+function arch(x,y,z,w=1,h=2,c=0x633d32,p=world){box(w,h-w*.5,.08,c,x,y+(h-w*.5)/2,z,p);const a=mesh(new THREE.CircleGeometry(w*.5,16,0,Math.PI),c,x,y+h-w*.5,z,p);return a}
+function pavilion(x,y,z,r=1,c=0xe9c393,p=world){cyl(r,r,.18,c,x,y,z,p,12);for(let i=0;i<6;i++){const a=i*Math.PI/3;cyl(.07,.07,1.3,c,x+Math.cos(a)*r*.7,y+.7,z+Math.sin(a)*r*.7,p,6)}dome(x,y+1.4,z,r,c,p)}
+function flatHouse(x,z,w,h,c,p=world){box(w,h,w,c,x,h/2,z,p);box(w+.12,.2,w+.12,0xe0c49d,x,h+.1,z,p);for(const side of [-1,1])arch(x+side*w*.23,h*.45,z+w*.51,.35,.75,0x344c52,p);return p}
+function fort(x,z,c=0xba9760,scale=1){const p=new THREE.Group();p.position.set(x,0,z);p.scale.setScalar(scale);world.add(p);box(12,5,6,c,0,2.5,0,p);for(let j=-1;j<=1;j+=2)for(let i=-1;i<=1;i+=2){cyl(1.45,1.6,6,c,i*6,3,j*3,p,16);for(let k=0;k<8;k++){const a=k*Math.PI/4;box(.45,.55,.45,0xe0ba7a,i*6+Math.cos(a)*1.2,6.1,j*3+Math.sin(a)*1.2,p)}}for(let i=-5;i<=5;i++)box(.45,.5,.55,0xe0ba7a,i,5.15,3,p);arch(0,0,3.1,2,3.3,0x574231,p);for(let i=-4;i<=4;i+=2)arch(i,2.8,3.1,.6,1.2,0x745c3e,p);return p}
+function lake(x,z,w,d,c=0x6bafa9){const m=box(w,.12,d,c,x,.12,z);for(let i=0;i<14;i++){let z2=z-d*.45+(i/14)*d;const wave=box(1.2+i%3,.025,.05,0xb7d2bc,x-w*.4+(i*3.7)%(w*.8),.2,z2);animated.push({mesh:wave,type:'wave',base:wave.position.x,phase:i})}return m}
+function boat(x,z,angle=0){const g=new THREE.Group();g.position.set(x,.35,z);g.rotation.y=angle;world.add(g);sphere(1,0x7e4a31,0,0,0,g,1.7,.22,.48);box(1.7,.1,.55,0xcf9e58,0,.12,0,g);return g}
 
-import WebGL from 'three/examples/jsm/capabilities/WebGL.js';
 
-// Enable Three.js file cache
-THREE.Cache.enabled = true;
+const loader=new GLTFLoader(),models=new Map();let mixer=null,generation=0,modelRoot=null;
+function grass(x,z,c=0x899b64){for(let i=0;i<3;i++)beam([x,0,z],[x+(i-1)*.18,.6+i*.12,z+.15],.035,c)}
+function build(index){dirty=true;const gen=++generation;scene.remove(world);world.traverse(o=>{if(o.isMesh&&!o.userData.asset)o.geometry.dispose()});world=new THREE.Group();scene.add(world);animated=[];mixer=null;modelRoot=null;const c=places[index];scene.background=new THREE.Color(c.color);scene.fog=new THREE.Fog(c.color,45,100);cyl(11.5,12,1.2,0xa28e6a,0,-.85,0,world,64);cyl(11.5,11.5,.15,index===3?0xe2c69a:0x9ca879,0,-.18,0,world,64);
+if(index===0){for(let i=0;i<7;i++){const a=Math.PI+i*Math.PI/6,x=Math.cos(a)*8.7,z=Math.sin(a)*8.7-1;const t=tree(x,z,.4+i%2*.05,false);for(let j=0;j<4;j++)sphere(1.5,0x577c58,x+Math.cos(j*1.7)*.5,2+j*.1,z+Math.sin(j*1.7)*.5,world,.6,.3,.6)}for(let i=0;i<22;i++)grass(-8+(i*3.7)%16,-8+(i*5.3)%16)}
+if(index===1||index===3){cyl(8.7,8.7,.12,index===1?0x6faaa2:0x85b9b3,0,-.02,0,world,64);for(let i=0;i<24;i++){const a=i*2.4,r=3+i%6;const w=box(.8+i%3*.3,.025,.045,0xc1d4bc,Math.cos(a)*r,.06,Math.sin(a)*r);animated.push({mesh:w,type:'wave',base:w.position.x,phase:i})}for(let i=0;i<18;i++){let a=i*.4;for(let j=0;j<3;j++){let x=Math.cos(a)*9,z=Math.sin(a)*9;beam([x,0,z],[x+(j-1)*.13,1.1+i%3*.3,z],.035,0x747f45);cyl(.08,.08,.35,0x947651,x,1.2+i%3*.3,z,world,6)}}}
+if(index===2){for(let i=-4;i<=4;i++){box(.16,1.4,.16,0x9c7652,i*2, .7,-6);if(i<4){box(2,.1,.1,0xb19665,i*2+1,.5,-6);box(2,.1,.1,0xb19665,i*2+1,1.1,-6)}}for(let i=0;i<45;i++)grass(-8+(i*2.3)%16,-8+(i*5.7)%16);tree(-8,-4,1,false);tree(8,-5,.85,false)}
+resetCamera();canvas.dataset.chapter=''+index;canvas.dataset.ready='false';canvas.dataset.error='';const load=models.has(c.model)?Promise.resolve(models.get(c.model)):loader.loadAsync('assets/models/'+c.model+'.glb').then(g=>{models.set(c.model,g);return g});load.then(g=>{if(gen!==generation)return;const model=clone(g.scene);if(g.animations.length){mixer=new THREE.AnimationMixer(model);mixer.clipAction(g.animations[0]).play();mixer.update(index===2?.12:.25)}model.updateMatrixWorld(true);const bounds=new THREE.Box3().setFromObject(model,true),size=bounds.getSize(new THREE.Vector3()),center=bounds.getCenter(new THREE.Vector3());const scale=7/Math.max(size.x,size.y,size.z);const wrapper=new THREE.Group();model.scale.setScalar(scale);model.position.copy(center.multiplyScalar(-scale));wrapper.position.y=index===0?5.2:index===2?2.2:4.2;wrapper.add(model);model.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true;o.userData.asset=true;o.material=o.material.clone()}});world.add(wrapper);modelRoot=wrapper;canvas.dataset.ready='true';dirty=true}).catch(e=>{canvas.dataset.error=e.message;$('#detail').textContent='The model could not load. Choose another study, or try this one again.';canvas.dataset.ready='error'})}
+function resize(){dirty=true;const r=canvas.getBoundingClientRect(),w=r.width,h=r.height;renderer.setSize(w,h,false);camera.aspect=w/h;camera.clearViewOffset();if(innerWidth>768)camera.setViewOffset(w,h,-w*.11,0,w,h);camera.updateProjectionMatrix();controls.update()}
+function resetCamera(){controls.autoRotate=false;controls.enableDamping=false;camera.position.set(...places[selected].camera);controls.target.set(0,selected===0?3.8:2.3,0);controls.update();resize()}
+window.addEventListener('resize',resize);canvas.addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home'].includes(e.key))return;e.preventDefault();if(e.key==='Home'){resetCamera();return}const v=camera.position.clone().sub(controls.target),s=new THREE.Spherical().setFromVector3(v);s.theta+=e.key==='ArrowLeft'?.15:e.key==='ArrowRight'?-.15:0;s.phi=THREE.MathUtils.clamp(s.phi+(e.key==='ArrowUp'?-.1:e.key==='ArrowDown'?.1:0),.15,Math.PI*.47);camera.position.copy(controls.target).add(new THREE.Vector3().setFromSpherical(s));controls.update()});
 
-document.addEventListener('DOMContentLoaded', () => {
-    if (!WebGL.isWebGL2Available()) {
-        const warning = WebGL.getWebGL2ErrorMessage();
-        document.body.appendChild(warning);
-        document.getElementById('loadingIndicator').style.display = 'none';
-        return;
-    }
-
-    const canvas = document.getElementById('webglCanvas');
-    const navigationControls = document.getElementById('navigationControls');
-    const siteDescription = document.getElementById('siteDescription');
-    const loadingIndicator = document.getElementById('loadingIndicator');
-
-    const sceneManager = new SceneManager(canvas);
-
-    const onTransitionEnd = () => {
-        uiManager.setTransitioning(false);
-        uiManager.updateActiveButton(siteManager.currentSiteIndex);
-        uiManager.showDescription();
-        siteDescription.focus();
-
-        // Preload next site
-        // const nextIndex = (siteManager.currentSiteIndex + 1) % siteManager.sitesData.length;
-        // siteManager.preloadSite(nextIndex);
-    };
-
-    const siteManager = new SiteManager(sceneManager.scene, sceneManager.gltfLoader, onTransitionEnd);
-
-    // Error tracking for loading
-    let loadingError = false;
-
-    // Configure LoadingManager callbacks BEFORE starting any loads (switchSite)
-    sceneManager.gltfLoader.manager.onStart = (url, itemsLoaded, itemsTotal) => {
-        console.log(`Loading started: ${url} (${itemsLoaded}/${itemsTotal})`);
-        // We do not reset loadingError here because onStart can be called multiple times
-        // We reset it in switchSite
-    };
-
-    sceneManager.gltfLoader.manager.onError = (url) => {
-        console.error('Error loading assets from ' + url);
-        loadingError = true;
-
-        uiManager.showError(
-            url,
-            () => {
-                // Retry callback
-                // Ensure render loop is running (it might have stopped after errors)
-                sceneManager.restartRenderLoop((delta, elapsedTime) => {
-                    siteManager.update(delta, elapsedTime);
-                });
-                switchSite(siteManager.currentSiteIndex, true);
-            },
-            () => {
-                // Dismiss callback
-                uiManager.hideLoading();
-            },
-        );
-    };
-
-    sceneManager.gltfLoader.manager.onLoad = () => {
-        // Only hide the loading indicator if no errors occurred.
-        // If errors occurred, the indicator contains the error message and retry button.
-        if (!loadingError) {
-            uiManager.hideLoading();
-        } else {
-            console.warn('Loading finished but errors were detected. Placeholders used.');
-        }
-    };
-
-    const switchSite = (index, force = false) => {
-        // Pass force to siteManager to allow retrying current site
-        if (!force && siteManager.isTransitioning) return;
-
-        // Reset error state for new site load, if we want to allow retries or new navigations
-        loadingError = false;
-
-        uiManager.showLoading();
-
-        uiManager.setTransitioning(true);
-        uiManager.hideDescription();
-
-        const onProgress = (xhr) => {
-            if (loadingError) return; // Prevent overwriting error message
-            if (xhr.lengthComputable) {
-                const percentComplete = Math.round((xhr.loaded / xhr.total) * 100);
-                uiManager.updateLoadingProgress(percentComplete);
-            }
-        };
-
-        const siteInfo = siteManager.switchSite(index, sceneManager.clock, onProgress, force);
-        if (siteInfo) {
-            uiManager.updateSiteDescription(siteInfo.description);
-            // Update canvas accessibility label
-            const siteName = siteManager.sitesData[index].name;
-            canvas.setAttribute('aria-label', `3D View of ${siteName}`);
-
-            // Update document title for accessibility and context
-            document.title = `${siteName} - Western Australia 3D Sites`;
-
-            // Update on-screen site title
-            const siteTitleElement = document.getElementById('currentSiteTitle');
-            if (siteTitleElement) {
-                siteTitleElement.textContent = siteName;
-            }
-
-            sceneManager.animateCameraToTarget(new THREE.Vector3(0, 2, 5), new THREE.Vector3(0, 0, 0));
-        } else {
-            // If switchSite fails (e.g. invalid index), unlock UI
-            uiManager.setTransitioning(false);
-            loadingIndicator.style.display = 'none';
-        }
-    };
-
-    const uiManager = new UIManager(
-        siteManager.sitesData,
-        switchSite,
-        navigationControls,
-        siteDescription,
-        loadingIndicator,
-    );
-
-    // Initial setup
-    uiManager.createNavigationButtons();
-
-    // Start loading the first site immediately.
-    switchSite(0);
-
-    sceneManager.render((delta, elapsedTime) => {
-        siteManager.update(delta, elapsedTime);
-    });
-
-    // Keyboard controls
-    window.addEventListener('keydown', (event) => {
-        // Prevent interference if user is interacting with UI elements
-        const tagName = document.activeElement.tagName.toLowerCase();
-        if (tagName === 'input' || tagName === 'textarea') {
-            return;
-        }
-
-        const key = event.key;
-
-        // Number keys
-        const numKey = parseInt(key);
-        if (!isNaN(numKey) && numKey > 0 && numKey <= siteManager.sitesData.length) {
-            switchSite(numKey - 1);
-            return;
-        }
-
-        // Arrow keys
-        if (key === 'ArrowLeft') {
-            uiManager.navigatePrevious();
-        } else if (key === 'ArrowRight') {
-            uiManager.navigateNext();
-        }
-    });
-});
+let priorFocus;function panel(title,html){priorFocus=document.activeElement;$('#panel-content').innerHTML=`<h2 id="panel-title">${title}</h2>${html}`;$('#panel').showModal();$('#close').focus()}$('#close').onclick=()=>$('#panel').close();$('#panel').addEventListener('close',()=>priorFocus?.focus());
+function render(){seen.add(selected);try{localStorage.setItem('wa-studies-seen',JSON.stringify([...seen]))}catch{}const c=places[selected];$('#chapter').value=''+selected;$('#position').textContent=`${selected+1} of 4`;$('#seen').textContent=`${seen.size} / 4 explored`;$('#place').textContent=c.name;$('#detail').textContent=c.detail;$('#prev').disabled=selected===0;$('#next').disabled=selected===3;$('#story').scrollTop=0;build(selected)}
+places.forEach((c,i)=>$('#chapter').add(new Option(c.name,''+i)));$('#chapter').onchange=e=>{selected=+e.target.value;render()};$('#prev').onclick=()=>{selected=Math.max(0,selected-1);render()};$('#next').onclick=()=>{selected=Math.min(3,selected+1);render()};$('#reset').onclick=resetCamera;
+$('#theme').onclick=()=>{document.body.classList.toggle('dark');$('#theme').textContent=document.body.classList.contains('dark')?'Light UI':'Dark UI'};function motionLabel(){document.body.dataset.motion=motion?'playing':'paused';$('#motion').textContent=motion?'Pause motion':'Play motion'}$('#motion').onclick=()=>{motion=!motion;motionLabel()};motionLabel();
+$('#discover').onclick=()=>panel(places[selected].name,`<p>${places[selected].detail}</p><p>The model and animation are preserved from the earlier collection. Names describe imagined habitats, not documented locations or verified native species. The old flamingo and stork text described wading, but the actual assets contain flight animations.</p><p>Drag to inspect the subject from every side. Motion pauses the animation without disabling the camera; Reset view restores this study's composed angle.</p>`);
+$('#guide').onclick=()=>panel('About the collection',`<h3>Four subjects, your own angle</h3><p>Choose a study. Drag or use the arrow keys to orbit. Scroll or pinch to zoom; Home or Reset view restores the composed angle. Number keys1-4 select the studies. The explored count stays in this browser.</p><h3>What these scenes mean</h3><p>The repository is named Western Australia, but its four inherited assets are generic parrot, stork, horse and flamingo models. No exact wildlife location or native-species identification was recorded. These are imagined settings and animation studies, not a field guide or route map.</p><h3>Inherited models</h3><p>All four original GLB files are retained, including their original animation clips. The original files exactly match the three.js r160 Parrot, Stork, Horse and Flamingo examples. Models by mirada for ROME, &quot;3 Dreams of Black&quot;, CC BY-NC-SA 3.0. The original files are unchanged; this presentation changes scale, placement, lighting and habitat. These model-based visual adaptations are shared under that same noncommercial licence. No endorsement is implied. <a href="asset-credits.md">Sources, licence and exact file hashes</a>. The original source is archived in legacy.</p><h3>Sound only by invitation</h3><p>The optional sound is a synthesized soft wind texture, not a wildlife or location recording. Sound off stops it and closes the audio context. No audio starts on arrival.</p>`);
+const sound={ctx:null,on:false,gain:null,source:null};$('#sound').onclick=()=>{sound.on=!sound.on;if(sound.on){const ctx=new(window.AudioContext||window.webkitAudioContext)();sound.ctx=ctx;const data=ctx.createBuffer(1,ctx.sampleRate*12,ctx.sampleRate),a=data.getChannelData(0);let last=0;for(let i=0;i<a.length;i++){last=.97*last+.03*(Math.random()*2-1);a[i]=last*(.55+.35*Math.sin(i/ctx.sampleRate*.65))}const src=ctx.createBufferSource();src.buffer=data;src.loop=true;const filter=ctx.createBiquadFilter();filter.type='lowpass';filter.frequency.value=1100;const gain=ctx.createGain();gain.gain.value=.35;src.connect(filter).connect(gain).connect(ctx.destination);src.start();ctx.resume();sound.source=src;sound.gain=gain}else{sound.source?.stop();sound.ctx?.close();sound.ctx=null;sound.source=null;sound.gain=null}$('#sound').textContent=sound.on?'Sound off':'Sound on';$('#sound').setAttribute('aria-pressed',''+sound.on)};
+window.wildlife={get model(){return modelRoot},get selected(){return selected},sound,camera,controls,renderer,reset:resetCamera};let last=performance.now(),elapsed=0,lastRendered=0;function tick(now){requestAnimationFrame(tick);const dt=Math.min(.05,(now-last)/1000);last=now;if(motion){elapsed+=dt;mixer?.update(dt)}for(const a of animated)if(a.type==='wave')a.mesh.position.x=a.base+Math.sin(elapsed*.5+a.phase)*.2;if((motion||dirty)&&now-lastRendered>40){renderer.render(scene,camera);dirty=false;lastRendered=now}}render();requestAnimationFrame(tick);window.addEventListener('keydown',e=>{if(/^[1-4]$/.test(e.key)&&!e.target.matches('select,input,textarea')){selected=+e.key-1;render()}});
