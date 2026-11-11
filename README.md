@@ -1,125 +1,16 @@
-# Western Australia 3D Sites Viewer
+# Western Australia: Wildlife studies
 
-A web-based application to explore various 3D rendered sites in Western Australia, built using Three.js.
+The four original animated GLB subjects are preserved: Parrot, Stork, Horse and Flamingo. Imagined settings are explicitly not documented Western Australian sites or verified native species. The flight animations replace older misleading wading descriptions.
 
-## Features
+- Subject-specific starting cameras, full orbit, zoom, arrow keys, Home/Reset.
+- Model loading has a visible failure state rather than an endless loading overlay.
+- Independent animation and opt-in synthesized wind, light/dark UI, explored count.
+- Real morph-weight checks prove that animation changes and pause holds it.
+- Original code, documents, tests and deployment workflow preserved in legacy.
+- Model files are byte-identical to three.js r160; by mirada for ROME, CC BY-NC-SA 3.0. See public/asset-credits.md. This educational viewer is noncommercial. ISC code licensing does not override asset terms.
 
-- Interactive 3D viewing of multiple sites.
-- Navigation controls (previous/next site, direct site selection).
-- Dynamic site descriptions.
-- Loading indicators and error handling.
-- Responsive design for different screen sizes.
-- Skybox and environment mapping for realistic rendering.
-- Post-processing effects (Bloom, Bokeh).
+`npm ci && npm run build`; `WIDTH=390 npm test` verifies all states. THEME=0 or THEME=1 runs one theme. CI runs390 and1440.
 
-## Getting Started
+Executed local matrices cover320/390/1440, both UI themes and motion modes, real drag, keyboard/Home/Reset, every study and guide,14px floor, no overflow, persistence and silent start. Rendered contrast400visibletextsamples min7.92:1. Actual post-gain8second sound capture passed off/replay; human listening remains unsigned. See verification scripts and evidence records.
 
-### Prerequisites
-
-- A modern web browser with WebGL support (e.g., Chrome, Firefox, Safari, Edge).
-- Node.js and npm (for development and running tests).
-
-### Installation
-
-1.  Clone the repository:
-    ```bash
-    git clone <repository-url>
-    ```
-2.  Install development dependencies:
-    ```bash
-    npm install
-    ```
-
-### Running the Project
-
-To run the project locally, you must use a development server that supports ES modules and bare imports (via Vite).
-
-1.  Start the development server:
-    ```bash
-    npm run dev
-    ```
-2.  Open the URL shown in the terminal (usually `http://localhost:5173`).
-
-To build and preview the production version:
-
-1.  Build the project:
-    ```bash
-    npm run build
-    ```
-2.  Preview the build:
-    ```bash
-    npm run preview
-    ```
-
-## Usage Examples
-
-- **Navigation Buttons:** Use the "Previous Site" and "Next Site" buttons to cycle through the available 3D sites.
-- **Direct Site Selection:** Click on the numbered buttons (e.g., "Site 1", "Site 2") to jump directly to a specific site.
-- **Keyboard Shortcuts:** Use the number keys (1, 2, 3, etc.) on your keyboard to quickly switch to the corresponding site.
-- **Site Information:** Information and a brief description of the currently viewed site are displayed alongside the 3D view.
-
-## Bug Scanning and Fixing
-
-### Browser Developer Tools
-
-If you encounter issues, open your browser's developer console (usually by pressing F12). Check for any error messages, which can provide clues about what's going wrong.
-
-### Testing with Jest
-
-This project uses Jest for JavaScript testing.
-
-- **Run tests:**
-    ```bash
-    npm test
-    ```
-- We encourage writing new tests for any new features or bug fixes to maintain code quality. Test files are typically located in a `__tests__` directory or have a `.test.js` or `.spec.js` extension.
-
-## CI/CD Pipeline Setup
-
-Continuous Integration/Continuous Deployment (CI/CD) helps automate the development process.
-
-### General Best Practices
-
-- **Automate Everything:** Automate tests, builds, and deployments.
-- **Version Control:** Use Git for version control, with meaningful commit messages and branches for new features/fixes.
-- **Linting and Code Style:** Use tools like ESLint or Prettier to maintain consistent code style and catch potential errors early.
-
-### Example CI/CD Setup (GitHub Actions)
-
-Create a workflow file in your repository, for example, at `.github/workflows/main.yml`:
-
-```yaml
-name: CI Pipeline
-
-on:
-    push:
-        branches: [main]
-    pull_request:
-        branches: [main]
-
-jobs:
-    build-and-test:
-        runs-on: ubuntu-latest
-
-        steps:
-            - uses: actions/checkout@v3
-
-            - name: Set up Node.js
-              uses: actions/setup-node@v3
-              with:
-                  node-version: '18' # Specify your Node.js version
-
-            - name: Install dependencies
-              run: npm install
-
-            - name: Run tests
-              run: npm test
-```
-
-## Contributing
-
-Contributions are welcome! Please feel free to fork the repository, make your changes, and submit a pull request.
-
-## License
-
-This project is licensed under the ISC License. See the `LICENSE` file for details.
+The old GitHub Pages build is retained as a baseline, not reused as a new hosting fallback. GitHub-backed free Cloudflare Pages is the new target.

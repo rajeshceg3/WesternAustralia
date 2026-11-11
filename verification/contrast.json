@@ -1,0 +1,3602 @@
+[
+  {
+    "width": 390,
+    "state": "0-0",
+    "element": 0,
+    "text": "Wildlife studies",
+    "minimum": 10.974687339272368,
+    "font": "26px",
+    "glyphPixels": 542
+  },
+  {
+    "width": 390,
+    "state": "0-0",
+    "element": 1,
+    "text": "Western Australia collection",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 316
+  },
+  {
+    "width": 390,
+    "state": "0-0",
+    "element": 2,
+    "text": "Choose a studyParrot's PerchStork's SanctuaryHorse",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 327
+  },
+  {
+    "width": 390,
+    "state": "0-0",
+    "element": 3,
+    "text": "Parrot's PerchStork's SanctuaryHorse's MeadowFlami",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 158
+  },
+  {
+    "width": 390,
+    "state": "0-0",
+    "element": 4,
+    "text": "Reset view",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 116
+  },
+  {
+    "width": 390,
+    "state": "0-0",
+    "element": 5,
+    "text": "Dark UI",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 87
+  },
+  {
+    "width": 390,
+    "state": "0-0",
+    "element": 6,
+    "text": "Play motion",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 113
+  },
+  {
+    "width": 390,
+    "state": "0-0",
+    "element": 7,
+    "text": "Sound on",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 93
+  },
+  {
+    "width": 390,
+    "state": "0-0",
+    "element": 8,
+    "text": "1 of 4",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 52
+  },
+  {
+    "width": 390,
+    "state": "0-0",
+    "element": 9,
+    "text": "1 / 4 explored",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 153
+  },
+  {
+    "width": 390,
+    "state": "0-0",
+    "element": 10,
+    "text": "Parrot's Perch",
+    "minimum": 10.974687339272368,
+    "font": "26px",
+    "glyphPixels": 467
+  },
+  {
+    "width": 390,
+    "state": "0-0",
+    "element": 11,
+    "text": "A scarlet bird spreads its blue and yellow wings a",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 1572
+  },
+  {
+    "width": 390,
+    "state": "0-0",
+    "element": 12,
+    "text": "About this study",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 166
+  },
+  {
+    "width": 390,
+    "state": "0-0",
+    "element": 13,
+    "text": "\u2190 Previous",
+    "minimum": 8.654696930556783,
+    "font": "15px",
+    "glyphPixels": 103
+  },
+  {
+    "width": 390,
+    "state": "0-0",
+    "element": 14,
+    "text": "Next \u2192",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 55
+  },
+  {
+    "width": 390,
+    "state": "0-1",
+    "element": 0,
+    "text": "Wildlife studies",
+    "minimum": 10.974687339272368,
+    "font": "26px",
+    "glyphPixels": 542
+  },
+  {
+    "width": 390,
+    "state": "0-1",
+    "element": 1,
+    "text": "Western Australia collection",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 316
+  },
+  {
+    "width": 390,
+    "state": "0-1",
+    "element": 2,
+    "text": "Choose a studyParrot's PerchStork's SanctuaryHorse",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 399
+  },
+  {
+    "width": 390,
+    "state": "0-1",
+    "element": 3,
+    "text": "Parrot's PerchStork's SanctuaryHorse's MeadowFlami",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 230
+  },
+  {
+    "width": 390,
+    "state": "0-1",
+    "element": 4,
+    "text": "Reset view",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 116
+  },
+  {
+    "width": 390,
+    "state": "0-1",
+    "element": 5,
+    "text": "Dark UI",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 87
+  },
+  {
+    "width": 390,
+    "state": "0-1",
+    "element": 6,
+    "text": "Play motion",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 113
+  },
+  {
+    "width": 390,
+    "state": "0-1",
+    "element": 7,
+    "text": "Sound on",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 93
+  },
+  {
+    "width": 390,
+    "state": "0-1",
+    "element": 8,
+    "text": "2 of 4",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 60
+  },
+  {
+    "width": 390,
+    "state": "0-1",
+    "element": 9,
+    "text": "2 / 4 explored",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 154
+  },
+  {
+    "width": 390,
+    "state": "0-1",
+    "element": 10,
+    "text": "Stork's Sanctuary",
+    "minimum": 10.974687339272368,
+    "font": "26px",
+    "glyphPixels": 527
+  },
+  {
+    "width": 390,
+    "state": "0-1",
+    "element": 11,
+    "text": "White wings, dark flight feathers and a long red b",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 1888
+  },
+  {
+    "width": 390,
+    "state": "0-1",
+    "element": 12,
+    "text": "About this study",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 166
+  },
+  {
+    "width": 390,
+    "state": "0-1",
+    "element": 13,
+    "text": "\u2190 Previous",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 100
+  },
+  {
+    "width": 390,
+    "state": "0-1",
+    "element": 14,
+    "text": "Next \u2192",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 55
+  },
+  {
+    "width": 390,
+    "state": "0-2",
+    "element": 0,
+    "text": "Wildlife studies",
+    "minimum": 10.974687339272368,
+    "font": "26px",
+    "glyphPixels": 542
+  },
+  {
+    "width": 390,
+    "state": "0-2",
+    "element": 1,
+    "text": "Western Australia collection",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 316
+  },
+  {
+    "width": 390,
+    "state": "0-2",
+    "element": 2,
+    "text": "Choose a studyParrot's PerchStork's SanctuaryHorse",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 370
+  },
+  {
+    "width": 390,
+    "state": "0-2",
+    "element": 3,
+    "text": "Parrot's PerchStork's SanctuaryHorse's MeadowFlami",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 201
+  },
+  {
+    "width": 390,
+    "state": "0-2",
+    "element": 4,
+    "text": "Reset view",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 116
+  },
+  {
+    "width": 390,
+    "state": "0-2",
+    "element": 5,
+    "text": "Dark UI",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 87
+  },
+  {
+    "width": 390,
+    "state": "0-2",
+    "element": 6,
+    "text": "Play motion",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 113
+  },
+  {
+    "width": 390,
+    "state": "0-2",
+    "element": 7,
+    "text": "Sound on",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 93
+  },
+  {
+    "width": 390,
+    "state": "0-2",
+    "element": 8,
+    "text": "3 of 4",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 58
+  },
+  {
+    "width": 390,
+    "state": "0-2",
+    "element": 9,
+    "text": "3 / 4 explored",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 152
+  },
+  {
+    "width": 390,
+    "state": "0-2",
+    "element": 10,
+    "text": "Horse's Meadow",
+    "minimum": 10.974687339272368,
+    "font": "26px",
+    "glyphPixels": 546
+  },
+  {
+    "width": 390,
+    "state": "0-2",
+    "element": 11,
+    "text": "A galloping horse crosses a fenced meadow. Pause t",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 1510
+  },
+  {
+    "width": 390,
+    "state": "0-2",
+    "element": 12,
+    "text": "About this study",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 166
+  },
+  {
+    "width": 390,
+    "state": "0-2",
+    "element": 13,
+    "text": "\u2190 Previous",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 100
+  },
+  {
+    "width": 390,
+    "state": "0-2",
+    "element": 14,
+    "text": "Next \u2192",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 55
+  },
+  {
+    "width": 390,
+    "state": "0-3",
+    "element": 0,
+    "text": "Wildlife studies",
+    "minimum": 10.974687339272368,
+    "font": "26px",
+    "glyphPixels": 542
+  },
+  {
+    "width": 390,
+    "state": "0-3",
+    "element": 1,
+    "text": "Western Australia collection",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 316
+  },
+  {
+    "width": 390,
+    "state": "0-3",
+    "element": 2,
+    "text": "Choose a studyParrot's PerchStork's SanctuaryHorse",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 385
+  },
+  {
+    "width": 390,
+    "state": "0-3",
+    "element": 3,
+    "text": "Parrot's PerchStork's SanctuaryHorse's MeadowFlami",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 216
+  },
+  {
+    "width": 390,
+    "state": "0-3",
+    "element": 4,
+    "text": "Reset view",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 116
+  },
+  {
+    "width": 390,
+    "state": "0-3",
+    "element": 5,
+    "text": "Dark UI",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 87
+  },
+  {
+    "width": 390,
+    "state": "0-3",
+    "element": 6,
+    "text": "Play motion",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 113
+  },
+  {
+    "width": 390,
+    "state": "0-3",
+    "element": 7,
+    "text": "Sound on",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 93
+  },
+  {
+    "width": 390,
+    "state": "0-3",
+    "element": 8,
+    "text": "4 of 4",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 63
+  },
+  {
+    "width": 390,
+    "state": "0-3",
+    "element": 9,
+    "text": "4 / 4 explored",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 157
+  },
+  {
+    "width": 390,
+    "state": "0-3",
+    "element": 10,
+    "text": "Flamingo Beach",
+    "minimum": 10.974687339272368,
+    "font": "26px",
+    "glyphPixels": 569
+  },
+  {
+    "width": 390,
+    "state": "0-3",
+    "element": 11,
+    "text": "Pink wings and a long neck form a bright flight si",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 1735
+  },
+  {
+    "width": 390,
+    "state": "0-3",
+    "element": 12,
+    "text": "About this study",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 166
+  },
+  {
+    "width": 390,
+    "state": "0-3",
+    "element": 13,
+    "text": "\u2190 Previous",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 100
+  },
+  {
+    "width": 390,
+    "state": "0-3",
+    "element": 14,
+    "text": "Next \u2192",
+    "minimum": 8.654696930556783,
+    "font": "15px",
+    "glyphPixels": 55
+  },
+  {
+    "width": 390,
+    "state": "0-bottom",
+    "element": 0,
+    "text": "Wildlife studies",
+    "minimum": 10.974687339272368,
+    "font": "26px",
+    "glyphPixels": 542
+  },
+  {
+    "width": 390,
+    "state": "0-bottom",
+    "element": 1,
+    "text": "Western Australia collection",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 316
+  },
+  {
+    "width": 390,
+    "state": "0-bottom",
+    "element": 2,
+    "text": "Choose a studyParrot's PerchStork's SanctuaryHorse",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 385
+  },
+  {
+    "width": 390,
+    "state": "0-bottom",
+    "element": 3,
+    "text": "Parrot's PerchStork's SanctuaryHorse's MeadowFlami",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 216
+  },
+  {
+    "width": 390,
+    "state": "0-bottom",
+    "element": 4,
+    "text": "Reset view",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 116
+  },
+  {
+    "width": 390,
+    "state": "0-bottom",
+    "element": 5,
+    "text": "Dark UI",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 87
+  },
+  {
+    "width": 390,
+    "state": "0-bottom",
+    "element": 6,
+    "text": "Play motion",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 113
+  },
+  {
+    "width": 390,
+    "state": "0-bottom",
+    "element": 7,
+    "text": "Sound on",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 93
+  },
+  {
+    "width": 390,
+    "state": "0-bottom",
+    "element": 11,
+    "text": "Pink wings and a long neck form a bright flight si",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 286
+  },
+  {
+    "width": 390,
+    "state": "0-bottom",
+    "element": 12,
+    "text": "About this study",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 166
+  },
+  {
+    "width": 390,
+    "state": "0-bottom",
+    "element": 13,
+    "text": "\u2190 Previous",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 100
+  },
+  {
+    "width": 390,
+    "state": "0-bottom",
+    "element": 14,
+    "text": "Next \u2192",
+    "minimum": 8.654696930556783,
+    "font": "15px",
+    "glyphPixels": 55
+  },
+  {
+    "width": 390,
+    "state": "0-bottom",
+    "element": 15,
+    "text": "Guide & credits",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 168
+  },
+  {
+    "width": 390,
+    "state": "0-bottom",
+    "element": 16,
+    "text": "Imagined habitats, not documented Western Australi",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 642
+  },
+  {
+    "width": 390,
+    "state": "0-guide",
+    "element": 0,
+    "text": "Close",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 76
+  },
+  {
+    "width": 390,
+    "state": "0-guide",
+    "element": 1,
+    "text": "About the collection",
+    "minimum": 10.974687339272368,
+    "font": "28px",
+    "glyphPixels": 725
+  },
+  {
+    "width": 390,
+    "state": "0-guide",
+    "element": 2,
+    "text": "Four subjects, your own angle",
+    "minimum": 10.974687339272368,
+    "font": "23px",
+    "glyphPixels": 672
+  },
+  {
+    "width": 390,
+    "state": "0-guide",
+    "element": 3,
+    "text": "Choose a study. Drag or use the arrow keys to orbi",
+    "minimum": 10.974687339272368,
+    "font": "16px",
+    "glyphPixels": 2641
+  },
+  {
+    "width": 390,
+    "state": "0-guide",
+    "element": 4,
+    "text": "What these scenes mean",
+    "minimum": 10.974687339272368,
+    "font": "23px",
+    "glyphPixels": 595
+  },
+  {
+    "width": 390,
+    "state": "0-guide",
+    "element": 5,
+    "text": "The repository is named Western Australia, but its",
+    "minimum": 10.974687339272368,
+    "font": "16px",
+    "glyphPixels": 3738
+  },
+  {
+    "width": 390,
+    "state": "0-guide",
+    "element": 6,
+    "text": "Inherited models",
+    "minimum": 10.974687339272368,
+    "font": "23px",
+    "glyphPixels": 455
+  },
+  {
+    "width": 390,
+    "state": "0-guide",
+    "element": 7,
+    "text": "All four original GLB files are retained, includin",
+    "minimum": 10.974687339272368,
+    "font": "16px",
+    "glyphPixels": 512
+  },
+  {
+    "width": 390,
+    "state": "0-guidebottom",
+    "element": 5,
+    "text": "The repository is named Western Australia, but its",
+    "minimum": 10.974687339272368,
+    "font": "16px",
+    "glyphPixels": 691
+  },
+  {
+    "width": 390,
+    "state": "0-guidebottom",
+    "element": 6,
+    "text": "Inherited models",
+    "minimum": 10.974687339272368,
+    "font": "23px",
+    "glyphPixels": 455
+  },
+  {
+    "width": 390,
+    "state": "0-guidebottom",
+    "element": 7,
+    "text": "All four original GLB files are retained, includin",
+    "minimum": 10.974687339272368,
+    "font": "16px",
+    "glyphPixels": 7497
+  },
+  {
+    "width": 390,
+    "state": "0-guidebottom",
+    "element": 8,
+    "text": "Sources, licence and exact file hashes",
+    "minimum": 10.974687339272368,
+    "font": "16px",
+    "glyphPixels": 770
+  },
+  {
+    "width": 390,
+    "state": "0-guidebottom",
+    "element": 9,
+    "text": "Sound only by invitation",
+    "minimum": 10.974687339272368,
+    "font": "23px",
+    "glyphPixels": 571
+  },
+  {
+    "width": 390,
+    "state": "0-guidebottom",
+    "element": 10,
+    "text": "The optional sound is a synthesized soft wind text",
+    "minimum": 10.974687339272368,
+    "font": "16px",
+    "glyphPixels": 2128
+  },
+  {
+    "width": 390,
+    "state": "0-landmark",
+    "element": 0,
+    "text": "Close",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 76
+  },
+  {
+    "width": 390,
+    "state": "0-landmark",
+    "element": 1,
+    "text": "Flamingo Beach",
+    "minimum": 10.974687339272368,
+    "font": "28px",
+    "glyphPixels": 672
+  },
+  {
+    "width": 390,
+    "state": "0-landmark",
+    "element": 2,
+    "text": "Pink wings and a long neck form a bright flight si",
+    "minimum": 10.974687339272368,
+    "font": "16px",
+    "glyphPixels": 2056
+  },
+  {
+    "width": 390,
+    "state": "0-landmark",
+    "element": 3,
+    "text": "The model and animation are preserved from the ear",
+    "minimum": 10.974687339272368,
+    "font": "16px",
+    "glyphPixels": 3484
+  },
+  {
+    "width": 390,
+    "state": "0-landmark",
+    "element": 4,
+    "text": "Drag to inspect the subject from every side. Motio",
+    "minimum": 10.974687339272368,
+    "font": "16px",
+    "glyphPixels": 2041
+  },
+  {
+    "width": 390,
+    "state": "1-0",
+    "element": 0,
+    "text": "Wildlife studies",
+    "minimum": 10.833904518530991,
+    "font": "26px",
+    "glyphPixels": 562
+  },
+  {
+    "width": 390,
+    "state": "1-0",
+    "element": 1,
+    "text": "Western Australia collection",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 336
+  },
+  {
+    "width": 390,
+    "state": "1-0",
+    "element": 2,
+    "text": "Choose a studyParrot's PerchStork's SanctuaryHorse",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 372
+  },
+  {
+    "width": 390,
+    "state": "1-0",
+    "element": 3,
+    "text": "Parrot's PerchStork's SanctuaryHorse's MeadowFlami",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 180
+  },
+  {
+    "width": 390,
+    "state": "1-0",
+    "element": 4,
+    "text": "Reset view",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 132
+  },
+  {
+    "width": 390,
+    "state": "1-0",
+    "element": 5,
+    "text": "Light UI",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 110
+  },
+  {
+    "width": 390,
+    "state": "1-0",
+    "element": 6,
+    "text": "Play motion",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 138
+  },
+  {
+    "width": 390,
+    "state": "1-0",
+    "element": 7,
+    "text": "Sound on",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 104
+  },
+  {
+    "width": 390,
+    "state": "1-0",
+    "element": 8,
+    "text": "1 of 4",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 65
+  },
+  {
+    "width": 390,
+    "state": "1-0",
+    "element": 9,
+    "text": "4 / 4 explored",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 166
+  },
+  {
+    "width": 390,
+    "state": "1-0",
+    "element": 10,
+    "text": "Parrot's Perch",
+    "minimum": 10.833904518530991,
+    "font": "26px",
+    "glyphPixels": 494
+  },
+  {
+    "width": 390,
+    "state": "1-0",
+    "element": 11,
+    "text": "A scarlet bird spreads its blue and yellow wings a",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 1752
+  },
+  {
+    "width": 390,
+    "state": "1-0",
+    "element": 12,
+    "text": "About this study",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 205
+  },
+  {
+    "width": 390,
+    "state": "1-0",
+    "element": 13,
+    "text": "\u2190 Previous",
+    "minimum": 7.918775218811363,
+    "font": "15px",
+    "glyphPixels": 110
+  },
+  {
+    "width": 390,
+    "state": "1-0",
+    "element": 14,
+    "text": "Next \u2192",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 68
+  },
+  {
+    "width": 390,
+    "state": "1-1",
+    "element": 0,
+    "text": "Wildlife studies",
+    "minimum": 10.833904518530991,
+    "font": "26px",
+    "glyphPixels": 562
+  },
+  {
+    "width": 390,
+    "state": "1-1",
+    "element": 1,
+    "text": "Western Australia collection",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 336
+  },
+  {
+    "width": 390,
+    "state": "1-1",
+    "element": 2,
+    "text": "Choose a studyParrot's PerchStork's SanctuaryHorse",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 445
+  },
+  {
+    "width": 390,
+    "state": "1-1",
+    "element": 3,
+    "text": "Parrot's PerchStork's SanctuaryHorse's MeadowFlami",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 253
+  },
+  {
+    "width": 390,
+    "state": "1-1",
+    "element": 4,
+    "text": "Reset view",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 132
+  },
+  {
+    "width": 390,
+    "state": "1-1",
+    "element": 5,
+    "text": "Light UI",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 110
+  },
+  {
+    "width": 390,
+    "state": "1-1",
+    "element": 6,
+    "text": "Play motion",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 138
+  },
+  {
+    "width": 390,
+    "state": "1-1",
+    "element": 7,
+    "text": "Sound on",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 104
+  },
+  {
+    "width": 390,
+    "state": "1-1",
+    "element": 8,
+    "text": "2 of 4",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 64
+  },
+  {
+    "width": 390,
+    "state": "1-1",
+    "element": 9,
+    "text": "4 / 4 explored",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 166
+  },
+  {
+    "width": 390,
+    "state": "1-1",
+    "element": 10,
+    "text": "Stork's Sanctuary",
+    "minimum": 10.833904518530991,
+    "font": "26px",
+    "glyphPixels": 560
+  },
+  {
+    "width": 390,
+    "state": "1-1",
+    "element": 11,
+    "text": "White wings, dark flight feathers and a long red b",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 2084
+  },
+  {
+    "width": 390,
+    "state": "1-1",
+    "element": 12,
+    "text": "About this study",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 205
+  },
+  {
+    "width": 390,
+    "state": "1-1",
+    "element": 13,
+    "text": "\u2190 Previous",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 111
+  },
+  {
+    "width": 390,
+    "state": "1-1",
+    "element": 14,
+    "text": "Next \u2192",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 68
+  },
+  {
+    "width": 390,
+    "state": "1-2",
+    "element": 0,
+    "text": "Wildlife studies",
+    "minimum": 10.833904518530991,
+    "font": "26px",
+    "glyphPixels": 562
+  },
+  {
+    "width": 390,
+    "state": "1-2",
+    "element": 1,
+    "text": "Western Australia collection",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 336
+  },
+  {
+    "width": 390,
+    "state": "1-2",
+    "element": 2,
+    "text": "Choose a studyParrot's PerchStork's SanctuaryHorse",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 440
+  },
+  {
+    "width": 390,
+    "state": "1-2",
+    "element": 3,
+    "text": "Parrot's PerchStork's SanctuaryHorse's MeadowFlami",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 248
+  },
+  {
+    "width": 390,
+    "state": "1-2",
+    "element": 4,
+    "text": "Reset view",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 132
+  },
+  {
+    "width": 390,
+    "state": "1-2",
+    "element": 5,
+    "text": "Light UI",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 110
+  },
+  {
+    "width": 390,
+    "state": "1-2",
+    "element": 6,
+    "text": "Play motion",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 138
+  },
+  {
+    "width": 390,
+    "state": "1-2",
+    "element": 7,
+    "text": "Sound on",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 104
+  },
+  {
+    "width": 390,
+    "state": "1-2",
+    "element": 8,
+    "text": "3 of 4",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 64
+  },
+  {
+    "width": 390,
+    "state": "1-2",
+    "element": 9,
+    "text": "4 / 4 explored",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 166
+  },
+  {
+    "width": 390,
+    "state": "1-2",
+    "element": 10,
+    "text": "Horse's Meadow",
+    "minimum": 10.833904518530991,
+    "font": "26px",
+    "glyphPixels": 595
+  },
+  {
+    "width": 390,
+    "state": "1-2",
+    "element": 11,
+    "text": "A galloping horse crosses a fenced meadow. Pause t",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 1675
+  },
+  {
+    "width": 390,
+    "state": "1-2",
+    "element": 12,
+    "text": "About this study",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 205
+  },
+  {
+    "width": 390,
+    "state": "1-2",
+    "element": 13,
+    "text": "\u2190 Previous",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 111
+  },
+  {
+    "width": 390,
+    "state": "1-2",
+    "element": 14,
+    "text": "Next \u2192",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 68
+  },
+  {
+    "width": 390,
+    "state": "1-3",
+    "element": 0,
+    "text": "Wildlife studies",
+    "minimum": 10.833904518530991,
+    "font": "26px",
+    "glyphPixels": 562
+  },
+  {
+    "width": 390,
+    "state": "1-3",
+    "element": 1,
+    "text": "Western Australia collection",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 336
+  },
+  {
+    "width": 390,
+    "state": "1-3",
+    "element": 2,
+    "text": "Choose a studyParrot's PerchStork's SanctuaryHorse",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 436
+  },
+  {
+    "width": 390,
+    "state": "1-3",
+    "element": 3,
+    "text": "Parrot's PerchStork's SanctuaryHorse's MeadowFlami",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 244
+  },
+  {
+    "width": 390,
+    "state": "1-3",
+    "element": 4,
+    "text": "Reset view",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 132
+  },
+  {
+    "width": 390,
+    "state": "1-3",
+    "element": 5,
+    "text": "Light UI",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 110
+  },
+  {
+    "width": 390,
+    "state": "1-3",
+    "element": 6,
+    "text": "Play motion",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 138
+  },
+  {
+    "width": 390,
+    "state": "1-3",
+    "element": 7,
+    "text": "Sound on",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 104
+  },
+  {
+    "width": 390,
+    "state": "1-3",
+    "element": 8,
+    "text": "4 of 4",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 68
+  },
+  {
+    "width": 390,
+    "state": "1-3",
+    "element": 9,
+    "text": "4 / 4 explored",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 166
+  },
+  {
+    "width": 390,
+    "state": "1-3",
+    "element": 10,
+    "text": "Flamingo Beach",
+    "minimum": 10.833904518530991,
+    "font": "26px",
+    "glyphPixels": 595
+  },
+  {
+    "width": 390,
+    "state": "1-3",
+    "element": 11,
+    "text": "Pink wings and a long neck form a bright flight si",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 1915
+  },
+  {
+    "width": 390,
+    "state": "1-3",
+    "element": 12,
+    "text": "About this study",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 205
+  },
+  {
+    "width": 390,
+    "state": "1-3",
+    "element": 13,
+    "text": "\u2190 Previous",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 111
+  },
+  {
+    "width": 390,
+    "state": "1-3",
+    "element": 14,
+    "text": "Next \u2192",
+    "minimum": 7.918775218811363,
+    "font": "15px",
+    "glyphPixels": 68
+  },
+  {
+    "width": 390,
+    "state": "1-bottom",
+    "element": 0,
+    "text": "Wildlife studies",
+    "minimum": 10.833904518530991,
+    "font": "26px",
+    "glyphPixels": 562
+  },
+  {
+    "width": 390,
+    "state": "1-bottom",
+    "element": 1,
+    "text": "Western Australia collection",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 336
+  },
+  {
+    "width": 390,
+    "state": "1-bottom",
+    "element": 2,
+    "text": "Choose a studyParrot's PerchStork's SanctuaryHorse",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 436
+  },
+  {
+    "width": 390,
+    "state": "1-bottom",
+    "element": 3,
+    "text": "Parrot's PerchStork's SanctuaryHorse's MeadowFlami",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 244
+  },
+  {
+    "width": 390,
+    "state": "1-bottom",
+    "element": 4,
+    "text": "Reset view",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 132
+  },
+  {
+    "width": 390,
+    "state": "1-bottom",
+    "element": 5,
+    "text": "Light UI",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 110
+  },
+  {
+    "width": 390,
+    "state": "1-bottom",
+    "element": 6,
+    "text": "Play motion",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 138
+  },
+  {
+    "width": 390,
+    "state": "1-bottom",
+    "element": 7,
+    "text": "Sound on",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 104
+  },
+  {
+    "width": 390,
+    "state": "1-bottom",
+    "element": 11,
+    "text": "Pink wings and a long neck form a bright flight si",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 318
+  },
+  {
+    "width": 390,
+    "state": "1-bottom",
+    "element": 12,
+    "text": "About this study",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 205
+  },
+  {
+    "width": 390,
+    "state": "1-bottom",
+    "element": 13,
+    "text": "\u2190 Previous",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 111
+  },
+  {
+    "width": 390,
+    "state": "1-bottom",
+    "element": 14,
+    "text": "Next \u2192",
+    "minimum": 7.918775218811363,
+    "font": "15px",
+    "glyphPixels": 68
+  },
+  {
+    "width": 390,
+    "state": "1-bottom",
+    "element": 15,
+    "text": "Guide & credits",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 203
+  },
+  {
+    "width": 390,
+    "state": "1-bottom",
+    "element": 16,
+    "text": "Imagined habitats, not documented Western Australi",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 705
+  },
+  {
+    "width": 390,
+    "state": "1-guide",
+    "element": 0,
+    "text": "Close",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 80
+  },
+  {
+    "width": 390,
+    "state": "1-guide",
+    "element": 1,
+    "text": "About the collection",
+    "minimum": 10.833904518530991,
+    "font": "28px",
+    "glyphPixels": 803
+  },
+  {
+    "width": 390,
+    "state": "1-guide",
+    "element": 2,
+    "text": "Four subjects, your own angle",
+    "minimum": 10.833904518530991,
+    "font": "23px",
+    "glyphPixels": 759
+  },
+  {
+    "width": 390,
+    "state": "1-guide",
+    "element": 3,
+    "text": "Choose a study. Drag or use the arrow keys to orbi",
+    "minimum": 10.833904518530991,
+    "font": "16px",
+    "glyphPixels": 2993
+  },
+  {
+    "width": 390,
+    "state": "1-guide",
+    "element": 4,
+    "text": "What these scenes mean",
+    "minimum": 10.833904518530991,
+    "font": "23px",
+    "glyphPixels": 639
+  },
+  {
+    "width": 390,
+    "state": "1-guide",
+    "element": 5,
+    "text": "The repository is named Western Australia, but its",
+    "minimum": 10.833904518530991,
+    "font": "16px",
+    "glyphPixels": 4189
+  },
+  {
+    "width": 390,
+    "state": "1-guide",
+    "element": 6,
+    "text": "Inherited models",
+    "minimum": 10.833904518530991,
+    "font": "23px",
+    "glyphPixels": 485
+  },
+  {
+    "width": 390,
+    "state": "1-guide",
+    "element": 7,
+    "text": "All four original GLB files are retained, includin",
+    "minimum": 10.833904518530991,
+    "font": "16px",
+    "glyphPixels": 578
+  },
+  {
+    "width": 390,
+    "state": "1-guidebottom",
+    "element": 5,
+    "text": "The repository is named Western Australia, but its",
+    "minimum": 10.833904518530991,
+    "font": "16px",
+    "glyphPixels": 778
+  },
+  {
+    "width": 390,
+    "state": "1-guidebottom",
+    "element": 6,
+    "text": "Inherited models",
+    "minimum": 10.833904518530991,
+    "font": "23px",
+    "glyphPixels": 485
+  },
+  {
+    "width": 390,
+    "state": "1-guidebottom",
+    "element": 7,
+    "text": "All four original GLB files are retained, includin",
+    "minimum": 10.833904518530991,
+    "font": "16px",
+    "glyphPixels": 8403
+  },
+  {
+    "width": 390,
+    "state": "1-guidebottom",
+    "element": 8,
+    "text": "Sources, licence and exact file hashes",
+    "minimum": 10.833904518530991,
+    "font": "16px",
+    "glyphPixels": 848
+  },
+  {
+    "width": 390,
+    "state": "1-guidebottom",
+    "element": 9,
+    "text": "Sound only by invitation",
+    "minimum": 10.833904518530991,
+    "font": "23px",
+    "glyphPixels": 621
+  },
+  {
+    "width": 390,
+    "state": "1-guidebottom",
+    "element": 10,
+    "text": "The optional sound is a synthesized soft wind text",
+    "minimum": 10.833904518530991,
+    "font": "16px",
+    "glyphPixels": 2395
+  },
+  {
+    "width": 390,
+    "state": "1-landmark",
+    "element": 0,
+    "text": "Close",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 80
+  },
+  {
+    "width": 390,
+    "state": "1-landmark",
+    "element": 1,
+    "text": "Flamingo Beach",
+    "minimum": 10.833904518530991,
+    "font": "28px",
+    "glyphPixels": 710
+  },
+  {
+    "width": 390,
+    "state": "1-landmark",
+    "element": 2,
+    "text": "Pink wings and a long neck form a bright flight si",
+    "minimum": 10.833904518530991,
+    "font": "16px",
+    "glyphPixels": 2322
+  },
+  {
+    "width": 390,
+    "state": "1-landmark",
+    "element": 3,
+    "text": "The model and animation are preserved from the ear",
+    "minimum": 10.833904518530991,
+    "font": "16px",
+    "glyphPixels": 3926
+  },
+  {
+    "width": 390,
+    "state": "1-landmark",
+    "element": 4,
+    "text": "Drag to inspect the subject from every side. Motio",
+    "minimum": 10.833904518530991,
+    "font": "16px",
+    "glyphPixels": 2324
+  },
+  {
+    "width": 1440,
+    "state": "0-0",
+    "element": 0,
+    "text": "Wildlife studies",
+    "minimum": 10.974687339272368,
+    "font": "32px",
+    "glyphPixels": 889
+  },
+  {
+    "width": 1440,
+    "state": "0-0",
+    "element": 1,
+    "text": "Western Australia collection",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 314
+  },
+  {
+    "width": 1440,
+    "state": "0-0",
+    "element": 2,
+    "text": "Choose a studyParrot's PerchStork's SanctuaryHorse",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 345
+  },
+  {
+    "width": 1440,
+    "state": "0-0",
+    "element": 3,
+    "text": "Parrot's PerchStork's SanctuaryHorse's MeadowFlami",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 187
+  },
+  {
+    "width": 1440,
+    "state": "0-0",
+    "element": 4,
+    "text": "Reset view",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 136
+  },
+  {
+    "width": 1440,
+    "state": "0-0",
+    "element": 5,
+    "text": "Dark UI",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 95
+  },
+  {
+    "width": 1440,
+    "state": "0-0",
+    "element": 6,
+    "text": "Play motion",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 146
+  },
+  {
+    "width": 1440,
+    "state": "0-0",
+    "element": 7,
+    "text": "Sound on",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 117
+  },
+  {
+    "width": 1440,
+    "state": "0-0",
+    "element": 8,
+    "text": "1 of 4",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 52
+  },
+  {
+    "width": 1440,
+    "state": "0-0",
+    "element": 9,
+    "text": "4 / 4 explored",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 157
+  },
+  {
+    "width": 1440,
+    "state": "0-0",
+    "element": 10,
+    "text": "Parrot's Perch",
+    "minimum": 10.974687339272368,
+    "font": "32px",
+    "glyphPixels": 716
+  },
+  {
+    "width": 1440,
+    "state": "0-0",
+    "element": 11,
+    "text": "A scarlet bird spreads its blue and yellow wings a",
+    "minimum": 10.974687339272368,
+    "font": "16px",
+    "glyphPixels": 1957
+  },
+  {
+    "width": 1440,
+    "state": "0-0",
+    "element": 12,
+    "text": "About this study",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 197
+  },
+  {
+    "width": 1440,
+    "state": "0-0",
+    "element": 13,
+    "text": "\u2190 Previous",
+    "minimum": 8.654696930556783,
+    "font": "15px",
+    "glyphPixels": 107
+  },
+  {
+    "width": 1440,
+    "state": "0-0",
+    "element": 14,
+    "text": "Next \u2192",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 61
+  },
+  {
+    "width": 1440,
+    "state": "0-0",
+    "element": 15,
+    "text": "Guide & credits",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 184
+  },
+  {
+    "width": 1440,
+    "state": "0-0",
+    "element": 16,
+    "text": "Imagined habitats, not documented Western Australi",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 613
+  },
+  {
+    "width": 1440,
+    "state": "0-1",
+    "element": 0,
+    "text": "Wildlife studies",
+    "minimum": 10.974687339272368,
+    "font": "32px",
+    "glyphPixels": 889
+  },
+  {
+    "width": 1440,
+    "state": "0-1",
+    "element": 1,
+    "text": "Western Australia collection",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 314
+  },
+  {
+    "width": 1440,
+    "state": "0-1",
+    "element": 2,
+    "text": "Choose a studyParrot's PerchStork's SanctuaryHorse",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 353
+  },
+  {
+    "width": 1440,
+    "state": "0-1",
+    "element": 3,
+    "text": "Parrot's PerchStork's SanctuaryHorse's MeadowFlami",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 195
+  },
+  {
+    "width": 1440,
+    "state": "0-1",
+    "element": 4,
+    "text": "Reset view",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 136
+  },
+  {
+    "width": 1440,
+    "state": "0-1",
+    "element": 5,
+    "text": "Dark UI",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 95
+  },
+  {
+    "width": 1440,
+    "state": "0-1",
+    "element": 6,
+    "text": "Play motion",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 146
+  },
+  {
+    "width": 1440,
+    "state": "0-1",
+    "element": 7,
+    "text": "Sound on",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 117
+  },
+  {
+    "width": 1440,
+    "state": "0-1",
+    "element": 8,
+    "text": "2 of 4",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 60
+  },
+  {
+    "width": 1440,
+    "state": "0-1",
+    "element": 9,
+    "text": "4 / 4 explored",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 157
+  },
+  {
+    "width": 1440,
+    "state": "0-1",
+    "element": 10,
+    "text": "Stork's Sanctuary",
+    "minimum": 10.974687339272368,
+    "font": "32px",
+    "glyphPixels": 880
+  },
+  {
+    "width": 1440,
+    "state": "0-1",
+    "element": 11,
+    "text": "White wings, dark flight feathers and a long red b",
+    "minimum": 10.974687339272368,
+    "font": "16px",
+    "glyphPixels": 2314
+  },
+  {
+    "width": 1440,
+    "state": "0-1",
+    "element": 12,
+    "text": "About this study",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 197
+  },
+  {
+    "width": 1440,
+    "state": "0-1",
+    "element": 13,
+    "text": "\u2190 Previous",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 106
+  },
+  {
+    "width": 1440,
+    "state": "0-1",
+    "element": 14,
+    "text": "Next \u2192",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 61
+  },
+  {
+    "width": 1440,
+    "state": "0-1",
+    "element": 15,
+    "text": "Guide & credits",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 184
+  },
+  {
+    "width": 1440,
+    "state": "0-1",
+    "element": 16,
+    "text": "Imagined habitats, not documented Western Australi",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 613
+  },
+  {
+    "width": 1440,
+    "state": "0-2",
+    "element": 0,
+    "text": "Wildlife studies",
+    "minimum": 10.974687339272368,
+    "font": "32px",
+    "glyphPixels": 889
+  },
+  {
+    "width": 1440,
+    "state": "0-2",
+    "element": 1,
+    "text": "Western Australia collection",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 314
+  },
+  {
+    "width": 1440,
+    "state": "0-2",
+    "element": 2,
+    "text": "Choose a studyParrot's PerchStork's SanctuaryHorse",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 375
+  },
+  {
+    "width": 1440,
+    "state": "0-2",
+    "element": 3,
+    "text": "Parrot's PerchStork's SanctuaryHorse's MeadowFlami",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 217
+  },
+  {
+    "width": 1440,
+    "state": "0-2",
+    "element": 4,
+    "text": "Reset view",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 136
+  },
+  {
+    "width": 1440,
+    "state": "0-2",
+    "element": 5,
+    "text": "Dark UI",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 95
+  },
+  {
+    "width": 1440,
+    "state": "0-2",
+    "element": 6,
+    "text": "Play motion",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 146
+  },
+  {
+    "width": 1440,
+    "state": "0-2",
+    "element": 7,
+    "text": "Sound on",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 117
+  },
+  {
+    "width": 1440,
+    "state": "0-2",
+    "element": 8,
+    "text": "3 of 4",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 58
+  },
+  {
+    "width": 1440,
+    "state": "0-2",
+    "element": 9,
+    "text": "4 / 4 explored",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 157
+  },
+  {
+    "width": 1440,
+    "state": "0-2",
+    "element": 10,
+    "text": "Horse's Meadow",
+    "minimum": 10.974687339272368,
+    "font": "32px",
+    "glyphPixels": 857
+  },
+  {
+    "width": 1440,
+    "state": "0-2",
+    "element": 11,
+    "text": "A galloping horse crosses a fenced meadow. Pause t",
+    "minimum": 10.974687339272368,
+    "font": "16px",
+    "glyphPixels": 1836
+  },
+  {
+    "width": 1440,
+    "state": "0-2",
+    "element": 12,
+    "text": "About this study",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 197
+  },
+  {
+    "width": 1440,
+    "state": "0-2",
+    "element": 13,
+    "text": "\u2190 Previous",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 106
+  },
+  {
+    "width": 1440,
+    "state": "0-2",
+    "element": 14,
+    "text": "Next \u2192",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 61
+  },
+  {
+    "width": 1440,
+    "state": "0-2",
+    "element": 15,
+    "text": "Guide & credits",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 184
+  },
+  {
+    "width": 1440,
+    "state": "0-2",
+    "element": 16,
+    "text": "Imagined habitats, not documented Western Australi",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 613
+  },
+  {
+    "width": 1440,
+    "state": "0-3",
+    "element": 0,
+    "text": "Wildlife studies",
+    "minimum": 10.974687339272368,
+    "font": "32px",
+    "glyphPixels": 889
+  },
+  {
+    "width": 1440,
+    "state": "0-3",
+    "element": 1,
+    "text": "Western Australia collection",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 314
+  },
+  {
+    "width": 1440,
+    "state": "0-3",
+    "element": 2,
+    "text": "Choose a studyParrot's PerchStork's SanctuaryHorse",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 406
+  },
+  {
+    "width": 1440,
+    "state": "0-3",
+    "element": 3,
+    "text": "Parrot's PerchStork's SanctuaryHorse's MeadowFlami",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 248
+  },
+  {
+    "width": 1440,
+    "state": "0-3",
+    "element": 4,
+    "text": "Reset view",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 136
+  },
+  {
+    "width": 1440,
+    "state": "0-3",
+    "element": 5,
+    "text": "Dark UI",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 95
+  },
+  {
+    "width": 1440,
+    "state": "0-3",
+    "element": 6,
+    "text": "Play motion",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 146
+  },
+  {
+    "width": 1440,
+    "state": "0-3",
+    "element": 7,
+    "text": "Sound on",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 117
+  },
+  {
+    "width": 1440,
+    "state": "0-3",
+    "element": 8,
+    "text": "4 of 4",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 63
+  },
+  {
+    "width": 1440,
+    "state": "0-3",
+    "element": 9,
+    "text": "4 / 4 explored",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 157
+  },
+  {
+    "width": 1440,
+    "state": "0-3",
+    "element": 10,
+    "text": "Flamingo Beach",
+    "minimum": 10.974687339272368,
+    "font": "32px",
+    "glyphPixels": 922
+  },
+  {
+    "width": 1440,
+    "state": "0-3",
+    "element": 11,
+    "text": "Pink wings and a long neck form a bright flight si",
+    "minimum": 10.974687339272368,
+    "font": "16px",
+    "glyphPixels": 2056
+  },
+  {
+    "width": 1440,
+    "state": "0-3",
+    "element": 12,
+    "text": "About this study",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 197
+  },
+  {
+    "width": 1440,
+    "state": "0-3",
+    "element": 13,
+    "text": "\u2190 Previous",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 106
+  },
+  {
+    "width": 1440,
+    "state": "0-3",
+    "element": 14,
+    "text": "Next \u2192",
+    "minimum": 8.654696930556783,
+    "font": "15px",
+    "glyphPixels": 61
+  },
+  {
+    "width": 1440,
+    "state": "0-3",
+    "element": 15,
+    "text": "Guide & credits",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 184
+  },
+  {
+    "width": 1440,
+    "state": "0-3",
+    "element": 16,
+    "text": "Imagined habitats, not documented Western Australi",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 613
+  },
+  {
+    "width": 1440,
+    "state": "0-bottom",
+    "element": 0,
+    "text": "Wildlife studies",
+    "minimum": 10.974687339272368,
+    "font": "32px",
+    "glyphPixels": 889
+  },
+  {
+    "width": 1440,
+    "state": "0-bottom",
+    "element": 1,
+    "text": "Western Australia collection",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 314
+  },
+  {
+    "width": 1440,
+    "state": "0-bottom",
+    "element": 2,
+    "text": "Choose a studyParrot's PerchStork's SanctuaryHorse",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 406
+  },
+  {
+    "width": 1440,
+    "state": "0-bottom",
+    "element": 3,
+    "text": "Parrot's PerchStork's SanctuaryHorse's MeadowFlami",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 248
+  },
+  {
+    "width": 1440,
+    "state": "0-bottom",
+    "element": 4,
+    "text": "Reset view",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 136
+  },
+  {
+    "width": 1440,
+    "state": "0-bottom",
+    "element": 5,
+    "text": "Dark UI",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 95
+  },
+  {
+    "width": 1440,
+    "state": "0-bottom",
+    "element": 6,
+    "text": "Play motion",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 146
+  },
+  {
+    "width": 1440,
+    "state": "0-bottom",
+    "element": 7,
+    "text": "Sound on",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 117
+  },
+  {
+    "width": 1440,
+    "state": "0-bottom",
+    "element": 8,
+    "text": "4 of 4",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 63
+  },
+  {
+    "width": 1440,
+    "state": "0-bottom",
+    "element": 9,
+    "text": "4 / 4 explored",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 157
+  },
+  {
+    "width": 1440,
+    "state": "0-bottom",
+    "element": 10,
+    "text": "Flamingo Beach",
+    "minimum": 10.974687339272368,
+    "font": "32px",
+    "glyphPixels": 922
+  },
+  {
+    "width": 1440,
+    "state": "0-bottom",
+    "element": 11,
+    "text": "Pink wings and a long neck form a bright flight si",
+    "minimum": 10.974687339272368,
+    "font": "16px",
+    "glyphPixels": 2056
+  },
+  {
+    "width": 1440,
+    "state": "0-bottom",
+    "element": 12,
+    "text": "About this study",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 197
+  },
+  {
+    "width": 1440,
+    "state": "0-bottom",
+    "element": 13,
+    "text": "\u2190 Previous",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 106
+  },
+  {
+    "width": 1440,
+    "state": "0-bottom",
+    "element": 14,
+    "text": "Next \u2192",
+    "minimum": 8.654696930556783,
+    "font": "15px",
+    "glyphPixels": 61
+  },
+  {
+    "width": 1440,
+    "state": "0-bottom",
+    "element": 15,
+    "text": "Guide & credits",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 184
+  },
+  {
+    "width": 1440,
+    "state": "0-bottom",
+    "element": 16,
+    "text": "Imagined habitats, not documented Western Australi",
+    "minimum": 10.974687339272368,
+    "font": "14px",
+    "glyphPixels": 613
+  },
+  {
+    "width": 1440,
+    "state": "0-guide",
+    "element": 0,
+    "text": "Close",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 76
+  },
+  {
+    "width": 1440,
+    "state": "0-guide",
+    "element": 1,
+    "text": "About the collection",
+    "minimum": 10.974687339272368,
+    "font": "28px",
+    "glyphPixels": 725
+  },
+  {
+    "width": 1440,
+    "state": "0-guide",
+    "element": 2,
+    "text": "Four subjects, your own angle",
+    "minimum": 10.974687339272368,
+    "font": "23px",
+    "glyphPixels": 672
+  },
+  {
+    "width": 1440,
+    "state": "0-guide",
+    "element": 3,
+    "text": "Choose a study. Drag or use the arrow keys to orbi",
+    "minimum": 10.974687339272368,
+    "font": "16px",
+    "glyphPixels": 2639
+  },
+  {
+    "width": 1440,
+    "state": "0-guide",
+    "element": 4,
+    "text": "What these scenes mean",
+    "minimum": 10.974687339272368,
+    "font": "23px",
+    "glyphPixels": 595
+  },
+  {
+    "width": 1440,
+    "state": "0-guide",
+    "element": 5,
+    "text": "The repository is named Western Australia, but its",
+    "minimum": 10.974687339272368,
+    "font": "16px",
+    "glyphPixels": 3804
+  },
+  {
+    "width": 1440,
+    "state": "0-guide",
+    "element": 6,
+    "text": "Inherited models",
+    "minimum": 10.974687339272368,
+    "font": "23px",
+    "glyphPixels": 455
+  },
+  {
+    "width": 1440,
+    "state": "0-guide",
+    "element": 7,
+    "text": "All four original GLB files are retained, includin",
+    "minimum": 10.974687339272368,
+    "font": "16px",
+    "glyphPixels": 7576
+  },
+  {
+    "width": 1440,
+    "state": "0-guide",
+    "element": 8,
+    "text": "Sources, licence and exact file hashes",
+    "minimum": 10.974687339272368,
+    "font": "16px",
+    "glyphPixels": 787
+  },
+  {
+    "width": 1440,
+    "state": "0-guidebottom",
+    "element": 3,
+    "text": "Choose a study. Drag or use the arrow keys to orbi",
+    "minimum": 10.974687339272368,
+    "font": "16px",
+    "glyphPixels": 2639
+  },
+  {
+    "width": 1440,
+    "state": "0-guidebottom",
+    "element": 4,
+    "text": "What these scenes mean",
+    "minimum": 10.974687339272368,
+    "font": "23px",
+    "glyphPixels": 595
+  },
+  {
+    "width": 1440,
+    "state": "0-guidebottom",
+    "element": 5,
+    "text": "The repository is named Western Australia, but its",
+    "minimum": 10.974687339272368,
+    "font": "16px",
+    "glyphPixels": 3804
+  },
+  {
+    "width": 1440,
+    "state": "0-guidebottom",
+    "element": 6,
+    "text": "Inherited models",
+    "minimum": 10.974687339272368,
+    "font": "23px",
+    "glyphPixels": 455
+  },
+  {
+    "width": 1440,
+    "state": "0-guidebottom",
+    "element": 7,
+    "text": "All four original GLB files are retained, includin",
+    "minimum": 10.974687339272368,
+    "font": "16px",
+    "glyphPixels": 7576
+  },
+  {
+    "width": 1440,
+    "state": "0-guidebottom",
+    "element": 8,
+    "text": "Sources, licence and exact file hashes",
+    "minimum": 10.974687339272368,
+    "font": "16px",
+    "glyphPixels": 787
+  },
+  {
+    "width": 1440,
+    "state": "0-guidebottom",
+    "element": 9,
+    "text": "Sound only by invitation",
+    "minimum": 10.974687339272368,
+    "font": "23px",
+    "glyphPixels": 571
+  },
+  {
+    "width": 1440,
+    "state": "0-guidebottom",
+    "element": 10,
+    "text": "The optional sound is a synthesized soft wind text",
+    "minimum": 10.974687339272368,
+    "font": "16px",
+    "glyphPixels": 2116
+  },
+  {
+    "width": 1440,
+    "state": "0-landmark",
+    "element": 0,
+    "text": "Close",
+    "minimum": 10.974687339272368,
+    "font": "15px",
+    "glyphPixels": 76
+  },
+  {
+    "width": 1440,
+    "state": "0-landmark",
+    "element": 1,
+    "text": "Flamingo Beach",
+    "minimum": 10.974687339272368,
+    "font": "28px",
+    "glyphPixels": 672
+  },
+  {
+    "width": 1440,
+    "state": "0-landmark",
+    "element": 2,
+    "text": "Pink wings and a long neck form a bright flight si",
+    "minimum": 10.974687339272368,
+    "font": "16px",
+    "glyphPixels": 2069
+  },
+  {
+    "width": 1440,
+    "state": "0-landmark",
+    "element": 3,
+    "text": "The model and animation are preserved from the ear",
+    "minimum": 10.974687339272368,
+    "font": "16px",
+    "glyphPixels": 3490
+  },
+  {
+    "width": 1440,
+    "state": "0-landmark",
+    "element": 4,
+    "text": "Drag to inspect the subject from every side. Motio",
+    "minimum": 10.974687339272368,
+    "font": "16px",
+    "glyphPixels": 2045
+  },
+  {
+    "width": 1440,
+    "state": "1-0",
+    "element": 0,
+    "text": "Wildlife studies",
+    "minimum": 10.833904518530991,
+    "font": "32px",
+    "glyphPixels": 933
+  },
+  {
+    "width": 1440,
+    "state": "1-0",
+    "element": 1,
+    "text": "Western Australia collection",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 342
+  },
+  {
+    "width": 1440,
+    "state": "1-0",
+    "element": 2,
+    "text": "Choose a studyParrot's PerchStork's SanctuaryHorse",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 392
+  },
+  {
+    "width": 1440,
+    "state": "1-0",
+    "element": 3,
+    "text": "Parrot's PerchStork's SanctuaryHorse's MeadowFlami",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 209
+  },
+  {
+    "width": 1440,
+    "state": "1-0",
+    "element": 4,
+    "text": "Reset view",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 138
+  },
+  {
+    "width": 1440,
+    "state": "1-0",
+    "element": 5,
+    "text": "Light UI",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 110
+  },
+  {
+    "width": 1440,
+    "state": "1-0",
+    "element": 6,
+    "text": "Play motion",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 162
+  },
+  {
+    "width": 1440,
+    "state": "1-0",
+    "element": 7,
+    "text": "Sound on",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 127
+  },
+  {
+    "width": 1440,
+    "state": "1-0",
+    "element": 8,
+    "text": "1 of 4",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 65
+  },
+  {
+    "width": 1440,
+    "state": "1-0",
+    "element": 9,
+    "text": "4 / 4 explored",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 166
+  },
+  {
+    "width": 1440,
+    "state": "1-0",
+    "element": 10,
+    "text": "Parrot's Perch",
+    "minimum": 10.833904518530991,
+    "font": "32px",
+    "glyphPixels": 746
+  },
+  {
+    "width": 1440,
+    "state": "1-0",
+    "element": 11,
+    "text": "A scarlet bird spreads its blue and yellow wings a",
+    "minimum": 10.833904518530991,
+    "font": "16px",
+    "glyphPixels": 2201
+  },
+  {
+    "width": 1440,
+    "state": "1-0",
+    "element": 12,
+    "text": "About this study",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 220
+  },
+  {
+    "width": 1440,
+    "state": "1-0",
+    "element": 13,
+    "text": "\u2190 Previous",
+    "minimum": 7.918775218811363,
+    "font": "15px",
+    "glyphPixels": 116
+  },
+  {
+    "width": 1440,
+    "state": "1-0",
+    "element": 14,
+    "text": "Next \u2192",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 70
+  },
+  {
+    "width": 1440,
+    "state": "1-0",
+    "element": 15,
+    "text": "Guide & credits",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 207
+  },
+  {
+    "width": 1440,
+    "state": "1-0",
+    "element": 16,
+    "text": "Imagined habitats, not documented Western Australi",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 676
+  },
+  {
+    "width": 1440,
+    "state": "1-1",
+    "element": 0,
+    "text": "Wildlife studies",
+    "minimum": 10.833904518530991,
+    "font": "32px",
+    "glyphPixels": 933
+  },
+  {
+    "width": 1440,
+    "state": "1-1",
+    "element": 1,
+    "text": "Western Australia collection",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 342
+  },
+  {
+    "width": 1440,
+    "state": "1-1",
+    "element": 2,
+    "text": "Choose a studyParrot's PerchStork's SanctuaryHorse",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 415
+  },
+  {
+    "width": 1440,
+    "state": "1-1",
+    "element": 3,
+    "text": "Parrot's PerchStork's SanctuaryHorse's MeadowFlami",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 232
+  },
+  {
+    "width": 1440,
+    "state": "1-1",
+    "element": 4,
+    "text": "Reset view",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 138
+  },
+  {
+    "width": 1440,
+    "state": "1-1",
+    "element": 5,
+    "text": "Light UI",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 110
+  },
+  {
+    "width": 1440,
+    "state": "1-1",
+    "element": 6,
+    "text": "Play motion",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 162
+  },
+  {
+    "width": 1440,
+    "state": "1-1",
+    "element": 7,
+    "text": "Sound on",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 127
+  },
+  {
+    "width": 1440,
+    "state": "1-1",
+    "element": 8,
+    "text": "2 of 4",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 64
+  },
+  {
+    "width": 1440,
+    "state": "1-1",
+    "element": 9,
+    "text": "4 / 4 explored",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 166
+  },
+  {
+    "width": 1440,
+    "state": "1-1",
+    "element": 10,
+    "text": "Stork's Sanctuary",
+    "minimum": 10.833904518530991,
+    "font": "32px",
+    "glyphPixels": 925
+  },
+  {
+    "width": 1440,
+    "state": "1-1",
+    "element": 11,
+    "text": "White wings, dark flight feathers and a long red b",
+    "minimum": 10.833904518530991,
+    "font": "16px",
+    "glyphPixels": 2592
+  },
+  {
+    "width": 1440,
+    "state": "1-1",
+    "element": 12,
+    "text": "About this study",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 220
+  },
+  {
+    "width": 1440,
+    "state": "1-1",
+    "element": 13,
+    "text": "\u2190 Previous",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 117
+  },
+  {
+    "width": 1440,
+    "state": "1-1",
+    "element": 14,
+    "text": "Next \u2192",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 70
+  },
+  {
+    "width": 1440,
+    "state": "1-1",
+    "element": 15,
+    "text": "Guide & credits",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 207
+  },
+  {
+    "width": 1440,
+    "state": "1-1",
+    "element": 16,
+    "text": "Imagined habitats, not documented Western Australi",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 676
+  },
+  {
+    "width": 1440,
+    "state": "1-2",
+    "element": 0,
+    "text": "Wildlife studies",
+    "minimum": 10.833904518530991,
+    "font": "32px",
+    "glyphPixels": 933
+  },
+  {
+    "width": 1440,
+    "state": "1-2",
+    "element": 1,
+    "text": "Western Australia collection",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 342
+  },
+  {
+    "width": 1440,
+    "state": "1-2",
+    "element": 2,
+    "text": "Choose a studyParrot's PerchStork's SanctuaryHorse",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 441
+  },
+  {
+    "width": 1440,
+    "state": "1-2",
+    "element": 3,
+    "text": "Parrot's PerchStork's SanctuaryHorse's MeadowFlami",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 258
+  },
+  {
+    "width": 1440,
+    "state": "1-2",
+    "element": 4,
+    "text": "Reset view",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 138
+  },
+  {
+    "width": 1440,
+    "state": "1-2",
+    "element": 5,
+    "text": "Light UI",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 110
+  },
+  {
+    "width": 1440,
+    "state": "1-2",
+    "element": 6,
+    "text": "Play motion",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 162
+  },
+  {
+    "width": 1440,
+    "state": "1-2",
+    "element": 7,
+    "text": "Sound on",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 127
+  },
+  {
+    "width": 1440,
+    "state": "1-2",
+    "element": 8,
+    "text": "3 of 4",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 64
+  },
+  {
+    "width": 1440,
+    "state": "1-2",
+    "element": 9,
+    "text": "4 / 4 explored",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 166
+  },
+  {
+    "width": 1440,
+    "state": "1-2",
+    "element": 10,
+    "text": "Horse's Meadow",
+    "minimum": 10.833904518530991,
+    "font": "32px",
+    "glyphPixels": 895
+  },
+  {
+    "width": 1440,
+    "state": "1-2",
+    "element": 11,
+    "text": "A galloping horse crosses a fenced meadow. Pause t",
+    "minimum": 10.833904518530991,
+    "font": "16px",
+    "glyphPixels": 2108
+  },
+  {
+    "width": 1440,
+    "state": "1-2",
+    "element": 12,
+    "text": "About this study",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 220
+  },
+  {
+    "width": 1440,
+    "state": "1-2",
+    "element": 13,
+    "text": "\u2190 Previous",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 117
+  },
+  {
+    "width": 1440,
+    "state": "1-2",
+    "element": 14,
+    "text": "Next \u2192",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 70
+  },
+  {
+    "width": 1440,
+    "state": "1-2",
+    "element": 15,
+    "text": "Guide & credits",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 207
+  },
+  {
+    "width": 1440,
+    "state": "1-2",
+    "element": 16,
+    "text": "Imagined habitats, not documented Western Australi",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 676
+  },
+  {
+    "width": 1440,
+    "state": "1-3",
+    "element": 0,
+    "text": "Wildlife studies",
+    "minimum": 10.833904518530991,
+    "font": "32px",
+    "glyphPixels": 933
+  },
+  {
+    "width": 1440,
+    "state": "1-3",
+    "element": 1,
+    "text": "Western Australia collection",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 342
+  },
+  {
+    "width": 1440,
+    "state": "1-3",
+    "element": 2,
+    "text": "Choose a studyParrot's PerchStork's SanctuaryHorse",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 430
+  },
+  {
+    "width": 1440,
+    "state": "1-3",
+    "element": 3,
+    "text": "Parrot's PerchStork's SanctuaryHorse's MeadowFlami",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 247
+  },
+  {
+    "width": 1440,
+    "state": "1-3",
+    "element": 4,
+    "text": "Reset view",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 138
+  },
+  {
+    "width": 1440,
+    "state": "1-3",
+    "element": 5,
+    "text": "Light UI",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 110
+  },
+  {
+    "width": 1440,
+    "state": "1-3",
+    "element": 6,
+    "text": "Play motion",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 162
+  },
+  {
+    "width": 1440,
+    "state": "1-3",
+    "element": 7,
+    "text": "Sound on",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 127
+  },
+  {
+    "width": 1440,
+    "state": "1-3",
+    "element": 8,
+    "text": "4 of 4",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 68
+  },
+  {
+    "width": 1440,
+    "state": "1-3",
+    "element": 9,
+    "text": "4 / 4 explored",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 166
+  },
+  {
+    "width": 1440,
+    "state": "1-3",
+    "element": 10,
+    "text": "Flamingo Beach",
+    "minimum": 10.833904518530991,
+    "font": "32px",
+    "glyphPixels": 983
+  },
+  {
+    "width": 1440,
+    "state": "1-3",
+    "element": 11,
+    "text": "Pink wings and a long neck form a bright flight si",
+    "minimum": 10.833904518530991,
+    "font": "16px",
+    "glyphPixels": 2322
+  },
+  {
+    "width": 1440,
+    "state": "1-3",
+    "element": 12,
+    "text": "About this study",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 220
+  },
+  {
+    "width": 1440,
+    "state": "1-3",
+    "element": 13,
+    "text": "\u2190 Previous",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 117
+  },
+  {
+    "width": 1440,
+    "state": "1-3",
+    "element": 14,
+    "text": "Next \u2192",
+    "minimum": 7.918775218811363,
+    "font": "15px",
+    "glyphPixels": 69
+  },
+  {
+    "width": 1440,
+    "state": "1-3",
+    "element": 15,
+    "text": "Guide & credits",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 207
+  },
+  {
+    "width": 1440,
+    "state": "1-3",
+    "element": 16,
+    "text": "Imagined habitats, not documented Western Australi",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 676
+  },
+  {
+    "width": 1440,
+    "state": "1-bottom",
+    "element": 0,
+    "text": "Wildlife studies",
+    "minimum": 10.833904518530991,
+    "font": "32px",
+    "glyphPixels": 933
+  },
+  {
+    "width": 1440,
+    "state": "1-bottom",
+    "element": 1,
+    "text": "Western Australia collection",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 342
+  },
+  {
+    "width": 1440,
+    "state": "1-bottom",
+    "element": 2,
+    "text": "Choose a studyParrot's PerchStork's SanctuaryHorse",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 430
+  },
+  {
+    "width": 1440,
+    "state": "1-bottom",
+    "element": 3,
+    "text": "Parrot's PerchStork's SanctuaryHorse's MeadowFlami",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 247
+  },
+  {
+    "width": 1440,
+    "state": "1-bottom",
+    "element": 4,
+    "text": "Reset view",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 138
+  },
+  {
+    "width": 1440,
+    "state": "1-bottom",
+    "element": 5,
+    "text": "Light UI",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 110
+  },
+  {
+    "width": 1440,
+    "state": "1-bottom",
+    "element": 6,
+    "text": "Play motion",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 162
+  },
+  {
+    "width": 1440,
+    "state": "1-bottom",
+    "element": 7,
+    "text": "Sound on",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 127
+  },
+  {
+    "width": 1440,
+    "state": "1-bottom",
+    "element": 8,
+    "text": "4 of 4",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 68
+  },
+  {
+    "width": 1440,
+    "state": "1-bottom",
+    "element": 9,
+    "text": "4 / 4 explored",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 166
+  },
+  {
+    "width": 1440,
+    "state": "1-bottom",
+    "element": 10,
+    "text": "Flamingo Beach",
+    "minimum": 10.833904518530991,
+    "font": "32px",
+    "glyphPixels": 983
+  },
+  {
+    "width": 1440,
+    "state": "1-bottom",
+    "element": 11,
+    "text": "Pink wings and a long neck form a bright flight si",
+    "minimum": 10.833904518530991,
+    "font": "16px",
+    "glyphPixels": 2322
+  },
+  {
+    "width": 1440,
+    "state": "1-bottom",
+    "element": 12,
+    "text": "About this study",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 220
+  },
+  {
+    "width": 1440,
+    "state": "1-bottom",
+    "element": 13,
+    "text": "\u2190 Previous",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 117
+  },
+  {
+    "width": 1440,
+    "state": "1-bottom",
+    "element": 14,
+    "text": "Next \u2192",
+    "minimum": 7.918775218811363,
+    "font": "15px",
+    "glyphPixels": 69
+  },
+  {
+    "width": 1440,
+    "state": "1-bottom",
+    "element": 15,
+    "text": "Guide & credits",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 207
+  },
+  {
+    "width": 1440,
+    "state": "1-bottom",
+    "element": 16,
+    "text": "Imagined habitats, not documented Western Australi",
+    "minimum": 10.833904518530991,
+    "font": "14px",
+    "glyphPixels": 676
+  },
+  {
+    "width": 1440,
+    "state": "1-guide",
+    "element": 0,
+    "text": "Close",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 80
+  },
+  {
+    "width": 1440,
+    "state": "1-guide",
+    "element": 1,
+    "text": "About the collection",
+    "minimum": 10.833904518530991,
+    "font": "28px",
+    "glyphPixels": 803
+  },
+  {
+    "width": 1440,
+    "state": "1-guide",
+    "element": 2,
+    "text": "Four subjects, your own angle",
+    "minimum": 10.833904518530991,
+    "font": "23px",
+    "glyphPixels": 759
+  },
+  {
+    "width": 1440,
+    "state": "1-guide",
+    "element": 3,
+    "text": "Choose a study. Drag or use the arrow keys to orbi",
+    "minimum": 10.833904518530991,
+    "font": "16px",
+    "glyphPixels": 2997
+  },
+  {
+    "width": 1440,
+    "state": "1-guide",
+    "element": 4,
+    "text": "What these scenes mean",
+    "minimum": 10.833904518530991,
+    "font": "23px",
+    "glyphPixels": 639
+  },
+  {
+    "width": 1440,
+    "state": "1-guide",
+    "element": 5,
+    "text": "The repository is named Western Australia, but its",
+    "minimum": 10.833904518530991,
+    "font": "16px",
+    "glyphPixels": 4237
+  },
+  {
+    "width": 1440,
+    "state": "1-guide",
+    "element": 6,
+    "text": "Inherited models",
+    "minimum": 10.833904518530991,
+    "font": "23px",
+    "glyphPixels": 485
+  },
+  {
+    "width": 1440,
+    "state": "1-guide",
+    "element": 7,
+    "text": "All four original GLB files are retained, includin",
+    "minimum": 10.833904518530991,
+    "font": "16px",
+    "glyphPixels": 8549
+  },
+  {
+    "width": 1440,
+    "state": "1-guide",
+    "element": 8,
+    "text": "Sources, licence and exact file hashes",
+    "minimum": 10.833904518530991,
+    "font": "16px",
+    "glyphPixels": 857
+  },
+  {
+    "width": 1440,
+    "state": "1-guidebottom",
+    "element": 3,
+    "text": "Choose a study. Drag or use the arrow keys to orbi",
+    "minimum": 10.833904518530991,
+    "font": "16px",
+    "glyphPixels": 2997
+  },
+  {
+    "width": 1440,
+    "state": "1-guidebottom",
+    "element": 4,
+    "text": "What these scenes mean",
+    "minimum": 10.833904518530991,
+    "font": "23px",
+    "glyphPixels": 639
+  },
+  {
+    "width": 1440,
+    "state": "1-guidebottom",
+    "element": 5,
+    "text": "The repository is named Western Australia, but its",
+    "minimum": 10.833904518530991,
+    "font": "16px",
+    "glyphPixels": 4237
+  },
+  {
+    "width": 1440,
+    "state": "1-guidebottom",
+    "element": 6,
+    "text": "Inherited models",
+    "minimum": 10.833904518530991,
+    "font": "23px",
+    "glyphPixels": 485
+  },
+  {
+    "width": 1440,
+    "state": "1-guidebottom",
+    "element": 7,
+    "text": "All four original GLB files are retained, includin",
+    "minimum": 10.833904518530991,
+    "font": "16px",
+    "glyphPixels": 8549
+  },
+  {
+    "width": 1440,
+    "state": "1-guidebottom",
+    "element": 8,
+    "text": "Sources, licence and exact file hashes",
+    "minimum": 10.833904518530991,
+    "font": "16px",
+    "glyphPixels": 857
+  },
+  {
+    "width": 1440,
+    "state": "1-guidebottom",
+    "element": 9,
+    "text": "Sound only by invitation",
+    "minimum": 10.833904518530991,
+    "font": "23px",
+    "glyphPixels": 621
+  },
+  {
+    "width": 1440,
+    "state": "1-guidebottom",
+    "element": 10,
+    "text": "The optional sound is a synthesized soft wind text",
+    "minimum": 10.833904518530991,
+    "font": "16px",
+    "glyphPixels": 2444
+  },
+  {
+    "width": 1440,
+    "state": "1-landmark",
+    "element": 0,
+    "text": "Close",
+    "minimum": 10.833904518530991,
+    "font": "15px",
+    "glyphPixels": 80
+  },
+  {
+    "width": 1440,
+    "state": "1-landmark",
+    "element": 1,
+    "text": "Flamingo Beach",
+    "minimum": 10.833904518530991,
+    "font": "28px",
+    "glyphPixels": 710
+  },
+  {
+    "width": 1440,
+    "state": "1-landmark",
+    "element": 2,
+    "text": "Pink wings and a long neck form a bright flight si",
+    "minimum": 10.833904518530991,
+    "font": "16px",
+    "glyphPixels": 2355
+  },
+  {
+    "width": 1440,
+    "state": "1-landmark",
+    "element": 3,
+    "text": "The model and animation are preserved from the ear",
+    "minimum": 10.833904518530991,
+    "font": "16px",
+    "glyphPixels": 3926
+  },
+  {
+    "width": 1440,
+    "state": "1-landmark",
+    "element": 4,
+    "text": "Drag to inspect the subject from every side. Motio",
+    "minimum": 10.833904518530991,
+    "font": "16px",
+    "glyphPixels": 2343
+  }
+]

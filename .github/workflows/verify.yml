@@ -1,0 +1,23 @@
+name: Guide verification
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  chromium:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        width: [390, 1440]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npm test
+        env:
+          WIDTH: ${{ matrix.width }}
+          CHROME: /usr/bin/google-chrome
+      - run: npm audit --audit-level=high

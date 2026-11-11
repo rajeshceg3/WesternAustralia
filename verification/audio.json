@@ -1,0 +1,7 @@
+{
+  "silentStart": true,
+  "offAndReplay": true,
+  "capture": "actual post-gain Web Audio output",
+  "humanListening": false,
+  "sound": "synthesized wind, not field recording"
+}
