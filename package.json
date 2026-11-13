@@ -7,7 +7,7 @@
     "build": "vite build",
     "preview": "vite preview --host 0.0.0.0",
     "verify": "node verification/check.cjs",
-    "test": "node verification/check.cjs"
+    "test": "node verification/check.cjs && node verification/disclosure.cjs"
   },
   "dependencies": {
     "three": "^0.182.0"

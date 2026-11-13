@@ -4,3 +4,36 @@
 header h1{font-size:36px}#discover{margin-top:0}#guide{width:100%}#story{width:355px}button,select{border-radius:4px}#story{border-radius:4px}main{background:#bed8c8}@media(max-width:768px){header h1{font-size:31px}#story{width:100%;max-height:265px}canvas{inset:0 0 265px;height:calc(100% - 265px)}main{min-height:560px}}
 
 header h1{font-size:32px}@media(max-width:768px){header h1{font-size:26px}}
+
+/* Quiet, learner-controlled chrome. Scene code is unchanged. */
+header{position:fixed;inset:0 0 auto;height:auto;min-height:0;padding:14px 16px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;background:transparent;border:0;pointer-events:none;z-index:2}
+header>div,header>button{pointer-events:auto;background:var(--paper);border:1px solid var(--line);padding:10px 14px}
+header h1{font-size:25px;margin:0}header p{display:none}
+#explore-controls{min-height:46px;flex:none}
+main{height:100dvh;min-height:560px}
+.chapter-source{position:absolute!important;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+#story #discover{width:100%;min-height:46px;background:var(--button);color:var(--buttonink)}
+#explore-panel{width:min(550px,calc(100% - 28px));max-height:85dvh;padding:20px;overscroll-behavior:contain}
+.explore-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:-20px;background:var(--paper);z-index:2;padding:10px 0}
+.explore-heading h2{font-size:28px;margin:0}
+#explore-panel section{border-top:1px solid var(--line);margin-top:18px;padding-top:16px}
+#explore-panel h3{font-size:21px;margin:0 0 12px}
+.place-tokens{display:flex;flex-wrap:wrap;gap:10px}
+.place-token{min-height:46px;text-align:left}
+.place-token[aria-checked=true]{background:var(--button);color:var(--buttonink);border-color:var(--button)}
+#explore-panel nav{display:flex;flex-wrap:wrap;gap:10px}
+#explore-panel .world-note{position:static;background:none;color:inherit;padding:0;margin:14px 0 0;font-size:14px;line-height:1.5;box-shadow:none}
+#explore-panel .story-actions{margin:0}
+button{transition:background-color .16s ease,border-color .16s ease}
+@media(max-width:768px){
+ header{height:auto;display:flex;grid-template-columns:none;padding:12px 14px;gap:10px}header h1{font-size:23px}
+ #story{max-height:46dvh;padding:16px 18px 18px;border-radius:12px 12px 0 0}
+ #story h2{font-size:26px;margin:7px 0}#detail{margin:8px 0 12px}
+ #discover{margin:0}
+ canvas{inset:0 0 var(--story-height,240px);height:calc(100% - var(--story-height,240px))}
+}
+@media(prefers-reduced-motion:reduce){button{transition:none}}
+
+/* A ruled field-note tab, kept distinct from the shore panels. */
+header>div,#explore-controls,.place-token{border-radius:2px;box-shadow:3px 3px 0 var(--soft)}
+.place-token{border-bottom:3px solid var(--line)}
